@@ -139,15 +139,21 @@ class NetworkManager {
             if statusCode == 200 {
                 do {
                     var tasks: [Task] = []
-                    let APItasks = try JSONDecoder().decode([APITask].self, from: data)
-                    for task in APItasks {
-                        let task = Task.init(id: Int(task.id)!,
-                                             subject: task.base.subject,
-                                             type: task.base.typeName,
-                                             state: task.base.stateName,
-                                             assignee: task.base.assigneeName,
-                                             author: task.base.authorName,
-                                             priority: task.base.priority)
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
+                    let APItasks = try decoder.decode([APITask].self, from: data)
+                    for APItask in APItasks {
+                        var task = Task.init(id: Int(APItask.id)!,
+                                             subject: APItask.base.subject,
+                                             type: APItask.base.typeName,
+                                             state: APItask.base.stateName,
+                                             assignee: APItask.base.assigneeName,
+                                             author: APItask.base.authorName,
+                                             priority: APItask.base.priority,
+                                             supplyPlanDate: nil)
+                        if task.type == "Несоответствие" {
+                            task.supplyPlanDate = APItask.extra.supplyPlanDate
+                        }
                         tasks.append(task)
                     }
                     completion(tasks)

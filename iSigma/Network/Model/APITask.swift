@@ -12,4 +12,5 @@ struct APITask: Decodable {
     var id: String
     var url: String
     var base: APITaskBase
+    var extra: APITaskExtra
 }

@@ -16,4 +16,5 @@ struct Task {
     var assignee: String
     var author: String
     var priority: Int
+    var supplyPlanDate: Date?
 }
