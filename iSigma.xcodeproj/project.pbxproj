@@ -19,6 +19,9 @@
 		FAD76B4F21C7EB410034F614 /* APITask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4E21C7EB410034F614 /* APITask.swift */; };
 		FAD76B5121C7EBA00034F614 /* APITaskBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5021C7EBA00034F614 /* APITaskBase.swift */; };
 		FAD76B5321C805570034F614 /* APITaskID.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5221C805570034F614 /* APITaskID.swift */; };
+		FAD76B5521C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */; };
+		FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5621C901C60034F614 /* TaskCell.swift */; };
+		FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		FAD76B4E21C7EB410034F614 /* APITask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITask.swift; sourceTree = "<group>"; };
 		FAD76B5021C7EBA00034F614 /* APITaskBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITaskBase.swift; sourceTree = "<group>"; };
 		FAD76B5221C805570034F614 /* APITaskID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITaskID.swift; sourceTree = "<group>"; };
+		FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+childForStatusBarStyle.swift"; sourceTree = "<group>"; };
+		FAD76B5621C901C60034F614 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITaskExtra.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,9 +75,10 @@
 			isa = PBXGroup;
 			children = (
 				FA3093A421C3DA1300A3B417 /* AppDelegate.swift */,
-				FA3093A621C3DA1300A3B417 /* TasksController.swift */,
+				FAD76B5D21C95FE20034F614 /* Extensions */,
 				FAD76B4321C7DFAE0034F614 /* Network */,
 				FAD76B4B21C7E8FD0034F614 /* Model */,
+				FAD76B5821C903CA0034F614 /* View */,
 				FA3093A821C3DA1300A3B417 /* Main.storyboard */,
 				FA3093AB21C3DA1400A3B417 /* Assets.xcassets */,
 				FA3093AD21C3DA1400A3B417 /* LaunchScreen.storyboard */,
@@ -97,6 +104,7 @@
 				FAD76B5221C805570034F614 /* APITaskID.swift */,
 				FAD76B4E21C7EB410034F614 /* APITask.swift */,
 				FAD76B5021C7EBA00034F614 /* APITaskBase.swift */,
+				FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -107,6 +115,39 @@
 				FAD76B4921C7E8290034F614 /* Task.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		FAD76B5821C903CA0034F614 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FAD76B5A21C903D80034F614 /* Controllers */,
+				FAD76B5921C903D30034F614 /* Cells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		FAD76B5921C903D30034F614 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				FAD76B5621C901C60034F614 /* TaskCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		FAD76B5A21C903D80034F614 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FA3093A621C3DA1300A3B417 /* TasksController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		FAD76B5D21C95FE20034F614 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,8 +227,11 @@
 				FAD76B4821C7E0620034F614 /* APIAuthToken.swift in Sources */,
 				FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */,
 				FAD76B4F21C7EB410034F614 /* APITask.swift in Sources */,
+				FAD76B5521C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift in Sources */,
+				FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */,
 				FAD76B4A21C7E8290034F614 /* Task.swift in Sources */,
 				FAD76B5321C805570034F614 /* APITaskID.swift in Sources */,
+				FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */,
 				FA3093A521C3DA1300A3B417 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
