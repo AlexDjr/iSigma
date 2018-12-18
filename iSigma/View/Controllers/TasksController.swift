@@ -10,6 +10,10 @@ import UIKit
 
 class TasksController: UITableViewController {
     var tasks: [Task]?
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
