@@ -110,16 +110,13 @@ class NetworkManager {
                 print("TASKS: \(String(describing: responseString))")
                 do {
                     let tasksList = try JSONDecoder().decode([APITaskID].self, from: data)
-                    var tasks: [Task] = []
+                    var tasksIds: [Int] = []
                     for task in tasksList {
-                        let taskId = Int(task.id)!
-                        self.getTask(byId: taskId, completion: { task in
-                            tasks.append(task)
-                            if tasksList.count == tasks.count {
-                                completion(tasks)
-                            }
-                        })
+                        tasksIds.append(Int(task.id)!)
                     }
+                    self.getTask(byIds: tasksIds, completion: { tasks in
+                            completion(tasks)
+                    })
                 } catch let error {
                     print("Error serialization json: ", error)
                 }
@@ -129,9 +126,10 @@ class NetworkManager {
         }
     }
     
-    func getTask(byId id: Int, completion: @escaping (Task) -> ()) {
+    func getTask(byIds ids: [Int], completion: @escaping ([Task]) -> ()) {
         guard let accessToken = accessToken else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/issues/\(String(id))?include=extra,project")!
+        let stringIds = ids.map{ String($0) }.joined(separator: ",")
+        let url = URL(string: "http://webtst:7878/api/ems/issues/\(stringIds)?include=extra,project")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
@@ -140,6 +138,7 @@ class NetworkManager {
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
                 do {
+                    var tasks: [Task] = []
                     let APItasks = try JSONDecoder().decode([APITask].self, from: data)
                     for task in APItasks {
                         let task = Task.init(id: Int(task.id)!,
@@ -149,8 +148,9 @@ class NetworkManager {
                                              assignee: task.base.assigneeName,
                                              author: task.base.authorName,
                                              priority: task.base.priority)
-                        completion(task)
+                        tasks.append(task)
                     }
+                    completion(tasks)
                 } catch let error {
                     print("Error serialization json: ", error)
                 }
