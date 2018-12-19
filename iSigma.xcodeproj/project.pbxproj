@@ -22,6 +22,9 @@
 		FAD76B5521C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */; };
 		FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5621C901C60034F614 /* TaskCell.swift */; };
 		FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */; };
+		FAD76B6021CA8D000034F614 /* TasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B5F21CA8D000034F614 /* TasksViewModel.swift */; };
+		FAD76B6221CA8D590034F614 /* TaskCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B6121CA8D590034F614 /* TaskCellViewModel.swift */; };
+		FAD76B6421CAAE160034F614 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B6321CAAE160034F614 /* Box.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+childForStatusBarStyle.swift"; sourceTree = "<group>"; };
 		FAD76B5621C901C60034F614 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITaskExtra.swift; sourceTree = "<group>"; };
+		FAD76B5F21CA8D000034F614 /* TasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewModel.swift; sourceTree = "<group>"; };
+		FAD76B6121CA8D590034F614 /* TaskCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellViewModel.swift; sourceTree = "<group>"; };
+		FAD76B6321CAAE160034F614 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +81,11 @@
 			isa = PBXGroup;
 			children = (
 				FA3093A421C3DA1300A3B417 /* AppDelegate.swift */,
+				FAD76B6321CAAE160034F614 /* Box.swift */,
 				FAD76B5D21C95FE20034F614 /* Extensions */,
 				FAD76B4321C7DFAE0034F614 /* Network */,
 				FAD76B4B21C7E8FD0034F614 /* Model */,
+				FAD76B5E21CA8CC40034F614 /* ViewModel */,
 				FAD76B5821C903CA0034F614 /* View */,
 				FA3093A821C3DA1300A3B417 /* Main.storyboard */,
 				FA3093AB21C3DA1400A3B417 /* Assets.xcassets */,
@@ -148,6 +156,15 @@
 				FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		FAD76B5E21CA8CC40034F614 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FAD76B5F21CA8D000034F614 /* TasksViewModel.swift */,
+				FAD76B6121CA8D590034F614 /* TaskCellViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +245,9 @@
 				FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */,
 				FAD76B4F21C7EB410034F614 /* APITask.swift in Sources */,
 				FAD76B5521C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift in Sources */,
+				FAD76B6221CA8D590034F614 /* TaskCellViewModel.swift in Sources */,
+				FAD76B6021CA8D000034F614 /* TasksViewModel.swift in Sources */,
+				FAD76B6421CAAE160034F614 /* Box.swift in Sources */,
 				FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */,
 				FAD76B4A21C7E8290034F614 /* Task.swift in Sources */,
 				FAD76B5321C805570034F614 /* APITaskID.swift in Sources */,
