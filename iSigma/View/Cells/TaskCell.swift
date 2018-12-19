@@ -15,8 +15,9 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var taskSubject: UILabel!
     @IBOutlet weak var taskState: UILabel!
     @IBOutlet weak var taskAssignee: UILabel!
-    @IBOutlet weak var supplyDateView: UIView!
     @IBOutlet weak var supplyDate: UILabel!
     @IBOutlet weak var supplyTime: UILabel!
-    
+    @IBOutlet weak var priorityView: UIView!
+    @IBOutlet weak var priority: UILabel!
+    @IBOutlet weak var taskTypeTrailingConstraint: NSLayoutConstraint!
 }

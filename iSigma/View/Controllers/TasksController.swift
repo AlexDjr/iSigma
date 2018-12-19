@@ -47,23 +47,50 @@ class TasksController: UITableViewController {
         cell.taskState.text = tasks[indexPath.row].state
         cell.taskAssignee.text = tasks[indexPath.row].assignee
         
+        cell.priorityView.layer.cornerRadius = 12.0
+        cell.priorityView.layer.borderWidth = 1.0
+        cell.priorityView.layer.borderColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+        
         if tasks[indexPath.row].type == "Несоответствие" {
-            cell.supplyDateView.isHidden = false
-            cell.supplyDateView.layer.cornerRadius = 14.0
-            cell.supplyDateView.layer.borderWidth = 1.0
-            cell.supplyDateView.layer.borderColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            cell.taskType.textColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            cell.taskTypeTrailingConstraint.constant = 40
+            
+            cell.priorityView.isHidden = false
+            
+            if tasks[indexPath.row].priority == 2 {
+                cell.priorityView.layer.backgroundColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+                cell.priority.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            } else {
+                cell.priorityView.layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                cell.priority.textColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            }
+            cell.priority.text = String(tasks[indexPath.row].priority)
+            
+            cell.supplyDate.isHidden = false
+            cell.supplyTime.isHidden = false
             
             if let supplyPlanDate = tasks[indexPath.row].supplyPlanDate {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "dd.MM.yyyy"
-                cell.supplyDate.text = dateFormatter.string(from: supplyPlanDate)
+                let dateString = dateFormatter.string(from: supplyPlanDate)
+                
+                let dateAttributedString = NSMutableAttributedString(string: dateString,
+                                                                     attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 12)])
+                dateAttributedString.insert(NSMutableAttributedString(string: "до "), at: 0)
+                cell.supplyDate.attributedText = dateAttributedString
+                
                 dateFormatter.dateFormat = "HH:mm"
                 cell.supplyTime.text = dateFormatter.string(from: supplyPlanDate)
             }
-            cell.taskType.textColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            
         } else {
-            cell.supplyDateView.isHidden = true
             cell.taskType.textColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
+            cell.taskTypeTrailingConstraint.constant = 10
+            
+            cell.priorityView.isHidden = true
+            
+            cell.supplyDate.isHidden = true
+            cell.supplyTime.isHidden = true
         }
         
         return cell
