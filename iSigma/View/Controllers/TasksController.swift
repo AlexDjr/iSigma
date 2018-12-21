@@ -30,9 +30,8 @@ class TasksController: UITableViewController {
         }
     }
     
-    // MARK: - UITableViewDataSource
+    //    MARK: - UITableViewDataSource
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return tasks?.count ?? 0
         return viewModel?.numberOfRowsInSection(section) ?? 0
     }
     
@@ -46,9 +45,21 @@ class TasksController: UITableViewController {
         return taskCell
     }
     
-    // MARK: - UITableViewDelegate
+    //    MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel?.heightForRowAt(forIndexPath: indexPath) ?? 44
+    }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let config = viewModel?.tableView(tableView, leadingSwipeActionsConfigurationForRowAt: indexPath)
+        
+        return config
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let config = viewModel?.tableView(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
+        
+        return config
     }
     
 }
