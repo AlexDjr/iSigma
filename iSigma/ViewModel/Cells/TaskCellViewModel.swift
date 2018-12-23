@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TaskCellViewModel {
+class TaskCellViewModel : CellViewModelProtocol {
     private var task : Task
     
     var taskId: String
@@ -60,7 +60,7 @@ class TaskCellViewModel {
         setupViewModel()
     }
     
-    private func setupViewModel() {
+    func setupViewModel() {
         taskId = String(task.id)
         taskType = task.type
         taskSubject = task.subject
