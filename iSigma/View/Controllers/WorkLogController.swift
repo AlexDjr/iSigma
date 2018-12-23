@@ -73,10 +73,10 @@ class WorkLogController: UITableViewController {
     }
     
     override func  tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 1
+        return viewModel?.heightForHeaderInSection(section) ?? 0.0
     }
     override func  tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 5
+        return viewModel?.heightForFooterInSection(section) ?? 0.0
     }
 
 }

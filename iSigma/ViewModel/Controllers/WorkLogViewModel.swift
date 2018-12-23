@@ -52,11 +52,19 @@ class WorkLogViewModel {
         } else {
             switch indexPath.row {
             case 0, 2, 3: return 44
-            case 1: return 150
+            case 1: return 148
             case 4: return 50
             default:
                 return 44
             }
         }
+    }
+    
+    func  heightForHeaderInSection(_ section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func  heightForFooterInSection(_ section: Int) -> CGFloat {
+        return 3
     }
 }
