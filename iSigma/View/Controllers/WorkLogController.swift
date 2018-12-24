@@ -8,24 +8,29 @@
 
 import UIKit
 
-class WorkLogController: UITableViewController {
+class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var viewModel: WorkLogViewModel?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setSubmitView()
     }
 
     //    MARK: - UITableViewDataSource
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.numberOfSections() ?? 1
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.numberOfRowsInSection(section) ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let viewModel = viewModel else { return UITableViewCell() }
         
         if indexPath.section == 0 {
@@ -55,11 +60,6 @@ class WorkLogController: UITableViewController {
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsDateCellViewModel
                 cell.viewModel = cellViewModel
                 return cell
-            case 4:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "workLogSubmitCell", for: indexPath) as! WorkLogSubmitCell
-                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogSubmitCellViewModel
-                cell.viewModel = cellViewModel
-                return cell
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
                 return cell
@@ -68,15 +68,39 @@ class WorkLogController: UITableViewController {
     }
     
     //    MARK: - UITableViewDelegate
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel?.heightForRowAt(forIndexPath: indexPath) ?? 44
     }
     
-    override func  tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return viewModel?.heightForHeaderInSection(section) ?? 0.0
     }
-    override func  tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return viewModel?.heightForFooterInSection(section) ?? 0.0
+    }
+    
+    func indexPathForPreferredFocusedView(in tableView: UITableView) -> IndexPath? {
+        return IndexPath(row: 0, section: 1)
+    }
+    
+    //    MARK: Methods
+    private func setSubmitView() {
+        guard let viewModel = viewModel else { return }
+        
+        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
+        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
+        
+        let width : CGFloat = view.frame.width
+        let height : CGFloat = viewModel.heightForSubmitView()
+        let x : CGFloat = viewModel.xForSubmitView()
+        let y : CGFloat = view.frame.height - navBarHeight - UIApplication.shared.statusBarFrame.height - tabBarHeight - height
+        
+        let submitView = SubmitView()
+        let submitViewModel = SubmitViewViewModel(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
+        submitView.viewModel = submitViewModel
+        
+        view.addSubview(submitView)
+        view.bringSubviewToFront(submitView)
     }
 
 }

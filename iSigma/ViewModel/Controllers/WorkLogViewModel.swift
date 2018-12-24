@@ -10,6 +10,8 @@ import UIKit
 
 class WorkLogViewModel {
     var task : Task?
+    var isTabBar = false
+    var isNavBar = false
     
     init(task: Task) {
         self.task = task
@@ -24,7 +26,7 @@ class WorkLogViewModel {
         if section == 0 {
             return 1
         } else {
-            return 5
+            return 4
         }
     }
     
@@ -39,7 +41,7 @@ class WorkLogViewModel {
         case 1: return WorkLogTimePickerCellViewModel()
         case 2: return WorkLogDetailsTypeCellViewModel()
         case 3: return WorkLogDetailsDateCellViewModel()
-        case 4: return WorkLogSubmitCellViewModel()
+//        case 4: return WorkLogSubmitCellViewModel()
         default:
             return WorkLogDetailsCellViewModel()
         }
@@ -52,8 +54,7 @@ class WorkLogViewModel {
         } else {
             switch indexPath.row {
             case 0, 2, 3: return 44
-            case 1: return 148
-            case 4: return 50
+            case 1: return 141
             default:
                 return 44
             }
@@ -61,10 +62,21 @@ class WorkLogViewModel {
     }
     
     func  heightForHeaderInSection(_ section: Int) -> CGFloat {
-        return 1
+        return 4
     }
     
     func  heightForFooterInSection(_ section: Int) -> CGFloat {
-        return 3
+        return 0.0001
     }
+    
+    //    MARK: - SubmitView
+    func heightForSubmitView() -> CGFloat {
+        return 54
+    }
+    
+    func xForSubmitView() -> CGFloat {
+        return 0
+    }
+
+    
 }
