@@ -16,4 +16,5 @@ struct WorkLog {
     
     static let hours = ["01","02","03","04","05","06","07","08"]
     static let minutes = ["00","05","10","15","20","25","30","35","40","45","50","55"]
+    static var types : [WorkLogType]? = nil
 }

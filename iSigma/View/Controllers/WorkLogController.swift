@@ -101,6 +101,24 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
         return IndexPath(row: 1, section: 1)
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        if indexPath.section == 0 {
+            
+        } else {
+            switch indexPath.row {
+            case 2:
+                let workLogController = storyboard.instantiateViewController(withIdentifier: "workLogTypesController") as! WorkLogTypesController
+                let viewModel = WorkLogTypesViewModel()
+                workLogController.viewModel = viewModel
+                workLogController.navigationItem.title = "Типы работ"
+                self.navigationController?.pushViewController(workLogController, animated: true)
+            default: break
+            }
+        }
+    }
+    
     
     //    MARK: Methods
     private func setSubmitView() {
