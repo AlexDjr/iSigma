@@ -9,9 +9,10 @@
 import Foundation
 
 class WorkLogDetailsTimeCellViewModel: WorkLogDetailsCellViewModel {
+    
     override init() {
         super.init()
-        self.detailName = "Время"
-        self.detailValue = ""
+        self.name = "Время"
+        self.value = Box("08:00")
     }
 }

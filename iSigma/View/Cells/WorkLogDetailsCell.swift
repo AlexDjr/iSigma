@@ -16,8 +16,12 @@ class WorkLogDetailsCell: UITableViewCell {
     weak var viewModel: WorkLogDetailsCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
-            detailName.text = viewModel.detailName
-            detailValue.text = viewModel.detailValue
+            detailName.text = viewModel.name
+            
+            viewModel.value.bind{ [unowned self] in
+                guard let string = $0 else { return }
+                self.detailValue.text = string
+            }
         }
     }
 }

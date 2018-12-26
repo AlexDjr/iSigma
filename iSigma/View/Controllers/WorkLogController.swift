@@ -8,16 +8,32 @@
 
 import UIKit
 
-class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDelegate, PickerDelegateProtocol {
+
+    @IBOutlet weak var tableView: UITableView!
 
     var viewModel: WorkLogViewModel?
+    var pickerCurrentValue: Box<String?>
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
+    init() {
+        self.pickerCurrentValue = Box(nil)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.pickerCurrentValue = Box(nil)
+        super.init(coder: aDecoder)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let viewModel = viewModel else { return }
+        self.pickerCurrentValue = Box(viewModel.timePickerValue)
         setSubmitView()
     }
 
@@ -43,12 +59,14 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsTimeCellViewModel
+                cellViewModel.value = pickerCurrentValue
                 cell.viewModel = cellViewModel
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "workLogTimePickerCell", for: indexPath) as! WorkLogTimePickerCell
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogTimePickerCellViewModel
                 cell.viewModel = cellViewModel
+                cell.delegate = self
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
@@ -80,8 +98,9 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func indexPathForPreferredFocusedView(in tableView: UITableView) -> IndexPath? {
-        return IndexPath(row: 0, section: 1)
+        return IndexPath(row: 1, section: 1)
     }
+    
     
     //    MARK: Methods
     private func setSubmitView() {
@@ -101,6 +120,13 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
         
         view.addSubview(submitView)
         view.bringSubviewToFront(submitView)
+    }
+    
+    func pickerDidSelectRow(value: String) {
+        pickerCurrentValue = Box(value)
+        print(pickerCurrentValue)
+        let indexPath = IndexPath(row: 0, section: 1)
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
 
 }

@@ -322,6 +322,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="mmU-V5-JWC"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="Maz-IO-69k" id="FB8-Jk-eM2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jBR-Va-xYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

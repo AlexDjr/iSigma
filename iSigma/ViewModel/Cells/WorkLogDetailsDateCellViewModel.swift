@@ -11,7 +11,7 @@ import Foundation
 class WorkLogDetailsDateCellViewModel: WorkLogDetailsCellViewModel {
     override init() {
         super.init()
-        self.detailName = "Дата"
-        self.detailValue = ""
+        self.name = "Дата"
+        self.value = Box(nil)
     }
 }

@@ -10,11 +10,11 @@ import UIKit
 
 class WorkLogViewModel {
     var task : Task?
-    var isTabBar = false
-    var isNavBar = false
+    var timePickerValue : String
     
     init(task: Task) {
         self.task = task
+        self.timePickerValue = "08:00"
     }
     
     //   MARK: - UITableViewDataSource

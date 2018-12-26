@@ -9,12 +9,12 @@
 import Foundation
 
 class WorkLogDetailsCellViewModel : CellViewModelProtocol {
-    var detailName: String
-    var detailValue: String
+    var name: String
+    var value: Box<String?>
     
     init() {
-        self.detailName = ""
-        self.detailValue = ""
+        self.name = ""
+        self.value = Box("00:00")
     }
     
     func setupViewModel() {

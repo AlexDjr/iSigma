@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WorkLogTimePickerCellViewModel : NSObject, CellViewModelProtocol, UIPickerViewDataSource, UIPickerViewDelegate {
+class WorkLogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
     
     var timePickerSelectedRows: (Int, Int)
     var timePickerComponentWidth: CGFloat
@@ -23,34 +23,6 @@ class WorkLogTimePickerCellViewModel : NSObject, CellViewModelProtocol, UIPicker
     func setupViewModel() {
         timePickerSelectedRows = (7,0)
         timePickerComponentWidth = 20.0
-    }
-    
-    //    MARK: - UIPickerViewDataSource
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0: return WorkLog.hours.count
-        case 1: return WorkLog.minutes.count
-        default:
-            return 0
-        }
-    }
-    
-    //    MARK: - UIPickerViewDelegate
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch component {
-        case 0: return WorkLog.hours[row]
-        case 1: return WorkLog.minutes[row]
-        default:
-            return ""
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return 50
     }
     
 }
