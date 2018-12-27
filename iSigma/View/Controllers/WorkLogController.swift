@@ -13,19 +13,18 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
     @IBOutlet weak var tableView: UITableView!
 
     var viewModel: WorkLogViewModel?
-    var pickerCurrentValue: Box<String?>
+    var сurrentPickerValue: String?
+    var currentWorkLogType: WorkLogType?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     init() {
-        self.pickerCurrentValue = Box(nil)
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.pickerCurrentValue = Box(nil)
         super.init(coder: aDecoder)
     }
     
@@ -33,7 +32,8 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let viewModel = viewModel else { return }
-        self.pickerCurrentValue = Box(viewModel.timePickerValue)
+        self.сurrentPickerValue = viewModel.timePickerValue
+        self.currentWorkLogType = viewModel.workLogType
         setSubmitView()
     }
 
@@ -59,7 +59,7 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsTimeCellViewModel
-                cellViewModel.value = pickerCurrentValue
+                cellViewModel.value = Box(сurrentPickerValue)
                 cell.viewModel = cellViewModel
                 return cell
             case 1:
@@ -71,6 +71,7 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsTypeCellViewModel
+                cellViewModel.value = Box(currentWorkLogType?.name)
                 cell.viewModel = cellViewModel
                 return cell
             case 3:
@@ -114,6 +115,11 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
                 workLogController.viewModel = viewModel
                 workLogController.navigationItem.title = "Типы работ"
                 self.navigationController?.pushViewController(workLogController, animated: true)
+                workLogController.callback = { result in
+                    self.currentWorkLogType = result
+                    let indexPath = IndexPath(row: 2, section: 1)
+                    tableView.reloadRows(at: [indexPath], with: .none)
+                }
             default: break
             }
         }
@@ -141,8 +147,7 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func pickerDidSelectRow(value: String) {
-        pickerCurrentValue = Box(value)
-        print(pickerCurrentValue)
+        сurrentPickerValue = value
         let indexPath = IndexPath(row: 0, section: 1)
         tableView.reloadRows(at: [indexPath], with: .none)
     }

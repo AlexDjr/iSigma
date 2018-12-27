@@ -11,6 +11,8 @@ import UIKit
 class WorkLogTypesController: UITableViewController {
 
     var viewModel: WorkLogTypesViewModel?
+    var callback: ((WorkLogType?) -> ())?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let viewModel = viewModel else { return }
@@ -50,5 +52,16 @@ class WorkLogTypesController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let viewModel = viewModel else { return nil}
         return viewModel.titleForHeaderInSection(section)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = viewModel, let types = viewModel.types, let typesOftenUsed = viewModel.typesOftenUsed else { return }
+        
+        if indexPath.section == 0 {
+            callback?(typesOftenUsed[indexPath.row])
+        } else {
+            callback?(types[indexPath.row])
+        }
+        self.navigationController?.popViewController(animated: true)
     }
 }

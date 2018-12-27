@@ -11,10 +11,12 @@ import UIKit
 class WorkLogViewModel {
     var task : Task?
     var timePickerValue : String
+    var workLogType : WorkLogType?
     
     init(task: Task) {
         self.task = task
         self.timePickerValue = "08:00"
+        self.workLogType = nil //WorkLogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
     }
     
     //   MARK: - UITableViewDataSource
@@ -41,7 +43,6 @@ class WorkLogViewModel {
         case 1: return WorkLogTimePickerCellViewModel()
         case 2: return WorkLogDetailsTypeCellViewModel()
         case 3: return WorkLogDetailsDateCellViewModel()
-//        case 4: return WorkLogSubmitCellViewModel()
         default:
             return WorkLogDetailsCellViewModel()
         }

@@ -9,5 +9,6 @@
 import Foundation
 
 struct APIWorkLogType: Decodable {
+    var value: Int
     var name: String
 }

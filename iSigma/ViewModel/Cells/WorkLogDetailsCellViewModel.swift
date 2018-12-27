@@ -14,7 +14,7 @@ class WorkLogDetailsCellViewModel : CellViewModelProtocol {
     
     init() {
         self.name = ""
-        self.value = Box("00:00")
+        self.value = Box("")
     }
     
     func setupViewModel() {

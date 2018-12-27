@@ -179,7 +179,7 @@ class NetworkManager {
                     let APIworkLogTypes = try JSONDecoder().decode(APIWorkLogTypes.self, from: data)
                     
                     for member in APIworkLogTypes.members {
-                        var workLogType = WorkLogType.init(name: member.name, isOften: false)
+                        var workLogType = WorkLogType(id: member.value, name: member.name, isOften: false)
                         if member.name.oneOf(other: "Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
                             workLogType.isOften = true
                         }

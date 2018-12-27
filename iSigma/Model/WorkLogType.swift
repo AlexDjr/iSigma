@@ -9,6 +9,7 @@
 import Foundation
 
 struct WorkLogType {
+    var id: Int
     var name: String
     var isOften: Bool
 }
