@@ -30,6 +30,10 @@ class WorkLogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        //    hiding selection lines
+        pickerView.subviews.forEach {
+            $0.isHidden = $0.frame.height < 1.0
+        }
         switch component {
         case 0: return WorkLog.hours.count
         case 1: return WorkLog.minutes.count

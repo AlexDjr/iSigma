@@ -264,16 +264,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detailName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="neh-1U-J1b">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detailName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="1" translatesAutoresizingMaskIntoConstraints="NO" id="neh-1U-J1b">
                                                     <rect key="frame" x="9" y="11.5" width="91" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="Yfe-Tu-DpS"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <color key="textColor" red="0.68606412409999995" green="0.1174660251" blue="0.2384344041" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detailValue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAN-zy-bmV">
-                                                    <rect key="frame" x="227" y="11.5" width="84" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.59999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="JAN-zy-bmV">
+                                                    <rect key="frame" x="311" y="22" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -282,7 +285,7 @@
                                                 <constraint firstItem="neh-1U-J1b" firstAttribute="centerY" secondItem="DuI-RH-TTs" secondAttribute="centerY" id="PRf-2z-5Ap"/>
                                                 <constraint firstItem="JAN-zy-bmV" firstAttribute="centerY" secondItem="DuI-RH-TTs" secondAttribute="centerY" id="TSB-D9-gmI"/>
                                                 <constraint firstAttribute="trailing" secondItem="JAN-zy-bmV" secondAttribute="trailing" constant="9" id="Z2z-iP-49S"/>
-                                                <constraint firstItem="JAN-zy-bmV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="neh-1U-J1b" secondAttribute="trailing" constant="10" id="oCf-jW-EFN"/>
+                                                <constraint firstItem="JAN-zy-bmV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="neh-1U-J1b" secondAttribute="trailing" priority="999" constant="5" id="oCf-jW-EFN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
