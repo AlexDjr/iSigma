@@ -166,7 +166,7 @@ class NetworkManager {
         }
     }
     
-    func getWorkLogTypes(completion: @escaping ([WorkLogType]) -> ()) {
+    func getWorklogTypes(completion: @escaping ([WorklogType]) -> ()) {
         let url = URL(string: "http://webtst:7878/api/ems/meta/model/contracts/worklog/type")!
         
         var request = URLRequest(url: url)
@@ -175,17 +175,17 @@ class NetworkManager {
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
                 do {
-                    var workLogTypes: [WorkLogType] = []
-                    let APIworkLogTypes = try JSONDecoder().decode(APIWorkLogTypes.self, from: data)
+                    var worklogTypes: [WorklogType] = []
+                    let APIworklogTypes = try JSONDecoder().decode(APIWorklogTypes.self, from: data)
                     
-                    for member in APIworkLogTypes.members {
-                        var workLogType = WorkLogType(id: member.value, name: member.name, isOften: false)
+                    for member in APIworklogTypes.members {
+                        var worklogType = WorklogType(id: member.value, name: member.name, isOften: false)
                         if member.name.oneOf(other: "Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
-                            workLogType.isOften = true
+                            worklogType.isOften = true
                         }
-                        workLogTypes.append(workLogType)
+                        worklogTypes.append(worklogType)
                     }
-                    completion(workLogTypes)
+                    completion(worklogTypes)
                 } catch let error {
                     print("Error serialization json: ", error)
                 }

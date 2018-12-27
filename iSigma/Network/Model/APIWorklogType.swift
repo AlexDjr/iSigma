@@ -1,5 +1,5 @@
 //
-//  APIWorkLogType.swift
+//  APIWorklogType.swift
 //  iSigma
 //
 //  Created by Alex Delin on 26/12/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct APIWorkLogType: Decodable {
+struct APIWorklogType: Decodable {
     var value: Int
     var name: String
 }

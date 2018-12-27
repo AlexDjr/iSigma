@@ -1,5 +1,5 @@
 //
-//  WorkLogDetailsCell.swift
+//  WorklogDetailsCell.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-class WorkLogDetailsCell: UITableViewCell {
+class WorklogDetailsCell: UITableViewCell {
 
     @IBOutlet weak var detailName: UILabel!
     @IBOutlet weak var detailValue: UILabel!
     
-    weak var viewModel: WorkLogDetailsCellViewModel? {
+    weak var viewModel: WorklogDetailsCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
             detailName.text = viewModel.name

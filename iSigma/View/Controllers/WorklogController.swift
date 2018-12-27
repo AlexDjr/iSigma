@@ -8,13 +8,13 @@
 
 import UIKit
 
-class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDelegate, PickerDelegateProtocol {
+class WorklogController: UIViewController, UITableViewDataSource, UITableViewDelegate, PickerDelegateProtocol {
 
     @IBOutlet weak var tableView: UITableView!
 
-    var viewModel: WorkLogViewModel?
+    var viewModel: WorklogViewModel?
     var сurrentPickerValue: String?
-    var currentWorkLogType: WorkLogType?
+    var currentWorklogType: WorklogType?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -33,7 +33,7 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
         super.viewDidLoad()
         guard let viewModel = viewModel else { return }
         self.сurrentPickerValue = viewModel.timePickerValue
-        self.currentWorkLogType = viewModel.workLogType
+        self.currentWorklogType = viewModel.worklogType
         setSubmitView()
     }
 
@@ -50,33 +50,33 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
         guard let viewModel = viewModel else { return UITableViewCell() }
         
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "workLogTaskCell", for: indexPath) as! WorkLogTaskCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "worklogTaskCell", for: indexPath) as! WorklogTaskCell
             let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! TaskCellViewModel
             cell.viewModel = cellViewModel
             return cell
         } else {
             switch indexPath.row {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
-                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsTimeCellViewModel
+                let cell = tableView.dequeueReusableCell(withIdentifier: "worklogDetailsCell", for: indexPath) as! WorklogDetailsCell
+                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogDetailsTimeCellViewModel
                 cellViewModel.value = Box(сurrentPickerValue)
                 cell.viewModel = cellViewModel
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "workLogTimePickerCell", for: indexPath) as! WorkLogTimePickerCell
-                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogTimePickerCellViewModel
+                let cell = tableView.dequeueReusableCell(withIdentifier: "worklogTimePickerCell", for: indexPath) as! WorklogTimePickerCell
+                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogTimePickerCellViewModel
                 cell.viewModel = cellViewModel
                 cell.delegate = self
                 return cell
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
-                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsTypeCellViewModel
-                cellViewModel.value = Box(currentWorkLogType?.name)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "worklogDetailsCell", for: indexPath) as! WorklogDetailsCell
+                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogDetailsTypeCellViewModel
+                cellViewModel.value = Box(currentWorklogType?.name)
                 cell.viewModel = cellViewModel
                 return cell
             case 3:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "workLogDetailsCell", for: indexPath) as! WorkLogDetailsCell
-                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorkLogDetailsDateCellViewModel
+                let cell = tableView.dequeueReusableCell(withIdentifier: "worklogDetailsCell", for: indexPath) as! WorklogDetailsCell
+                let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogDetailsDateCellViewModel
                 cell.viewModel = cellViewModel
                 return cell
             default:
@@ -110,13 +110,13 @@ class WorkLogController: UIViewController, UITableViewDataSource, UITableViewDel
         } else {
             switch indexPath.row {
             case 2:
-                let workLogController = storyboard.instantiateViewController(withIdentifier: "workLogTypesController") as! WorkLogTypesController
-                let viewModel = WorkLogTypesViewModel()
-                workLogController.viewModel = viewModel
-                workLogController.navigationItem.title = "Типы работ"
-                self.navigationController?.pushViewController(workLogController, animated: true)
-                workLogController.callback = { result in
-                    self.currentWorkLogType = result
+                let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogTypesController") as! WorklogTypesController
+                let viewModel = WorklogTypesViewModel()
+                worklogController.viewModel = viewModel
+                worklogController.navigationItem.title = "Типы работ"
+                self.navigationController?.pushViewController(worklogController, animated: true)
+                worklogController.callback = { result in
+                    self.currentWorklogType = result
                     let indexPath = IndexPath(row: 2, section: 1)
                     tableView.reloadRows(at: [indexPath], with: .none)
                 }

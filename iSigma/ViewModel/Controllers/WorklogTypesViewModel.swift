@@ -1,5 +1,5 @@
 //
-//  WorkLogTypesViewModel.swift
+//  WorklogTypesViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 26/12/2018.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class WorkLogTypesViewModel {
+class WorklogTypesViewModel {
     
-    var types: [WorkLogType]?
-    var typesOftenUsed: [WorkLogType]?
+    var types: [WorklogType]?
+    var typesOftenUsed: [WorklogType]?
     
     //   MARK: - UITableViewDataSource
     func numberOfSections() -> Int {
@@ -30,7 +30,7 @@ class WorkLogTypesViewModel {
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelProtocol? {
-        return WorkLogTypesCellViewModel()
+        return WorklogTypesCellViewModel()
     }
     
     //    MARK: - UITableViewDelegate
@@ -43,16 +43,16 @@ class WorkLogTypesViewModel {
     }
     
     //    MARK: - Methods
-    func getWorkLogTypes(completion: @escaping () -> ()) {
-        if WorkLog.types == nil {
-            NetworkManager.shared.getWorkLogTypes { workLogTypes in
-                self.types = workLogTypes
-                self.typesOftenUsed = workLogTypes.filter{ $0.isOften == true }
+    func getWorklogTypes(completion: @escaping () -> ()) {
+        if Worklog.types == nil {
+            NetworkManager.shared.getWorklogTypes { worklogTypes in
+                self.types = worklogTypes
+                self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
                 completion()
             }
         } else {
-            self.types = WorkLog.types
-            self.typesOftenUsed = WorkLog.types?.filter{ $0.isOften == true }
+            self.types = Worklog.types
+            self.typesOftenUsed = Worklog.types?.filter{ $0.isOften == true }
         }
     }
 }

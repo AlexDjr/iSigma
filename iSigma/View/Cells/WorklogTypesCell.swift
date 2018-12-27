@@ -1,5 +1,5 @@
 //
-//  WorkLogTypesCell.swift
+//  WorklogTypesCell.swift
 //  iSigma
 //
 //  Created by Alex Delin on 26/12/2018.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class WorkLogTypesCell: UITableViewCell {
+class WorklogTypesCell: UITableViewCell {
     
-    var viewModel: WorkLogTypesCellViewModel? {
+    var viewModel: WorklogTypesCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
             

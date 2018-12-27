@@ -137,10 +137,10 @@
             </objects>
             <point key="canvasLocation" x="1771.875" y="36.971830985915496"/>
         </scene>
-        <!--Work Log Controller-->
+        <!--Worklog Controller-->
         <scene sceneID="WmU-MD-XUL">
             <objects>
-                <viewController storyboardIdentifier="workLogController" id="h3Q-6r-Q0V" customClass="WorkLogController" customModule="iSigma" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="worklogController" id="h3Q-6r-Q0V" customClass="WorklogController" customModule="iSigma" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NFc-ee-cxo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,7 +151,7 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="workLogTaskCell" rowHeight="120" id="aXC-ph-bJt" customClass="WorkLogTaskCell" customModule="iSigma" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="worklogTaskCell" rowHeight="120" id="aXC-ph-bJt" customClass="WorklogTaskCell" customModule="iSigma" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aXC-ph-bJt" id="usz-HY-DVY">
@@ -257,7 +257,7 @@
                                             <outlet property="taskTypeTrailingConstraint" destination="4me-ek-lTO" id="KOC-CD-NOI"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="workLogDetailsCell" id="skv-7Q-neN" customClass="WorkLogDetailsCell" customModule="iSigma" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="worklogDetailsCell" id="skv-7Q-neN" customClass="WorklogDetailsCell" customModule="iSigma" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="175.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="skv-7Q-neN" id="DuI-RH-TTs">
@@ -293,7 +293,7 @@
                                             <outlet property="detailValue" destination="JAN-zy-bmV" id="21D-Oh-5FJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="workLogTimePickerCell" rowHeight="141" id="5BJ-w6-NEq" customClass="WorkLogTimePickerCell" customModule="iSigma" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="worklogTimePickerCell" rowHeight="141" id="5BJ-w6-NEq" customClass="WorklogTimePickerCell" customModule="iSigma" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="219.5" width="320" height="141"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5BJ-w6-NEq" id="M30-K0-YPI">
@@ -333,16 +333,16 @@
             </objects>
             <point key="canvasLocation" x="2610" y="38"/>
         </scene>
-        <!--Work Log Types Controller-->
+        <!--Worklog Types Controller-->
         <scene sceneID="e74-hs-eWf">
             <objects>
-                <tableViewController storyboardIdentifier="workLogTypesController" id="2cb-kH-QMq" customClass="WorkLogTypesController" customModule="iSigma" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="worklogTypesController" id="2cb-kH-QMq" customClass="WorklogTypesController" customModule="iSigma" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="PXe-T5-rml">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="HdK-sF-nsh" customClass="WorkLogTypesCell" customModule="iSigma" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="HdK-sF-nsh" customClass="WorklogTypesCell" customModule="iSigma" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HdK-sF-nsh" id="Ehf-TD-h5a">

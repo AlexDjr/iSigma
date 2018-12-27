@@ -1,5 +1,5 @@
 //
-//  WorkLogViewModel.swift
+//  WorklogViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-class WorkLogViewModel {
+class WorklogViewModel {
     var task : Task?
     var timePickerValue : String
-    var workLogType : WorkLogType?
+    var worklogType : WorklogType?
     
     init(task: Task) {
         self.task = task
         self.timePickerValue = "08:00"
-        self.workLogType = nil //WorkLogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
+        self.worklogType = nil //WorklogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
     }
     
     //   MARK: - UITableViewDataSource
@@ -39,12 +39,12 @@ class WorkLogViewModel {
             return TaskCellViewModel(task: task)
         }
         switch indexPath.row {
-        case 0: return WorkLogDetailsTimeCellViewModel()
-        case 1: return WorkLogTimePickerCellViewModel()
-        case 2: return WorkLogDetailsTypeCellViewModel()
-        case 3: return WorkLogDetailsDateCellViewModel()
+        case 0: return WorklogDetailsTimeCellViewModel()
+        case 1: return WorklogTimePickerCellViewModel()
+        case 2: return WorklogDetailsTypeCellViewModel()
+        case 3: return WorklogDetailsDateCellViewModel()
         default:
-            return WorkLogDetailsCellViewModel()
+            return WorklogDetailsCellViewModel()
         }
     }
     

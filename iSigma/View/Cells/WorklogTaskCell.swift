@@ -1,5 +1,5 @@
 //
-//  WorkLogTaskCell.swift
+//  WorklogTaskCell.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WorkLogTaskCell: UITableViewCell {
+class WorklogTaskCell: UITableViewCell {
 
     @IBOutlet weak var taskId: UILabel!
     @IBOutlet weak var taskSubject: UILabel!

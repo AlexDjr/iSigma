@@ -1,5 +1,5 @@
 //
-//  WorkLogDetailsCellViewModel.swift
+//  WorklogDetailsCellViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class WorkLogDetailsCellViewModel : CellViewModelProtocol {
+class WorklogDetailsCellViewModel : CellViewModelProtocol {
     var name: String
     var value: Box<String?>
     

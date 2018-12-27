@@ -1,5 +1,5 @@
 //
-//  WorkLogTimePickerViewModel.swift
+//  WorklogTimePickerViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WorkLogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
+class WorklogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
     
     var timePickerSelectedRows: (Int, Int)
     var timePickerComponentWidth: CGFloat

@@ -1,5 +1,5 @@
 //
-//  WorkLogDetailsDateCellViewModel.swift
+//  WorklogDetailsDateCellViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 22/12/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class WorkLogDetailsDateCellViewModel: WorkLogDetailsCellViewModel {
+class WorklogDetailsDateCellViewModel: WorklogDetailsCellViewModel {
     override init() {
         super.init()
         self.name = "Дата"

@@ -72,14 +72,14 @@ class TasksController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let logWrite = UIContextualAction(style: .destructive, title: "Списание") { (action, view, nil) in
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let workLogController = storyboard.instantiateViewController(withIdentifier: "workLogController") as! WorkLogController
+            let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogController") as! WorklogController
             
             guard let viewModel = self.viewModel else { return }
             viewModel.selectItem(atIndexPath: indexPath)
-            workLogController.viewModel = viewModel.viewModelForSelectedItem()
-            workLogController.navigationItem.title = "Списание"
+            worklogController.viewModel = viewModel.viewModelForSelectedItem()
+            worklogController.navigationItem.title = "Списание"
             
-            self.navigationController?.pushViewController(workLogController, animated: true)
+            self.navigationController?.pushViewController(worklogController, animated: true)
         }
         logWrite.backgroundColor = #colorLiteral(red: 0.4971398711, green: 0.7130244374, blue: 0.9623243213, alpha: 1)
         logWrite.image = #imageLiteral(resourceName: "logWrite")

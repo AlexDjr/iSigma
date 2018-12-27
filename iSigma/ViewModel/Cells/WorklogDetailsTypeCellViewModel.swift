@@ -1,5 +1,5 @@
 //
-//  WorkLogDetailsTimeCellViewModel.swift
+//  WorklogDetailsTypeCellViewModel.swift
 //  iSigma
 //
 //  Created by Alex Delin on 22/12/2018.
@@ -8,11 +8,10 @@
 
 import Foundation
 
-class WorkLogDetailsTimeCellViewModel: WorkLogDetailsCellViewModel {
-    
+class WorklogDetailsTypeCellViewModel: WorklogDetailsCellViewModel {
     override init() {
         super.init()
-        self.name = "Время"
-        self.value = Box("08:00")
+        self.name = "Тип"
+        self.value = Box(nil)
     }
 }

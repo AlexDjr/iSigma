@@ -1,5 +1,5 @@
 //
-//  WorkLogTimePickerCell.swift
+//  WorklogTimePickerCell.swift
 //  iSigma
 //
 //  Created by Alex Delin on 21/12/2018.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class WorkLogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
+class WorklogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet var timePicker: UIPickerView!
     
     var delegate: PickerDelegateProtocol?
     
-    var viewModel: WorkLogTimePickerCellViewModel? {
+    var viewModel: WorklogTimePickerCellViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
             timePicker.dataSource = self
@@ -35,8 +35,8 @@ class WorkLogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
             $0.isHidden = $0.frame.height < 1.0
         }
         switch component {
-        case 0: return WorkLog.hours.count
-        case 1: return WorkLog.minutes.count
+        case 0: return Worklog.hours.count
+        case 1: return Worklog.minutes.count
         default:
             return 0
         }
@@ -45,8 +45,8 @@ class WorkLogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
     //    MARK: - UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch component {
-        case 0: return WorkLog.hours[row]
-        case 1: return WorkLog.minutes[row]
+        case 0: return Worklog.hours[row]
+        case 1: return Worklog.minutes[row]
         default:
             return ""
         }
@@ -57,8 +57,8 @@ class WorkLogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let hours = WorkLog.hours[pickerView.selectedRow(inComponent: 0)]
-        let minutes = WorkLog.minutes[pickerView.selectedRow(inComponent: 1)]
+        let hours = Worklog.hours[pickerView.selectedRow(inComponent: 0)]
+        let minutes = Worklog.minutes[pickerView.selectedRow(inComponent: 1)]
         let value = hours + ":" + minutes
         delegate?.pickerDidSelectRow(value: value)
     }

@@ -1,5 +1,5 @@
 //
-//  WorkLogTypesController.swift
+//  WorklogTypesController.swift
 //  iSigma
 //
 //  Created by Alex Delin on 26/12/2018.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-class WorkLogTypesController: UITableViewController {
+class WorklogTypesController: UITableViewController {
 
-    var viewModel: WorkLogTypesViewModel?
-    var callback: ((WorkLogType?) -> ())?
+    var viewModel: WorklogTypesViewModel?
+    var callback: ((WorklogType?) -> ())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let viewModel = viewModel else { return }
-        viewModel.getWorkLogTypes {
+        viewModel.getWorklogTypes {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -35,8 +35,8 @@ class WorkLogTypesController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let viewModel = viewModel, let types = viewModel.types, let typesOftenUsed = viewModel.typesOftenUsed else { return UITableViewCell() }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! WorkLogTypesCell
-        let cellViewModel = WorkLogTypesCellViewModel()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! WorklogTypesCell
+        let cellViewModel = WorklogTypesCellViewModel()
         
         if indexPath.section == 0 {
             cellViewModel.value = Box(typesOftenUsed[indexPath.row].name)

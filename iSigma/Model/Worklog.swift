@@ -1,5 +1,5 @@
 //
-//  WorkLog.swift
+//  Worklog.swift
 //  iSigma
 //
 //  Created by Alex Delin on 23/12/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct WorkLog {
+struct Worklog {
     var task: Task
     var type: String
     var time: String
@@ -16,5 +16,5 @@ struct WorkLog {
     
     static let hours = ["01","02","03","04","05","06","07","08"]
     static let minutes = ["00","05","10","15","20","25","30","35","40","45","50","55"]
-    static var types : [WorkLogType]? = nil
+    static var types : [WorklogType]? = nil
 }

@@ -42,10 +42,10 @@ class TasksViewModel {
         }
     }
     
-    func viewModelForSelectedItem() -> WorkLogViewModel? {
+    func viewModelForSelectedItem() -> WorklogViewModel? {
         guard let selectedIndexPath = selectedIndexPath, let tasks = tasks else { return nil }
         let task = tasks[selectedIndexPath.row]
-        return WorkLogViewModel(task: task)
+        return WorklogViewModel(task: task)
     }
     
     func selectItem(atIndexPath indexPath: IndexPath) {
