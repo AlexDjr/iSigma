@@ -11,6 +11,8 @@ import UIKit
 class SubmitView: UIView {
     var submitButton: SubmitButton
     
+    var delegate: SubmitDelegateProtocol?
+    
     weak var viewModel: SubmitViewViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
@@ -41,7 +43,7 @@ class SubmitView: UIView {
     }
     
     @objc func submitButtonAction() {
-        print("Button pressed")
+        delegate?.submitButtonAction()
     }
     
 }

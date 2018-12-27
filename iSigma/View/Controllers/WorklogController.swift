@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WorklogController: UIViewController, UITableViewDataSource, UITableViewDelegate, PickerDelegateProtocol {
+class WorklogController: UIViewController, UITableViewDataSource, UITableViewDelegate, PickerDelegateProtocol, SubmitDelegateProtocol {
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -142,14 +142,37 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         let submitViewModel = SubmitViewViewModel(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
         submitView.viewModel = submitViewModel
         
+        submitView.delegate = self
+        
         view.addSubview(submitView)
         view.bringSubviewToFront(submitView)
     }
     
+    //    MARK: PickerDelegateProtocol
     func pickerDidSelectRow(value: String) {
         сurrentPickerValue = value
         let indexPath = IndexPath(row: 0, section: 1)
         tableView.reloadRows(at: [indexPath], with: .none)
     }
+    
+    //    MARK: SubmitDelegateProtocol
+    func submitButtonAction() {
+        if currentWorklogType == nil {
+            setWarningCell(at: IndexPath(item: 2, section: 1))
+        } else {
+            
+        }
+    }
+    
+    //    MARK: Methods
+    private func setWarningCell(at indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 1.5) {
+            cell?.layer.backgroundColor = WorklogDetailsCellViewModel.warningColor
+            cell?.layer.backgroundColor = WorklogDetailsCellViewModel.defaultColor
+        }
+    }
+    
+
 
 }
