@@ -14,6 +14,7 @@ class NetworkManager {
     private let clientSecret = "03408b403cd98bdd785736a52453bd3e"
     var accessToken: String?
     var refreshToken: String?
+    let cache = NSCache<NSString, NSArray>()
     
     static let shared = NetworkManager()
     

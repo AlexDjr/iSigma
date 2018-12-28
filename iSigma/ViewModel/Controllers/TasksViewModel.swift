@@ -36,9 +36,16 @@ class TasksViewModel {
     }
     
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
-        NetworkManager.shared.getTasksForCurrentUser{ tasks in
+        let networkManager = NetworkManager.shared
+        if let tasks = networkManager.cache.object(forKey: "tasks") as? Array<Task> {
             self.tasks = tasks
             completion(tasks)
+        } else {
+            networkManager.getTasksForCurrentUser{ tasks in
+                networkManager.cache.setObject(tasks as NSArray, forKey: "tasks")
+                self.tasks = tasks
+                completion(tasks)
+            }
         }
     }
     
