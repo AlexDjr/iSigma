@@ -120,11 +120,14 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
                     let indexPath = IndexPath(row: 2, section: 1)
                     tableView.reloadRows(at: [indexPath], with: .none)
                 }
+            case 3:
+                let caledarController = CalendarController()
+                caledarController.navigationItem.title = "Дата"
+                self.navigationController?.pushViewController(caledarController, animated: true)
             default: break
             }
         }
     }
-    
     
     //    MARK: Methods
     private func setSubmitView() {
