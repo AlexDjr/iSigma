@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Task {
+struct Task: CachableProtocol {
     var id: Int
     var subject: String
     var type: String

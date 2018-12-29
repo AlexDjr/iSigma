@@ -44,18 +44,12 @@ class WorklogTypesViewModel {
     
     //    MARK: - Methods
     func getWorklogTypes(completion: @escaping () -> ()) {
-        let networkManager = NetworkManager.shared
-        if let workLogTypes = networkManager.cache.object(forKey: "workLogTypes") as? Array<WorklogType> {
-            self.types = workLogTypes
-            self.typesOftenUsed = workLogTypes.filter{ $0.isOften == true }
+        let proxy = Proxy(withKey: "workLogTypes")
+        proxy.loadData { objects in
+            let worklogTypes = objects as! [WorklogType]
+            self.types = worklogTypes
+            self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
             completion()
-        } else {
-            networkManager.getWorklogTypes { worklogTypes in
-                networkManager.cache.setObject(worklogTypes as NSArray, forKey: "workLogTypes")
-                self.types = worklogTypes
-                self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
-                completion()
-            }
         }
     }
 }

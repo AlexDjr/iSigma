@@ -36,16 +36,11 @@ class TasksViewModel {
     }
     
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
-        let networkManager = NetworkManager.shared
-        if let tasks = networkManager.cache.object(forKey: "tasks") as? Array<Task> {
-            self.tasks = tasks
+        let proxy = Proxy(withKey: "tasks")
+        proxy.loadData { objects in
+            let tasks = objects as! [Task]
+            self.self.tasks = tasks
             completion(tasks)
-        } else {
-            networkManager.getTasksForCurrentUser{ tasks in
-                networkManager.cache.setObject(tasks as NSArray, forKey: "tasks")
-                self.tasks = tasks
-                completion(tasks)
-            }
         }
     }
     

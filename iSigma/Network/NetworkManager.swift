@@ -195,4 +195,20 @@ class NetworkManager {
             }
         }
     }
+    
+    func getData(forKey key: String, completion: @escaping ([CachableProtocol]) -> ()) {
+        switch key {
+        case "workLogTypes":
+            getWorklogTypes { objects in
+                self.cache.setObject(objects as NSArray, forKey: key as NSString)
+                completion(objects)
+            }
+        case "tasks":
+            getTasksForCurrentUser { objects in
+                self.cache.setObject(objects as NSArray, forKey: key as NSString)
+                completion(objects)
+            }
+        default: break
+        }
+    }
 }

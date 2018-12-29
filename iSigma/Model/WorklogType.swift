@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct WorklogType {
+struct WorklogType: CachableProtocol {
     var id: Int
     var name: String
     var isOften: Bool
