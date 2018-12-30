@@ -13,6 +13,6 @@ class WorklogDetailsTimeCellViewModel: WorklogDetailsCellViewModel {
     override init() {
         super.init()
         self.name = "Время"
-        self.value = Box("08:00")
+        self.value = Box("")
     }
 }

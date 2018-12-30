@@ -12,6 +12,6 @@ class WorklogDetailsDateCellViewModel: WorklogDetailsCellViewModel {
     override init() {
         super.init()
         self.name = "Дата"
-        self.value = Box(nil)
+        self.value = Box("")
     }
 }

@@ -22,7 +22,7 @@ struct Style {
     static var weekdaysLblColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
 }
 
-class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MonthViewDelegate {
+class CalendarView: UIView, MonthViewDelegate {
     
     var numOfDaysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
     var currentMonthIndex: Int = 0
@@ -65,54 +65,8 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         fatalError("init(coder:) has not been implemented")
     }
 
-    //    MARK: - UICollectionViewDataSource
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numOfDaysInMonth[currentMonthIndex - 1] + firstWeekDayOfMonth
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CalendarCell
-        cell.backgroundColor = UIColor.clear
-        cell.lbl.textColor = Colors.darkGray
-        
-        if indexPath.item <= firstWeekDayOfMonth - 1 {
-            cell.isHidden = true
-        } else {
-            let calcDate = indexPath.row - firstWeekDayOfMonth + 1
-            cell.isHidden = false
-            cell.lbl.text = "\(calcDate)"
-        }
-        return cell
-    }
-    
-    //    MARK: - UICollectionViewDelegate
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = Colors.darkRed
-        let lbl = cell?.subviews[1] as! UILabel
-        lbl.textColor = UIColor.white
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = UIColor.clear
-        let lbl = cell?.subviews[1] as! UILabel
-        lbl.textColor = Colors.darkGray
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/7 - 8
-        let height = collectionView.frame.width/7 - 8
-        return CGSize(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 8.0
-    }
+
+  
     
     //    MARK: - Methods
     func setupView() {
@@ -131,14 +85,13 @@ class CalendarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         
         setupViews()
         
-        myCollectionView.delegate = self
-        myCollectionView.dataSource = self
         myCollectionView.register(CalendarCell.self, forCellWithReuseIdentifier: "Cell")
     }
     
     func getFirstWeekDay() -> Int {
         //    returns number of weekday (Sunday-Saturday 1-7)
-        let day = ("01.\(currentMonthIndex).\(currentYear)".date?.firstDayOfTheMonth.weekday)!
+//        let day = ("01.\(currentMonthIndex).\(currentYear)".dateRUFormat?.firstDayOfTheMonth.weekday)!
+        let day = ("\(currentYear)-\(currentMonthIndex)-01".date?.firstDayOfTheMonth.weekday)!
         if day == 1 {
             return day + 5
         } else {

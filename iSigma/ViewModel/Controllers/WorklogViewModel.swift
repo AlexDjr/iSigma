@@ -12,11 +12,14 @@ class WorklogViewModel {
     var task : Task?
     var timePickerValue : String
     var worklogType : WorklogType?
+    var worklogDate : String?
     
     init(task: Task) {
         self.task = task
         self.timePickerValue = "08:00"
         self.worklogType = nil //WorklogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
+        
+        self.worklogDate = String.dateFormatter.string(from:Date())
     }
     
     //   MARK: - UITableViewDataSource
@@ -79,5 +82,26 @@ class WorklogViewModel {
         return 0
     }
 
+    //    MARK: - Methods
+    func getAjustedDate(from string: String) -> String {
+        let date = string.date
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "ru_RU")
+        if let date = date {
+            
+            if Calendar.current.isDateInYesterday(date) {
+                return "Вчера"
+            }
+            if Calendar.current.isDate(date, inSameDayAs: Date()) {
+                return "Сегодня"
+            }
+            
+            let day = formatter.shortStandaloneWeekdaySymbols[date.weekday - 1]
+            return day + ", " + formatter.string(from: date)
+        } else {
+            return ""
+        }
+    }
     
 }

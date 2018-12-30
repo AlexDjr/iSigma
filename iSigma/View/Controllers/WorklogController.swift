@@ -15,6 +15,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     var viewModel: WorklogViewModel?
     var сurrentPickerValue: String?
     var currentWorklogType: WorklogType?
+    var currentWorklogDate: String?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -34,6 +35,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         guard let viewModel = viewModel else { return }
         self.сurrentPickerValue = viewModel.timePickerValue
         self.currentWorklogType = viewModel.worklogType
+        self.currentWorklogDate = viewModel.worklogDate
         setSubmitView()
     }
 
@@ -77,6 +79,9 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "worklogDetailsCell", for: indexPath) as! WorklogDetailsCell
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogDetailsDateCellViewModel
+                if let currentWorklogDate = currentWorklogDate {
+                    cellViewModel.value = Box(viewModel.getAjustedDate(from: currentWorklogDate))
+                }
                 cell.viewModel = cellViewModel
                 return cell
             default:
@@ -123,7 +128,13 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 3:
                 let caledarController = CalendarController()
                 caledarController.navigationItem.title = "Дата"
+                caledarController.currentWorklogDate = currentWorklogDate
                 self.navigationController?.pushViewController(caledarController, animated: true)
+                caledarController.callback = { result in
+                    self.currentWorklogDate = result
+                    let indexPath = IndexPath(row: 3, section: 1)
+                    tableView.reloadRows(at: [indexPath], with: .none)
+                }
             default: break
             }
         }
