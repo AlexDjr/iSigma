@@ -174,7 +174,10 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         if currentWorklogType == nil {
             setWarningCell(at: IndexPath(item: 2, section: 1))
         } else {
-            
+            guard let taskId = viewModel?.task?.id, let time = сurrentPickerValue, let typeId = currentWorklogType?.id, let date = currentWorklogDate else { return }
+            NetworkManager.shared.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { result in
+                print(result)
+            }
         }
     }
     

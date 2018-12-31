@@ -211,4 +211,29 @@ class NetworkManager {
         default: break
         }
     }
+    
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String) -> ()) {
+        guard let accessToken = accessToken else { return }
+        let url = URL(string: "http://webtst:7878/api/ems/worklog/context/add")!
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        
+        let parameters = ["issue_id": task, "time_spent": time, "type_of_work": type, "date": date] as [String : Any]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            completion(error.localizedDescription)
+        }
+        
+        fetchData(fromRequest: request) { data, statusCode, responseString in
+            if statusCode == 200 {
+                completion(responseString)
+            } else {
+                print(responseString)
+            }
+        }
+    }
 }

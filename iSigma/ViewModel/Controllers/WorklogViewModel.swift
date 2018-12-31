@@ -19,7 +19,7 @@ class WorklogViewModel {
         self.timePickerValue = "08:00"
         self.worklogType = nil //WorklogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
         
-        self.worklogDate = String.dateFormatter.string(from:Date())
+        self.worklogDate = getAjustedDate(from: String.dateFormatter.string(from:Date()))
     }
     
     //   MARK: - UITableViewDataSource

@@ -21,7 +21,7 @@ class WorklogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
     }
     
     func setupViewModel() {
-        timePickerSelectedRows = (7,0)
+        timePickerSelectedRows = (8,0)
         timePickerComponentWidth = 20.0
     }
     
