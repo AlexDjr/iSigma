@@ -29,11 +29,11 @@ class NetworkManager {
                 
                 guard let data = data, let httpStatus = response as? HTTPURLResponse else { return }
                 
-                let responseString = String(data: data, encoding: .utf8)
+                let responseString = String(data: data, encoding: .utf8)!
                 
                 print("response = \(String(describing: response))")
                 
-                completion(data, httpStatus.statusCode, String(describing: responseString))
+                completion(data, httpStatus.statusCode, responseString)
             }
             }.resume()
     }
@@ -212,7 +212,7 @@ class NetworkManager {
         }
     }
     
-    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String) -> ()) {
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (Bool, String) -> ()) {
         guard let accessToken = accessToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/worklog/context/add")!
         
@@ -225,14 +225,21 @@ class NetworkManager {
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         } catch let error {
-            completion(error.localizedDescription)
+            completion(false, error.localizedDescription)
         }
         
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
-                completion(responseString)
+                do {
+                    let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
+                    let success = apiSuccessResponse.success
+                    let details = apiSuccessResponse.details
+                    completion(success, details)
+                } catch let error {
+                    completion(false, "Error serialization json: \(error.localizedDescription)")
+                }
             } else {
-                print(responseString)
+                completion(false, "statusCode = \(statusCode): \n \(responseString)")
             }
         }
     }

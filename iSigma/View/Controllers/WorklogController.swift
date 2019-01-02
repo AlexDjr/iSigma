@@ -175,8 +175,23 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
             setWarningCell(at: IndexPath(item: 2, section: 1))
         } else {
             guard let taskId = viewModel?.task?.id, let time = сurrentPickerValue, let typeId = currentWorklogType?.id, let date = currentWorklogDate else { return }
-            NetworkManager.shared.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { result in
-                print(result)
+            NetworkManager.shared.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { isSuccess, details in
+                var title = "Успешно!"
+                if !isSuccess {
+                    title = "Ошибка!"
+                }
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: title, message: details, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: { alert in
+                        if isSuccess {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    })
+                    
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
             }
         }
     }
