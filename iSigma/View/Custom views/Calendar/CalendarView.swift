@@ -15,7 +15,6 @@ struct Colors {
 }
 
 struct Style {
-    static var bgColor = UIColor.white
     static var monthViewLblColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
     static var monthViewBtnRightColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
     static var monthViewBtnLeftColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)

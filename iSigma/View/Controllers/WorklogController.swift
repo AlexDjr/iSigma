@@ -126,11 +126,13 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
                     tableView.reloadRows(at: [indexPath], with: .none)
                 }
             case 3:
-                let caledarController = CalendarController()
-                caledarController.navigationItem.title = "Дата"
-                caledarController.currentWorklogDate = currentWorklogDate
-                self.navigationController?.pushViewController(caledarController, animated: true)
-                caledarController.callback = { result in
+                guard let currentWorklogDate = currentWorklogDate else { return }
+                let calendarController = CalendarController()
+                let viewModel = CalendarViewModel(selectedDate: currentWorklogDate)
+                calendarController.viewModel = viewModel
+                calendarController.navigationItem.title = "Дата"
+                self.navigationController?.pushViewController(calendarController, animated: true)
+                calendarController.callback = { result in
                     self.currentWorklogDate = result
                     let indexPath = IndexPath(row: 3, section: 1)
                     tableView.reloadRows(at: [indexPath], with: .none)

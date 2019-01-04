@@ -10,21 +10,23 @@ import UIKit
 
 class CalendarCell: UICollectionViewCell {
     
-    let lbl: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = Colors.darkGray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    var viewModel: CalendarCellViewModel? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            let label = self.subviews[1] as! UILabel
+            label.text = viewModel.dayNumber
+            label.textColor = viewModel.dayTextColor
+            self.isHidden = viewModel.cellIsHidden
+            self.backgroundColor = viewModel.cellBGColor
+            self.layer.borderColor = viewModel.cellBorderColor
+            self.layer.borderWidth = viewModel.cellBorderWidth
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
         layer.cornerRadius = frame.height / 2
-        layer.masksToBounds = true
+//        layer.masksToBounds = true
         
         setupViews()
     }
@@ -35,10 +37,14 @@ class CalendarCell: UICollectionViewCell {
     
     //    MARK: - Methods
     func setupViews() {
-        addSubview(lbl)
-        lbl.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        lbl.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        lbl.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        lbl.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16)
+        addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        label.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        label.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        label.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 }
