@@ -31,9 +31,11 @@ class CalendarView: UIView, MonthViewDelegate {
     var presentYear = 0
     var todaysDate = 0
     var firstWeekDayOfMonth = 0
+    
+    var selectedDate: String?
 
-    let monthView: MonthView = {
-        let view = MonthView()
+    lazy var monthView: MonthView = {
+        let view = MonthView(selectedDate: self.selectedDate)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -58,6 +60,11 @@ class CalendarView: UIView, MonthViewDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    convenience init(selectedDate: String?) {
+        self.init()
+        self.selectedDate = selectedDate
         setupView()
     }
     
@@ -70,9 +77,14 @@ class CalendarView: UIView, MonthViewDelegate {
     
     //    MARK: - Methods
     func setupView() {
-        currentMonthIndex = Calendar.current.component(.month, from: Date())
-        currentYear = Calendar.current.component(.year, from: Date())
-        todaysDate = Calendar.current.component(.day, from: Date())
+        var date = Date()
+        if let selectedDate = selectedDate {
+            date = selectedDate.date!
+        }
+        currentMonthIndex = Calendar.current.component(.month, from: date)
+        currentYear = Calendar.current.component(.year, from: date)
+        todaysDate = Calendar.current.component(.day, from: date)
+        
         firstWeekDayOfMonth = getFirstWeekDay()
         
         //    calculate number of days for February
@@ -90,7 +102,6 @@ class CalendarView: UIView, MonthViewDelegate {
     
     func getFirstWeekDay() -> Int {
         //    returns number of weekday (Sunday-Saturday 1-7)
-//        let day = ("01.\(currentMonthIndex).\(currentYear)".dateRUFormat?.firstDayOfTheMonth.weekday)!
         let day = ("\(currentYear)-\(currentMonthIndex)-01".date?.firstDayOfTheMonth.weekday)!
         if day == 1 {
             return day + 5

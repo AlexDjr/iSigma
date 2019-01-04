@@ -17,6 +17,8 @@ class MonthView: UIView {
     var monthsArr = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
     var currentMonthIndex = 0
     var currentYear: Int = 0
+    var selectedDate: String?
+    
     var delegate: MonthViewDelegate?
     
     let lblName: UILabel = {
@@ -50,11 +52,12 @@ class MonthView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    convenience init(selectedDate: String?) {
+        self.init()
         self.backgroundColor = UIColor.clear
-        
-        currentMonthIndex = Calendar.current.component(.month, from: Date()) - 1
-        currentYear = Calendar.current.component(.year, from: Date())
-        
+        self.selectedDate = selectedDate
         setupViews()
     }
     
@@ -82,6 +85,13 @@ class MonthView: UIView {
     }
     
     func setupViews() {
+        var date = Date()
+        if let selectedDate = selectedDate {
+            date = selectedDate.date!
+        }
+        currentMonthIndex = Calendar.current.component(.month, from: date) - 1
+        currentYear = Calendar.current.component(.year, from: date)
+        
         self.addSubview(lblName)
         lblName.topAnchor.constraint(equalTo: topAnchor).isActive = true
         lblName.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

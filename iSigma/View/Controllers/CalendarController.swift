@@ -14,8 +14,8 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
     var callback: ((String?) -> ())?
     var currentWorklogDate: String?
     
-    let calendarView: CalendarView = {
-        let view = CalendarView()
+    lazy var calendarView : CalendarView = {
+        let view = CalendarView(selectedDate: self.currentWorklogDate)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -55,15 +55,15 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
             cell.lbl.text = "\(calcDate)"
             
             if let currentWorklogDate = currentWorklogDate {
-                let currentDate = currentWorklogDate.date
-                let currentDayIndex = indexPath.item - calendarView.firstWeekDayOfMonth + 1
-                let calendarDate = "\(calendarView.currentYear)-\(calendarView.currentMonthIndex)-\(currentDayIndex)".date
-
-                if currentDate == calendarDate {
+                if currentWorklogDate.date == getDate(indexPath) {
                     collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
                     setSelected(cell)
                 } else {
-                    setDeselected(cell)
+                    if isToday(indexPath) {
+                        setSelectedToday(cell)
+                    } else {
+                        setDeselected(cell)
+                    }
                 }
             }
         }
@@ -92,7 +92,11 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         if let cell = cell {
-            setDeselected(cell)
+            if isToday(indexPath) {
+                setSelectedToday(cell)
+            } else {
+                setDeselected(cell)
+            }
         }
     }
     
@@ -119,8 +123,33 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
     
     func setDeselected(_ cell: UICollectionViewCell) {
         cell.backgroundColor = UIColor.clear
+        cell.layer.borderColor = UIColor.clear.cgColor
         let lbl = cell.subviews[1] as! UILabel
         lbl.textColor = Colors.darkGray
+    }
+    
+    func setSelectedToday(_ cell: UICollectionViewCell) {
+        cell.backgroundColor = UIColor.clear
+        cell.layer.borderWidth = 1.0
+        cell.layer.borderColor = Colors.darkRed.cgColor
+        let lbl = cell.subviews[1] as! UILabel
+        lbl.textColor = Colors.darkGray
+    }
+    
+    func isToday(_ indexPath: IndexPath) -> Bool {
+        let currentDayIndex = indexPath.item - calendarView.firstWeekDayOfMonth + 1
+        let calendarDate = "\(calendarView.currentYear)-\(calendarView.currentMonthIndex)-\(currentDayIndex)".date
+        if calendarDate == String.dateFormatter.string(from:Date()).date {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func getDate(_ indexPath: IndexPath) -> Date {
+        let currentDayIndex = indexPath.item - calendarView.firstWeekDayOfMonth + 1
+        let date = "\(calendarView.currentYear)-\(calendarView.currentMonthIndex)-\(currentDayIndex)".date!
+        return date
     }
     
 }
