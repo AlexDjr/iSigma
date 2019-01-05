@@ -64,10 +64,10 @@ class CalendarView: UIView, CalendarDelegateProtocol {
         firstWeekDayOfMonth = getFirstWeekDay()
 
         daysCollectionView.reloadData()
-        //        UIView.animate(withDuration: 0.4) {
-        //            self.subviews[2].alpha = 0.0
-        //            self.subviews[2].alpha = 1.0
-        //        }
+        UIView.animate(withDuration: 0.4) {
+            self.subviews[2].alpha = 0.0
+            self.subviews[2].alpha = 1.0
+        }
     }
     
     //    MARK: - Methods
