@@ -79,22 +79,22 @@ class CalendarCellViewModel: CellViewModelProtocol {
     //    MARK: - Methods
     func setSelected() {
         isCellSelected = true
-        dayTextColor = UIColor.white
-        cellBGColor = Colors.darkRed
+        dayTextColor = .white
+        cellBGColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
     }
     
     func setDeselected() {
         isCellSelected = false
-        dayTextColor = Colors.darkGray
-        cellBGColor = UIColor.clear
+        dayTextColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
+        cellBGColor = .clear
         cellBorderColor = UIColor.clear.cgColor
     }
     
     func setSelectedToday() {
-        cellBGColor = UIColor.clear
-        dayTextColor = Colors.darkGray
+        cellBGColor = .clear
+        dayTextColor = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
         cellBorderWidth = 1.0
-        cellBorderColor = Colors.darkRed.cgColor
+        cellBorderColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1).cgColor
     }
     
     func isToday(_ indexPath: IndexPath) -> Bool {

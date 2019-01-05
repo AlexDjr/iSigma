@@ -25,13 +25,13 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
         viewModel.calendarView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 12).isActive = true
         viewModel.calendarView.heightAnchor.constraint(equalToConstant: 365).isActive = true
         
-        viewModel.calendarView.myCollectionView.delegate = self
-        viewModel.calendarView.myCollectionView.dataSource = self
+        viewModel.calendarView.daysCollectionView.delegate = self
+        viewModel.calendarView.daysCollectionView.dataSource = self
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        viewModel?.calendarView.myCollectionView.collectionViewLayout.invalidateLayout()
+        viewModel?.calendarView.daysCollectionView.collectionViewLayout.invalidateLayout()
     }
     
     //    MARK: - UICollectionViewDataSource
@@ -81,7 +81,7 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
         
         cell.viewModel = viewModel.viewModelForDeselectedItem()
     }
-        
+    
     //    MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return viewModel?.sizeForItem(collectionView) ?? CGSize.zero

@@ -27,7 +27,7 @@ class CalendarViewModel {
     
     //    MARK: - UICollectionViewDataSource
     func numberOfItemsInSection(_ section: Int) -> Int {
-        return calendarView.numOfDaysInMonth[calendarView.currentMonthIndex - 1] + calendarView.firstWeekDayOfMonth
+        return calendarView.numberOfDaysForCurrentMonth + calendarView.firstWeekDayOfMonth
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> CellViewModelProtocol? {

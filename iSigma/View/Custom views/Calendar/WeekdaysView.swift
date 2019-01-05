@@ -10,18 +10,8 @@
 import UIKit
 
 class WeekdaysView: UIView {
-    
-    let myStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clear
-        
         setupViews()
     }
     
@@ -31,20 +21,26 @@ class WeekdaysView: UIView {
     
     //    MARK: - Methods
     func setupViews() {
-        addSubview(myStackView)
-        myStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        myStackView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        myStackView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        myStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        let stackView = UIStackView()
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        var daysArr = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+        addSubview(stackView)
+        stackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        stackView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        stackView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
         for i in 0..<7 {
-            let lbl = UILabel()
-            lbl.text = daysArr[i]
-            lbl.textAlignment = .center
-            lbl.textColor = Style.weekdaysLblColor
-            myStackView.addArrangedSubview(lbl)
+            let label = UILabel()
+            if i == 6 {    // shortStandaloneWeekdaySymbols starts from Sunday
+                label.text = String.dateFormatter.shortStandaloneWeekdaySymbols[0].capitalized
+            } else {
+                label.text = String.dateFormatter.shortStandaloneWeekdaySymbols[i+1].capitalized
+            }
+            label.textAlignment = .center
+            label.textColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
+            stackView.addArrangedSubview(label)
         }
     }
-    
 }

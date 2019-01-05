@@ -11,7 +11,8 @@ import Foundation
 extension String {
     static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd"        
+        formatter.locale = Locale(identifier: "ru_RU")
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         return formatter
     }()
