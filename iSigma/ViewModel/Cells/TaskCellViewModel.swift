@@ -62,7 +62,7 @@ class TaskCellViewModel : CellViewModelProtocol {
     
     func setupViewModel() {
         taskId = String(task.id)
-        taskType = task.type
+        taskType = task.type.rawValue
         taskSubject = task.subject
         taskState = task.state
         taskAssignee = task.assignee
@@ -71,7 +71,7 @@ class TaskCellViewModel : CellViewModelProtocol {
         priorityViewBorderWidth = 1.0
         priorityViewBorderColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
         
-        if task.type == "Несоответствие" {
+        if task.type == .nse {
             taskTypeTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
             taskTypeTrailingConstraintConstant = 40
             

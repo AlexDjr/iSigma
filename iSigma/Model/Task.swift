@@ -11,7 +11,7 @@ import Foundation
 struct Task: CachableProtocol {
     var id: Int
     var subject: String
-    var type: String
+    var type: TaskType.Name
     var state: String
     var assignee: String
     var author: String

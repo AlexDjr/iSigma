@@ -38,6 +38,7 @@ class NetworkManager {
             }.resume()
     }
     
+    //    MARK: - Auth METHODS
     func auth(withUser user: String, completion: @escaping () -> ()) {
         let url = URL(string: "http://webtst:7878/api/ems/auth/hash")!
         
@@ -98,6 +99,7 @@ class NetworkManager {
         }
     }
     
+    //    MARK: - GET METHODS
     func getTasksForCurrentUser(completion: @escaping ([Task]) -> ()) {
         guard let accessToken = accessToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/context/assigned")!
@@ -146,13 +148,13 @@ class NetworkManager {
                     for APItask in APItasks {
                         var task = Task.init(id: Int(APItask.id)!,
                                              subject: APItask.base.subject,
-                                             type: APItask.base.typeName,
+                                             type: TaskType.Name.init(rawValue: APItask.base.typeName)!,
                                              state: APItask.base.stateName,
                                              assignee: APItask.base.assigneeName,
                                              author: APItask.base.authorName,
                                              priority: APItask.base.priority,
                                              supplyPlanDate: nil)
-                        if task.type == "Несоответствие" {
+                        if task.type == .nse {
                             task.supplyPlanDate = APItask.extra.supplyPlanDate
                         }
                         tasks.append(task)
@@ -165,6 +167,24 @@ class NetworkManager {
                 print(responseString)
             }
         }
+    }
+    
+    func getTaskTransitions(_ taskId: Int, completion: @escaping () -> ()) {
+        guard let accessToken = accessToken else { return }
+        let url = URL(string: "http://webtst:7878/api/ems/issues/\(taskId)/transitions")!
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
+        request.httpMethod = "GET"
+        
+        fetchData(fromRequest: request) { data, statusCode, responseString in
+            if statusCode == 200 {
+                
+            } else {
+                print(responseString)
+            }
+        }
+        
     }
     
     func getWorklogTypes(completion: @escaping ([WorklogType]) -> ()) {
@@ -212,6 +232,7 @@ class NetworkManager {
         }
     }
     
+    //    MARK: - POST METHODS
     func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (Bool, String) -> ()) {
         guard let accessToken = accessToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/worklog/context/add")!
