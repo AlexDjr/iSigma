@@ -149,13 +149,16 @@ class NetworkManager {
                         var task = Task.init(id: Int(APItask.id)!,
                                              subject: APItask.base.subject,
                                              type: TaskType.Name.init(rawValue: APItask.base.typeName)!,
-                                             state: APItask.base.stateName,
+                                             state: TaskState(taskType: TaskType.Name.init(rawValue: APItask.base.typeName)!, name: APItask.base.stateName),
                                              assignee: APItask.base.assigneeName,
                                              author: APItask.base.authorName,
                                              priority: APItask.base.priority,
                                              supplyPlanDate: nil)
                         if task.type == .nse {
                             task.supplyPlanDate = APItask.extra.supplyPlanDate
+                        }
+                        if task.state == nil {
+                            print("Для задачи \(task.id) не найдено соответствие состоянию \(APItask.base.stateName)")
                         }
                         tasks.append(task)
                     }
@@ -169,7 +172,7 @@ class NetworkManager {
         }
     }
     
-    func getTaskTransitions(_ taskId: Int, completion: @escaping () -> ()) {
+    func getTaskTransitions(_ taskId: Int, completion: @escaping ([String]) -> ()) {
         guard let accessToken = accessToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/\(taskId)/transitions")!
         
@@ -179,7 +182,16 @@ class NetworkManager {
         
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
-                
+                do {
+                    var taskStateNames: [String] = []
+                    let transitions = try JSONDecoder().decode([APITransition].self, from: data)
+                    for transition in transitions {
+                        taskStateNames.append(transition.targetstate.name)
+                    }
+                    completion(taskStateNames)
+                } catch let error {
+                    print("Error serialization json: ", error)
+                }
             } else {
                 print(responseString)
             }
@@ -217,18 +229,25 @@ class NetworkManager {
     }
     
     func getData(forKey key: String, completion: @escaping ([CachableProtocol]) -> ()) {
-        switch key {
-        case "workLogTypes":
+        if  key == "workLogTypes" {
             getWorklogTypes { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
                 completion(objects)
             }
-        case "tasks":
+        }
+        if key == "tasks"{
             getTasksForCurrentUser { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
                 completion(objects)
             }
-        default: break
+        }
+        if key.hasPrefix("taskStates") {
+            let components = key.components(separatedBy: "+")
+            let taskId = Int(components[1])!
+            getTaskTransitions(taskId) { objects in
+                self.cache.setObject(objects as NSArray, forKey: key as NSString)
+                completion(objects)
+            }
         }
     }
     

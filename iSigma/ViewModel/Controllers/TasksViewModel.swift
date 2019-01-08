@@ -39,7 +39,7 @@ class TasksViewModel {
         let proxy = Proxy(withKey: "tasks")
         proxy.loadData { objects in
             let tasks = objects as! [Task]
-            self.self.tasks = tasks
+            self.tasks = tasks
             completion(tasks)
         }
     }

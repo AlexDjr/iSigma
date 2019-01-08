@@ -12,7 +12,7 @@ struct Task: CachableProtocol {
     var id: Int
     var subject: String
     var type: TaskType.Name
-    var state: String
+    var state: TaskState?
     var assignee: String
     var author: String
     var priority: Int

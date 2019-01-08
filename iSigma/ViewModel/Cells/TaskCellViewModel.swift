@@ -64,7 +64,7 @@ class TaskCellViewModel : CellViewModelProtocol {
         taskId = String(task.id)
         taskType = task.type.rawValue
         taskSubject = task.subject
-        taskState = task.state
+        taskState = task.state?.name ?? "!Нет соответствия"
         taskAssignee = task.assignee
         
         priorityViewCornerRadius = 12.0

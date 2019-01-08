@@ -51,14 +51,72 @@ class TasksController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let viewModel = self.viewModel else { return nil }
+        
+        viewModel.selectItem(atIndexPath: indexPath)
+        let cellViewModel = viewModel.viewModelForSelectedItem()!
+        let task = cellViewModel.task!
+        
+        var forwardStates: [TaskState] = []
+        var backwardStates: [TaskState] = []
+        
+        if let currentState = task.state {
+            
+            let proxy = Proxy(withKey: "taskStates+\(task.id)")
+            proxy.loadData { objects in
+                let taskStateNames = objects as! [String]
+                for taskStateName in taskStateNames {
+                    let taskState = TaskState(taskType: task.type, name: taskStateName)
+                    if taskState == nil {
+                        print("Для задачи \(task.id) не найдено соответствие состоянию \(taskStateName)")
+                    } else {
+                        if taskState!.order < currentState.order {
+                            backwardStates.append(taskState!)
+                        } else {
+                            forwardStates.append(taskState!)
+                        }
+                    }
+                }
+                forwardStates.sort(by: { $0.order < $1.order })
+                backwardStates.sort(by: { $0.order > $1.order })
+            }
+            
+        } else {
+            let alert = UIAlertController(title: "Ошибка!", message: "Для данной задачи не определено текущее состояние!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "ОК", style: .default)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
         let transitForward = UIContextualAction(style: .normal, title: "Переход \n вперед") { (action, view, nil) in
-            print("Переход вперед")
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            actionSheet.addAction(cancelAction)
+            
+            for taskState in forwardStates {
+                var title = taskState.name
+                if taskState.isFinal {
+                    title = "⚑ " + title
+                }
+                let action = UIAlertAction(title: title, style: .default)
+                actionSheet.addAction(action)
+            }
+            self.present(actionSheet, animated: true, completion: nil)
         }
         transitForward.backgroundColor = #colorLiteral(red: 0.3076787591, green: 0.6730349064, blue: 0.009131425992, alpha: 1)
         transitForward.image = #imageLiteral(resourceName: "transitForward")
         
         let transitBackward = UIContextualAction(style: .normal, title: "Переход \n назад") { (action, view, nil) in
-            print("Переход назад")
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            actionSheet.addAction(cancelAction)
+            
+            for taskState in backwardStates {
+                let action = UIAlertAction(title: taskState.name, style: .default)
+                actionSheet.addAction(action)
+            }
+            self.present(actionSheet, animated: true, completion: nil)
         }
         transitBackward.backgroundColor = #colorLiteral(red: 0.6734550595, green: 0.8765394092, blue: 0.4567703605, alpha: 1)
         transitBackward.image = #imageLiteral(resourceName: "transitBackward")
