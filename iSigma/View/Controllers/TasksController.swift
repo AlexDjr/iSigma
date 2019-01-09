@@ -88,36 +88,11 @@ class TasksController: UITableViewController {
             self.present(alert, animated: true, completion: nil)
         }
         
-        
-        let transitForward = UIContextualAction(style: .normal, title: "Переход \n вперед") { (action, view, nil) in
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-            actionSheet.addAction(cancelAction)
-            
-            for taskState in forwardStates {
-                var title = taskState.name
-                if taskState.isFinal {
-                    title = "⚑ " + title
-                }
-                let action = UIAlertAction(title: title, style: .default)
-                actionSheet.addAction(action)
-            }
-            self.present(actionSheet, animated: true, completion: nil)
-        }
+        let transitForward = getContextualAction(title: "Переход \n вперед", taskStates: forwardStates)
         transitForward.backgroundColor = #colorLiteral(red: 0.3076787591, green: 0.6730349064, blue: 0.009131425992, alpha: 1)
         transitForward.image = #imageLiteral(resourceName: "transitForward")
         
-        let transitBackward = UIContextualAction(style: .normal, title: "Переход \n назад") { (action, view, nil) in
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-            actionSheet.addAction(cancelAction)
-            
-            for taskState in backwardStates {
-                let action = UIAlertAction(title: taskState.name, style: .default)
-                actionSheet.addAction(action)
-            }
-            self.present(actionSheet, animated: true, completion: nil)
-        }
+        let transitBackward = getContextualAction(title: "Переход \n назад", taskStates: backwardStates)
         transitBackward.backgroundColor = #colorLiteral(red: 0.6734550595, green: 0.8765394092, blue: 0.4567703605, alpha: 1)
         transitBackward.image = #imageLiteral(resourceName: "transitBackward")
         
@@ -143,6 +118,33 @@ class TasksController: UITableViewController {
         logWrite.image = #imageLiteral(resourceName: "logWrite")
         
         return UISwipeActionsConfiguration(actions: [logWrite])
+    }
+    
+    func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
+        let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, nil) in
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            actionSheet.addAction(cancelAction)
+            
+            let handler = { (action: UIAlertAction!) -> () in
+                if let index = actionSheet.actions.firstIndex(where: {$0 === action}) {
+                    print(action.title)
+                    print("index = \(index)")
+                    print(taskStates[index - 1])
+                }
+            }
+            
+            for taskState in taskStates {
+                var title = taskState.name
+                if taskState.isFinal {
+                    title = "⚑ " + title
+                }
+                let action = UIAlertAction(title: title, style: .default, handler: handler)
+                actionSheet.addAction(action)
+            }
+            self.present(actionSheet, animated: true, completion: nil)
+        }
+        return contextualAction
     }
     
 }
