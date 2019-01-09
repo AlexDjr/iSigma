@@ -31,7 +31,7 @@ class NetworkManager {
                 
                 let responseString = String(data: data, encoding: .utf8)!
                 
-                print("response = \(String(describing: response))")
+//                print("response = \(String(describing: response))")
                 
                 completion(data, httpStatus.statusCode, responseString)
             }

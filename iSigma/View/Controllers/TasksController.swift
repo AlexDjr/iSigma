@@ -119,6 +119,7 @@ class TasksController: UITableViewController {
                         rowAnimation = UITableView.RowAnimation(rawValue: 1)
                     }
                     
+                    //    asks server to perform task transition
                     NetworkManager.shared.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
                         if isSuccess {
                             NetworkManager.shared.cache.removeObject(forKey: "tasks")
@@ -144,7 +145,7 @@ class TasksController: UITableViewController {
                 }
             }
             
-            //    sets actions for actionSheet
+            //    sets actions (elements) for actionSheet
             for taskState in taskStates {
                 var title = taskState.name
                 if taskState.isFinal {
