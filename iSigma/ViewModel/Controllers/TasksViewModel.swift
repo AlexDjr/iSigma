@@ -77,10 +77,7 @@ class TasksViewModel {
             self.tasks = tasks
             
             //    saves possible states for each task in cache
-            for task in tasks {
-                let proxy = Proxy(withKey: "taskStates+\(task.id)")
-                proxy.loadData { _ in }
-            }
+            self.reloadTaskStates()
             
             completion(tasks)
         }
@@ -94,6 +91,14 @@ class TasksViewModel {
     
     func selectItem(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
+    }
+    
+    func reloadTaskStates() {
+        guard let tasks = tasks else { return }
+        for task in tasks {
+            let proxy = Proxy(withKey: "taskStates+\(task.id)")
+            proxy.loadData { _ in }
+        }
     }
     
 }

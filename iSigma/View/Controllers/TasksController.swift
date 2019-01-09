@@ -28,6 +28,11 @@ class TasksController: UITableViewController {
                 }
             }
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillReturnFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
     }
     
     //    MARK: - UITableViewDataSource
@@ -95,6 +100,7 @@ class TasksController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [logWrite])
     }
     
+    //    MARK: - Methods
     func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
         let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, nil) in
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -157,6 +163,11 @@ class TasksController: UITableViewController {
             self.present(actionSheet, animated: true, completion: nil)
         }
         return contextualAction
+    }
+    
+    @objc func appWillReturnFromBackground() {
+        guard let viewModel = self.viewModel else { return }
+        viewModel.reloadTaskStates()
     }
     
 }
