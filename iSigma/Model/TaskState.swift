@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TaskState {
+struct TaskState: CachableProtocol {
     var serverId: Int
     var order: Int
     var name: String
@@ -18,6 +18,18 @@ struct TaskState {
 extension TaskState {
     init?(taskType: TaskType.Name, name: String) {
         let taskState = taskStates[taskType]?.first(where: { $0.name == name })
+        if let taskState = taskState {
+            self.serverId = taskState.serverId
+            self.order = taskState.order
+            self.name = taskState.name
+            self.isFinal = taskState.isFinal
+        } else {
+            return nil
+        }
+    }
+    init?(taskStateId id: Int) {
+        let taskType = taskStates.first(where: { $0.value.contains(where: { $0.serverId == id }) })
+        let taskState = taskType?.value.first(where: { $0.serverId == id })
         if let taskState = taskState {
             self.serverId = taskState.serverId
             self.order = taskState.order

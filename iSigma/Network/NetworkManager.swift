@@ -172,7 +172,7 @@ class NetworkManager {
         }
     }
     
-    func getTaskTransitions(_ taskId: Int, completion: @escaping ([String]) -> ()) {
+    func getTaskTransitions(_ taskId: Int, completion: @escaping ([TaskState]) -> ()) {
         guard let accessToken = accessToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/\(taskId)/transitions")!
         
@@ -183,12 +183,17 @@ class NetworkManager {
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
                 do {
-                    var taskStateNames: [String] = []
+                    var taskStates: [TaskState] = []
                     let transitions = try JSONDecoder().decode([APITransition].self, from: data)
                     for transition in transitions {
-                        taskStateNames.append(transition.targetstate.name)
+                        let taskState = TaskState(taskStateId: transition.targetstate.id)
+                        if let taskState = taskState {
+                            taskStates.append(taskState)
+                        } else {
+                            print(print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)"))
+                        }
                     }
-                    completion(taskStateNames)
+                    completion(taskStates)
                 } catch let error {
                     print("Error serialization json: ", error)
                 }

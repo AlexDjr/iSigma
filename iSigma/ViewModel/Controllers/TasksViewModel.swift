@@ -41,17 +41,12 @@ class TasksViewModel {
             
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
             proxy.loadData { objects in
-                let taskStateNames = objects as! [String]
-                for taskStateName in taskStateNames {
-                    let taskState = TaskState(taskType: task.type, name: taskStateName)
-                    if taskState == nil {
-                        print("Для задачи \(task.id) не найдено соответствие состоянию \(taskStateName)")
+                let possibleStates = objects as! [TaskState]
+                for possibleState in possibleStates {
+                    if possibleState.order < currentState.order {
+                        backwardStates.append(possibleState)
                     } else {
-                        if taskState!.order < currentState.order {
-                            backwardStates.append(taskState!)
-                        } else {
-                            forwardStates.append(taskState!)
-                        }
+                        forwardStates.append(possibleState)
                     }
                 }
                 forwardStates.sort(by: { $0.order < $1.order })
@@ -59,7 +54,7 @@ class TasksViewModel {
                 
                 taskStates.append(forwardStates)
                 taskStates.append(backwardStates)
-
+                
                 completion(true, taskStates)
             }
         } else {
