@@ -302,7 +302,7 @@ class NetworkManager {
                           "notes": "",
                           "worklog": ["time_spent": "00:01",
                                       "type_of_work": 1],
-                          "categorization": ["type": 38,
+                          "categorization": ["type": 1,
                                              "author": "adelin@diasoft.ru",
                                              "reason": "---",
                                              "prevention": "---"],
@@ -321,9 +321,9 @@ class NetworkManager {
         fetchData(fromRequest: request) { data, statusCode, responseString in
             if statusCode == 200 {
                 do {
-                    let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
-                    let success = apiSuccessResponse.success
-                    let details = apiSuccessResponse.details
+                    let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+                    let success = apiResponse.result.success
+                    let details = apiResponse.result.details
                     completion(success, details)
                 } catch let error {
                     completion(false, "Error serialization json: \(error.localizedDescription)")

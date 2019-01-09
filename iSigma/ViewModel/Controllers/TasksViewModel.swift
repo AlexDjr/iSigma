@@ -10,7 +10,7 @@ import UIKit
 
 class TasksViewModel {
     var tasks : [Task]?
-    private var selectedIndexPath: IndexPath?
+    var selectedIndexPath: IndexPath?
     
     //   MARK: - UITableViewDataSource
     func numberOfRowsInSection(_ section: Int) -> Int {
