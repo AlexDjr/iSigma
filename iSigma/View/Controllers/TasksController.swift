@@ -54,50 +54,24 @@ class TasksController: UITableViewController {
         guard let viewModel = self.viewModel else { return nil }
         
         var config: UISwipeActionsConfiguration? = nil
-        
-        viewModel.selectItem(atIndexPath: indexPath)
-        let cellViewModel = viewModel.viewModelForSelectedItem()!
-        let task = cellViewModel.task!
-        
-        var forwardStates: [TaskState] = []
-        var backwardStates: [TaskState] = []
-        
-        if let currentState = task.state {
-            
-            let proxy = Proxy(withKey: "taskStates+\(task.id)")
-            proxy.loadData { objects in
-                let taskStateNames = objects as! [String]
-                for taskStateName in taskStateNames {
-                    let taskState = TaskState(taskType: task.type, name: taskStateName)
-                    if taskState == nil {
-                        print("Для задачи \(task.id) не найдено соответствие состоянию \(taskStateName)")
-                    } else {
-                        if taskState!.order < currentState.order {
-                            backwardStates.append(taskState!)
-                        } else {
-                            forwardStates.append(taskState!)
-                        }
-                    }
-                }
-                forwardStates.sort(by: { $0.order < $1.order })
-                backwardStates.sort(by: { $0.order > $1.order })
-                
-                let transitForward = self.getContextualAction(title: "Переход \n вперед", taskStates: forwardStates)
+        viewModel.taskStates(forIndexPath: indexPath) { isSuccess, taskStates in
+            if isSuccess {
+                let transitForward = self.getContextualAction(title: "Переход \n вперед", taskStates: taskStates![0])
                 transitForward.backgroundColor = #colorLiteral(red: 0.3076787591, green: 0.6730349064, blue: 0.009131425992, alpha: 1)
                 transitForward.image = #imageLiteral(resourceName: "transitForward")
                 
-                let transitBackward = self.getContextualAction(title: "Переход \n назад", taskStates: backwardStates)
+                let transitBackward = self.getContextualAction(title: "Переход \n назад", taskStates: taskStates![1])
                 transitBackward.backgroundColor = #colorLiteral(red: 0.6734550595, green: 0.8765394092, blue: 0.4567703605, alpha: 1)
                 transitBackward.image = #imageLiteral(resourceName: "transitBackward")
                 
                 config = UISwipeActionsConfiguration(actions: [transitBackward, transitForward])
                 config!.performsFirstActionWithFullSwipe = false
+            } else {
+                let alert = UIAlertController(title: "Ошибка!", message: "Для данной задачи не определено текущее состояние!", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
             }
-        } else {
-            let alert = UIAlertController(title: "Ошибка!", message: "Для данной задачи не определено текущее состояние!", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "ОК", style: .default)
-            alert.addAction(okAction)
-            self.present(alert, animated: true, completion: nil)
         }
         
         return config
@@ -127,11 +101,9 @@ class TasksController: UITableViewController {
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
             actionSheet.addAction(cancelAction)
             
+            //    sets handler logic for element of actionSheet
             let handler = { (action: UIAlertAction!) -> () in
                 if let index = actionSheet.actions.firstIndex(where: {$0 === action}) {
-                    print(action.title)
-                    print("index = \(index)")
-                    print(taskStates[index - 1])
                     
                     guard let viewModel = self.viewModel else { return }
                     let cellViewModel = viewModel.viewModelForSelectedItem()!
@@ -148,9 +120,6 @@ class TasksController: UITableViewController {
                     }
                     
                     NetworkManager.shared.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
-                        print("isSuccess = \(isSuccess)")
-                        print("details = \(details)")
-                        
                         if isSuccess {
                             NetworkManager.shared.cache.removeObject(forKey: "tasks")
                             NetworkManager.shared.cache.removeObject(forKey: "taskStates+\(task.id)" as NSString)
@@ -175,7 +144,7 @@ class TasksController: UITableViewController {
                 }
             }
             
-            
+            //    sets actions for actionSheet
             for taskState in taskStates {
                 var title = taskState.name
                 if taskState.isFinal {
