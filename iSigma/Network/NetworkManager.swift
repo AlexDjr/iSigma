@@ -283,4 +283,54 @@ class NetworkManager {
             }
         }
     }
+    
+    //    MARK: - PUT METHODS
+    func putTaskTransition(taskId: Int, from: Int, to: Int, completion: @escaping (Bool, String) -> ()) {
+        guard let accessToken = accessToken else { return }
+        let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/transfer")!
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "PUT"
+        
+        let parameters = ["username": "",
+                          "state_source": "",
+                          "from": from,
+                          "to": to,
+                          "assigned": "adelin@diasoft.ru",
+                          "notes": "",
+                          "worklog": ["time_spent": "00:01",
+                                      "type_of_work": 1],
+                          "categorization": ["type": 38,
+                                             "author": "adelin@diasoft.ru",
+                                             "reason": "---",
+                                             "prevention": "---"],
+                          "readme": ["impact_analysis_code": ["off": true],
+                                     "impact_analysis": ["off": true],
+                                     "description": ["off": true]],
+                          "solution": "---",
+                          "error_type": 6,
+                          "reason_rejection": 21] as [String : Any]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch let error {
+            completion(false, error.localizedDescription)
+        }
+        
+        fetchData(fromRequest: request) { data, statusCode, responseString in
+            if statusCode == 200 {
+                do {
+                    let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
+                    let success = apiSuccessResponse.success
+                    let details = apiSuccessResponse.details
+                    completion(success, details)
+                } catch let error {
+                    completion(false, "Error serialization json: \(error.localizedDescription)")
+                }
+            } else {
+                completion(false, "statusCode = \(statusCode): \n \(responseString)")
+            }
+        }
+    }
 }
