@@ -19,12 +19,6 @@ class TasksViewModel {
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> TaskCellViewModel? {
         guard let tasks = tasks else { return nil }
-        
-        //    saves possible states for each task in cache
-        let task = tasks[indexPath.row]
-        let proxy = Proxy(withKey: "taskStates+\(task.id)")
-        proxy.loadData { _ in }
-        
         return TaskCellViewModel(task: tasks[indexPath.row])
     }
     
@@ -86,6 +80,13 @@ class TasksViewModel {
         proxy.loadData { objects in
             let tasks = objects as! [Task]
             self.tasks = tasks
+            
+            //    saves possible states for each task in cache
+            for task in tasks {
+                let proxy = Proxy(withKey: "taskStates+\(task.id)")
+                proxy.loadData { _ in }
+            }
+            
             completion(tasks)
         }
     }
