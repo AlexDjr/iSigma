@@ -100,6 +100,13 @@ class TasksController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [logWrite])
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let taskInfoController = storyboard.instantiateViewController(withIdentifier: "taskInfoController") as! TaskInfoController
+        taskInfoController.navigationItem.title = "Задача"
+        self.navigationController?.pushViewController(taskInfoController, animated: true)
+    }
+    
     //    MARK: - Methods
     func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
         let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, nil) in
