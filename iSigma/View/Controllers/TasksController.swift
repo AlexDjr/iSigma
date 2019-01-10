@@ -31,7 +31,7 @@ class TasksController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(appWillReturnFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
