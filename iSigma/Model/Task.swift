@@ -17,4 +17,9 @@ struct Task: CachableProtocol {
     var author: String
     var priority: Int
     var supplyPlanDate: Date?
+    var description: String
+    var projectName: String
+    var projectManager: String
+    var projectClient: String
+    var projectStage: String
 }

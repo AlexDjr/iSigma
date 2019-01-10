@@ -153,7 +153,12 @@ class NetworkManager {
                                              assignee: APItask.base.assigneeName,
                                              author: APItask.base.authorName,
                                              priority: APItask.base.priority,
-                                             supplyPlanDate: nil)
+                                             supplyPlanDate: nil,
+                                             description: APItask.extra.desc.trimmingCharacters(in: .whitespacesAndNewlines),
+                                             projectName: APItask.project.name,
+                                             projectManager: APItask.project.managerName,
+                                             projectClient: APItask.project.clientName,
+                                             projectStage: APItask.project.stageName)
                         if task.type == .nse {
                             task.supplyPlanDate = APItask.extra.supplyPlanDate
                         }
