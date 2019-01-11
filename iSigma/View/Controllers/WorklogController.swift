@@ -63,6 +63,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
                 let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! WorklogDetailsTimeCellViewModel
                 cellViewModel.value = Box(сurrentPickerValue)
                 cell.viewModel = cellViewModel
+                cell.selectionStyle = .none
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "worklogTimePickerCell", for: indexPath) as! WorklogTimePickerCell
@@ -108,10 +109,15 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
         if indexPath.section == 0 {
-            
+            let taskInfoController = storyboard.instantiateViewController(withIdentifier: "taskInfoController") as! TaskInfoController
+            guard let task = self.viewModel?.task else { return }
+            taskInfoController.navigationItem.title = "Задача"
+            taskInfoController.viewModel = TaskInfoViewModel(task: task)
+            self.navigationController?.pushViewController(taskInfoController, animated: true)
         } else {
             switch indexPath.row {
             case 2:

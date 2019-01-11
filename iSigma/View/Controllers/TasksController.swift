@@ -101,12 +101,12 @@ class TasksController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let taskInfoController = storyboard.instantiateViewController(withIdentifier: "taskInfoController") as! TaskInfoController
         
-        guard let viewModel = self.viewModel, let tasks = self.viewModel?.tasks else { return }
+        guard let tasks = self.viewModel?.tasks else { return }
         taskInfoController.navigationItem.title = "Задача"
-        viewModel.selectItem(atIndexPath: indexPath)
         taskInfoController.viewModel = TaskInfoViewModel(task: tasks[indexPath.row])
         self.navigationController?.pushViewController(taskInfoController, animated: true)
     }
