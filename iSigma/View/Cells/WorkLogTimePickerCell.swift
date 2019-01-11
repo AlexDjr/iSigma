@@ -63,4 +63,14 @@ class WorklogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
         delegate?.pickerDidSelectRow(value: value)
     }
     
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {        
+        var pickerData = ""
+        switch component {
+        case 0: pickerData = Worklog.hours[row]
+        case 1: pickerData = Worklog.minutes[row]
+        default: break
+        }
+        let attributedString = NSAttributedString(string: pickerData, attributes: [NSAttributedString.Key.foregroundColor : #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)])
+        return attributedString
+    }
 }
