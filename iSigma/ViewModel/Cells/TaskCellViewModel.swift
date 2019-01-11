@@ -104,7 +104,7 @@ class TaskCellViewModel : CellViewModelProtocol {
             }
             
         } else {
-            taskTypeTextColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
+            taskTypeTextColor = #colorLiteral(red: 0.6078431373, green: 0.6078431373, blue: 0.6509803922, alpha: 1)
             taskTypeTrailingConstraintConstant = 9
             
             priorityViewIsHidden = true
