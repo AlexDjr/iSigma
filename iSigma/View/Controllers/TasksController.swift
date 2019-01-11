@@ -107,7 +107,7 @@ class TasksController: UITableViewController {
         guard let viewModel = self.viewModel, let tasks = self.viewModel?.tasks else { return }
         taskInfoController.navigationItem.title = "Задача"
         viewModel.selectItem(atIndexPath: indexPath)
-        taskInfoController.task = tasks[indexPath.row]
+        taskInfoController.viewModel = TaskInfoViewModel(task: tasks[indexPath.row])
         self.navigationController?.pushViewController(taskInfoController, animated: true)
     }
     

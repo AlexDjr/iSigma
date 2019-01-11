@@ -26,43 +26,30 @@ class TaskInfoController: UIViewController {
     @IBOutlet weak var taskProjectClient: UILabel!
     @IBOutlet weak var taskProjectStage: UILabel!
     
-    var task : Task?
+    var viewModel: TaskInfoViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let task = task else { return }
-        taskId.text = String(task.id)
-        taskType.text = task.type.rawValue
-        taskSubject.text = task.subject
-        priority.text = String(task.priority)
-        supplyDate.text = "---"
-        supplyTime.text = ""
+        guard let viewModel = viewModel else { return }
         
-        if let supplyPlanDate = task.supplyPlanDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.yyyy"
-            let dateString = dateFormatter.string(from: supplyPlanDate)
-            
-            let dateAttributedString = NSMutableAttributedString(string: dateString,
-                                                                 attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-            supplyDate.attributedText = dateAttributedString
-            
-            dateFormatter.dateFormat = "HH:mm"
-            supplyTime.text = dateFormatter.string(from: supplyPlanDate)
-        }
-        taskState.text = task.state?.name ?? ""
-        taskAssignee.text = task.assignee
-        taskAuthor.text = task.author
-        taskDescription.text = task.description
+        taskId.text = viewModel.taskId
+        taskType.text = viewModel.taskType
+        taskType.textColor = viewModel.taskTypeTextColor
+        taskSubject.text = viewModel.taskSubject
+        priority.attributedText = viewModel.priority
+        priority.textColor = viewModel.priorityTextColor
+        supplyDate.attributedText = viewModel.supplyDate
+        supplyDate.textColor = viewModel.supplyDateTextColor
+        supplyTime.text = viewModel.supplyTime
+        supplyTime.isHidden = viewModel.supplyTimeIsHidden
+        taskState.text = viewModel.taskState
+        taskAssignee.text = viewModel.taskAssignee
+        taskAuthor.text = viewModel.taskAuthor
+        taskDescription.text = viewModel.taskDescription
         
-        taskProjectName.text = task.projectName
-        taskProjectManager.text = task.projectManager
-        taskProjectClient.text = task.projectClient
-        taskProjectStage.text = task.projectStage
-
+        taskProjectName.text = viewModel.taskProjectName
+        taskProjectManager.text = viewModel.taskProjectManager
+        taskProjectClient.text = viewModel.taskProjectClient
+        taskProjectStage.text = viewModel.taskProjectStage
     }
-    
-
-
-
 }
