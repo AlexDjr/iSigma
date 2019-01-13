@@ -121,12 +121,13 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         } else {
             switch indexPath.row {
             case 2:
-                let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogTypesController") as! WorklogTypesController
+                let worklogTypesController = storyboard.instantiateViewController(withIdentifier: "worklogTypesController") as! WorklogTypesController
+                worklogTypesController.hidesBottomBarWhenPushed = true
                 let viewModel = WorklogTypesViewModel()
-                worklogController.viewModel = viewModel
-                worklogController.navigationItem.title = "Типы работ"
-                self.navigationController?.pushViewController(worklogController, animated: true)
-                worklogController.callback = { result in
+                worklogTypesController.viewModel = viewModel
+                worklogTypesController.navigationItem.title = "Типы работ"
+                self.navigationController?.pushViewController(worklogTypesController, animated: true)
+                worklogTypesController.callback = { result in
                     self.currentWorklogType = result
                     let indexPath = IndexPath(row: 2, section: 1)
                     tableView.reloadRows(at: [indexPath], with: .none)
@@ -134,6 +135,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
             case 3:
                 guard let currentWorklogDate = currentWorklogDate else { return }
                 let calendarController = CalendarController()
+                calendarController.hidesBottomBarWhenPushed = true
                 let viewModel = CalendarViewModel(selectedDate: currentWorklogDate)
                 calendarController.viewModel = viewModel
                 calendarController.navigationItem.title = "Дата"
