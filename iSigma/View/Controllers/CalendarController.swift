@@ -27,6 +27,14 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
         
         viewModel.calendarView.daysCollectionView.delegate = self
         viewModel.calendarView.daysCollectionView.dataSource = self
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(_:)))
+        rightSwipe.direction = .right
+        leftSwipe.direction = .left
+        view.addGestureRecognizer(rightSwipe)
+        view.addGestureRecognizer(leftSwipe)
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -93,6 +101,11 @@ class CalendarController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return viewModel?.spacingForSection() ?? 0
+    }
+    
+    @objc func handleSwipes(_ sender:UISwipeGestureRecognizer) {
+        guard let viewModel = viewModel else { return }
+            viewModel.handleSwipes(sender.direction)
     }
     
 }

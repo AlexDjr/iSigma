@@ -60,4 +60,14 @@ class CalendarViewModel {
         self.selectedIndexPath = indexPath
     }
     
+    func handleSwipes(_ direction: UISwipeGestureRecognizer.Direction) {
+        switch direction {
+        case .left:
+            calendarView.didChangeMonth(delta: 1)
+        case .right:
+            calendarView.didChangeMonth(delta: -1)
+        default: break
+        }
+    }
+    
 }
