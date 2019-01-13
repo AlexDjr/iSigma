@@ -36,7 +36,7 @@ class WorklogTypesViewModel {
     //    MARK: - UITableViewDelegate
     func titleForHeaderInSection(_ section: Int) -> String {
         if section == 0 {
-            return "Частые"
+            return "Часто используемые"
         } else {
             return "Все типы"
         }
