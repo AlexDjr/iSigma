@@ -58,7 +58,15 @@ class WorklogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let hours = Worklog.hours[pickerView.selectedRow(inComponent: 0)]
-        let minutes = Worklog.minutes[pickerView.selectedRow(inComponent: 1)]
+        var minutes = Worklog.minutes[pickerView.selectedRow(inComponent: 1)]
+        if hours == "00" && minutes == "00" {
+            pickerView.selectRow(1, inComponent: 1, animated: true)
+        }
+        if hours == "08" && minutes != "00" {
+            pickerView.selectRow(0, inComponent: 1, animated: true)
+        }
+        minutes = Worklog.minutes[pickerView.selectedRow(inComponent: 1)]
+        
         let value = hours + ":" + minutes
         delegate?.pickerDidSelectRow(value: value)
     }
