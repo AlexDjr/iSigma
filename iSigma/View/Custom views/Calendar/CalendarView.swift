@@ -10,15 +10,18 @@
 import UIKit
 
 class CalendarView: UIView, CalendarDelegateProtocol {
-    var numberOfDaysForCurrentMonth = 0
-    var currentMonthIndex = 0
+    var currentMonth = 0
     var currentYear = 0
+    var numberOfDaysForCurrentMonth = 0
     var firstWeekDayOfMonth = 0
     
     var selectedDate: String?
 
     lazy var monthView: MonthView = {
         let view = MonthView(selectedDate: self.selectedDate)
+        view.currentMonth = self.currentMonth
+        view.currentYear = self.currentYear
+        view.monthName.text = self.getMonthName(self.currentMonth)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -56,10 +59,21 @@ class CalendarView: UIView, CalendarDelegateProtocol {
     }
 
     //    MARK: - CalendarDelegateProtocol
-    func didChangeMonth(monthIndex: Int, year: Int) {
-        currentMonthIndex = monthIndex + 1
-        currentYear = year
-        numberOfDaysForCurrentMonth = getNumberOfDays(year: currentYear, month: currentMonthIndex)
+    func didChangeMonth(delta: Int) {
+        
+        currentMonth = currentMonth + delta
+        if currentMonth > 12 {
+            currentMonth = 1
+            currentYear += 1
+        }
+        if currentMonth < 1 {
+            currentMonth = 12
+            currentYear -= 1
+        }
+        
+        monthView.monthName.text = getMonthName(currentMonth)
+        
+        numberOfDaysForCurrentMonth = getNumberOfDays(year: currentYear, month: currentMonth)
         
         firstWeekDayOfMonth = getFirstWeekDay()
 
@@ -76,9 +90,9 @@ class CalendarView: UIView, CalendarDelegateProtocol {
         if let selectedDate = selectedDate {
             date = selectedDate.date!
         }
-        currentMonthIndex = Calendar.current.component(.month, from: date)
+        currentMonth = Calendar.current.component(.month, from: date)
         currentYear = Calendar.current.component(.year, from: date)
-        numberOfDaysForCurrentMonth = getNumberOfDays(year: currentYear, month: currentMonthIndex)
+        numberOfDaysForCurrentMonth = getNumberOfDays(year: currentYear, month: currentMonth)
         
         firstWeekDayOfMonth = getFirstWeekDay()
         
@@ -110,7 +124,7 @@ class CalendarView: UIView, CalendarDelegateProtocol {
     
     func getFirstWeekDay() -> Int {
         //    returns number of weekday (Sunday - 1 ... Saturday - 7)
-        let day = ("\(currentYear)-\(currentMonthIndex)-01".date?.weekday)!
+        let day = ("\(currentYear)-\(currentMonth)-01".date?.weekday)!
         //    modifies returned number to convenient one: Monday - 0 ... Sunday - 6
         if day == 1 {
             return day + 5
@@ -125,6 +139,11 @@ class CalendarView: UIView, CalendarDelegateProtocol {
         let range = Calendar.current.range(of: .day, in: .month, for: date)!
         let numberOfDays = range.count
         return numberOfDays
+    }
+    
+    func getMonthName(_ month: Int) -> String {
+        let monthName = String.dateFormatter.standaloneMonthSymbols[month - 1].capitalized
+        return "\(monthName) \(currentYear)"
     }
 
 }

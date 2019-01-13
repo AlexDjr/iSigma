@@ -100,7 +100,7 @@ class CalendarCellViewModel: CellViewModelProtocol {
     func isToday(_ indexPath: IndexPath) -> Bool {
         guard let calendarView = calendarView else { return false }
         let currentDayIndex = indexPath.item - calendarView.firstWeekDayOfMonth + 1
-        let calendarDate = "\(calendarView.currentYear)-\(calendarView.currentMonthIndex)-\(currentDayIndex)".date
+        let calendarDate = "\(calendarView.currentYear)-\(calendarView.currentMonth)-\(currentDayIndex)".date
         if calendarDate == String.dateFormatter.string(from:Date()).date {
             return true
         } else {
@@ -111,7 +111,7 @@ class CalendarCellViewModel: CellViewModelProtocol {
     func getDate(_ indexPath: IndexPath) -> Date {
         guard let calendarView = calendarView else { return Date() }
         let currentDayIndex = indexPath.item - calendarView.firstWeekDayOfMonth + 1
-        let date = "\(calendarView.currentYear)-\(calendarView.currentMonthIndex)-\(currentDayIndex)".date!
+        let date = "\(calendarView.currentYear)-\(calendarView.currentMonth)-\(currentDayIndex)".date!
         return date
     }
 }

@@ -9,5 +9,5 @@
 import Foundation
 
 protocol CalendarDelegateProtocol {
-    func didChangeMonth(monthIndex: Int, year: Int)
+    func didChangeMonth(delta: Int)
 }

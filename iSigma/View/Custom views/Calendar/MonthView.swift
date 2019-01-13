@@ -10,13 +10,12 @@
 import UIKit
 
 class MonthView: UIView {
-    var currentMonthIndex = 0
+    var currentMonth = 0
     var currentYear = 0
-    var selectedDate: String?
     
     var delegate: CalendarDelegateProtocol?
     
-    let monthLabel: UILabel = {
+    let monthName: UILabel = {
         let label = UILabel()
         label.textColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
         label.textAlignment = .center
@@ -49,7 +48,6 @@ class MonthView: UIView {
     
     convenience init(selectedDate: String?) {
         self.init()
-        self.selectedDate = selectedDate
         setupViews()
     }
     
@@ -59,20 +57,11 @@ class MonthView: UIView {
     
     //    MARK: - Methods
     func setupViews() {
-        var date = Date()
-        if let selectedDate = selectedDate {
-            date = selectedDate.date!
-        }
-        currentMonthIndex = Calendar.current.component(.month, from: date) - 1
-        currentYear = Calendar.current.component(.year, from: date)
-        
-        self.addSubview(monthLabel)
-        monthLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        monthLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        monthLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        monthLabel.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        let monthName = String.dateFormatter.standaloneMonthSymbols[currentMonthIndex].capitalized
-        monthLabel.text = "\(monthName) \(currentYear)"
+        self.addSubview(monthName)
+        monthName.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        monthName.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        monthName.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        monthName.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
         self.addSubview(rightButton)
         rightButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -90,24 +79,11 @@ class MonthView: UIView {
     @objc func buttonLeftRightAction(sender: UIButton) {
         switch sender {
         case rightButton:
-            currentMonthIndex += 1
-            if currentMonthIndex > 11 {
-                currentMonthIndex = 0
-                currentYear += 1
-            }
+            delegate?.didChangeMonth(delta: 1)
         case leftButton:
-            currentMonthIndex -= 1
-            if currentMonthIndex < 0 {
-                currentMonthIndex = 11
-                currentYear -= 1
-            }
+            delegate?.didChangeMonth(delta: -1)
         default: break
         }
-        
-        let monthName = String.dateFormatter.standaloneMonthSymbols[currentMonthIndex].capitalized
-        monthLabel.text = "\(monthName) \(currentYear)"
-        
-        delegate?.didChangeMonth(monthIndex: currentMonthIndex, year: currentYear)
     }
 }
 
