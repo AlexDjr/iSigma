@@ -238,6 +238,49 @@ class NetworkManager {
         }
     }
     
+    func getEmployees(completion: @escaping ([Employee]) -> ()) {
+        let url = URL(string: "http://webtst:7878/api/ems/employees/status/2")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        fetchData(fromRequest: request) { data, statusCode, responseString in
+            if statusCode == 200 {
+                do {
+                    var employees: [Employee] = []
+                    let apiEmployees = try JSONDecoder().decode([APIEmployee].self, from: data)
+                    for apiEmployee in apiEmployees {
+                        let employee = Employee(id: apiEmployee.id,
+                                                headId: apiEmployee.headId,
+                                                lastName: apiEmployee.lastName,
+                                                firstName: apiEmployee.firstName,
+                                                middleName: apiEmployee.middleName,
+                                                fullName: apiEmployee.fullName,
+                                                brief: apiEmployee.brief,
+                                                headFullName: apiEmployee.headFullName,
+                                                branch: apiEmployee.branch,
+                                                email: apiEmployee.email,
+                                                skype: apiEmployee.skype,
+                                                room: apiEmployee.room,
+                                                phone: apiEmployee.phone,
+                                                mobile: apiEmployee.mobile,
+                                                position: apiEmployee.position,
+                                                topDepartmentId: apiEmployee.topDepartmentId,
+                                                topDepartment: apiEmployee.topDepartment,
+                                                department: apiEmployee.department,
+                                                departmentId: apiEmployee.departmentId)
+                        employees.append(employee)
+                    }
+                    completion(employees)                    
+                } catch let error {
+                    print("Error serialization json: ", error)
+                }
+            } else {
+                print(responseString)
+            }
+        }
+    }
+    
     func getData(forKey key: String, completion: @escaping ([CachableProtocol]) -> ()) {
         if  key == "workLogTypes" {
             getWorklogTypes { objects in

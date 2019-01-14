@@ -8,7 +8,10 @@
 
 import UIKit
 
-class EmployeesController: UITableViewController {
+class EmployeesController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
+    
+    @IBOutlet weak var tableView: UITableView!
+    var employees: [Employee]?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -16,15 +19,28 @@ class EmployeesController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NetworkManager.shared.getEmployees{ employees in
+            self.employees = employees
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 
     //    MARK: - UITableViewDataSource
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return employees?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell.init(style: .default, reuseIdentifier: "Cell")
+        cell.textLabel?.text = employees?[indexPath.row].fullName ?? ""
+        return cell
     }
 
 }
