@@ -28,4 +28,5 @@ struct APIEmployee: Decodable {
     var topDepartment: String
     var department: String
     var departmentId: String
+    var flags: APIEmployeeFlags
 }

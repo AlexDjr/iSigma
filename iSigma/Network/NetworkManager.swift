@@ -250,28 +250,30 @@ class NetworkManager {
                     var employees: [Employee] = []
                     let apiEmployees = try JSONDecoder().decode([APIEmployee].self, from: data)
                     for apiEmployee in apiEmployees {
-                        let employee = Employee(id: apiEmployee.id,
-                                                headId: apiEmployee.headId,
-                                                lastName: apiEmployee.lastName,
-                                                firstName: apiEmployee.firstName,
-                                                middleName: apiEmployee.middleName,
-                                                fullName: apiEmployee.fullName,
-                                                brief: apiEmployee.brief,
-                                                headFullName: apiEmployee.headFullName,
-                                                branch: apiEmployee.branch,
-                                                email: apiEmployee.email,
-                                                skype: apiEmployee.skype,
-                                                room: apiEmployee.room,
-                                                phone: apiEmployee.phone,
-                                                mobile: apiEmployee.mobile,
-                                                position: apiEmployee.position,
-                                                topDepartmentId: apiEmployee.topDepartmentId,
-                                                topDepartment: apiEmployee.topDepartment,
-                                                department: apiEmployee.department,
-                                                departmentId: apiEmployee.departmentId)
-                        employees.append(employee)
+                        if !(apiEmployee.flags.isTech || apiEmployee.flags.doNotShowInPhonebook) {
+                            let employee = Employee(id: apiEmployee.id,
+                                                    headId: apiEmployee.headId,
+                                                    lastName: apiEmployee.lastName,
+                                                    firstName: apiEmployee.firstName,
+                                                    middleName: apiEmployee.middleName,
+                                                    fullName: apiEmployee.fullName,
+                                                    brief: apiEmployee.brief,
+                                                    headFullName: apiEmployee.headFullName,
+                                                    branch: apiEmployee.branch,
+                                                    email: apiEmployee.email,
+                                                    skype: apiEmployee.skype,
+                                                    room: apiEmployee.room,
+                                                    phone: apiEmployee.phone,
+                                                    mobile: apiEmployee.mobile,
+                                                    position: apiEmployee.position,
+                                                    topDepartmentId: apiEmployee.topDepartmentId,
+                                                    topDepartment: apiEmployee.topDepartment,
+                                                    department: apiEmployee.department,
+                                                    departmentId: apiEmployee.departmentId)
+                            employees.append(employee)
+                        }
                     }
-                    completion(employees)                    
+                    completion(employees)
                 } catch let error {
                     print("Error serialization json: ", error)
                 }
