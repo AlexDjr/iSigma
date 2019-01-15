@@ -48,5 +48,16 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel?.heightForRowAt(forIndexPath: indexPath) ?? 44
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let employeeInfoController = storyboard.instantiateViewController(withIdentifier: "employeeInfoController") as! EmployeeInfoController
+        
+        guard let employees = viewModel?.employees else { return }
+        employeeInfoController.navigationItem.title = "Сотрудник"
+        employeeInfoController.viewModel = EmployeeInfoViewModel(employee: employees[indexPath.row])
+        navigationController?.pushViewController(employeeInfoController, animated: true)
+    }
 
 }
