@@ -304,6 +304,12 @@ class NetworkManager {
                 completion(objects)
             }
         }
+        if key == "employees" {
+            getEmployees { objects in
+                self.cache.setObject(objects as NSArray, forKey: key as NSString)
+                completion(objects)
+            }
+        }
     }
     
     //    MARK: - POST METHODS

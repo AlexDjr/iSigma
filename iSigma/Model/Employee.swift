@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Employee {
+struct Employee: CachableProtocol  {
     var id: String
     var headId: String
     var lastName: String

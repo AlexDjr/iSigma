@@ -18,4 +18,17 @@ class EmployeeCell: UITableViewCell {
     @IBOutlet weak var branch: UILabel!
     @IBOutlet weak var mobile: UILabel!
     
+    
+    weak var viewModel: EmployeeCellViewModel? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            photo.image = viewModel.photo
+            lastName.text = viewModel.lastName
+            firstName.text = viewModel.firstName
+            middleName.text = viewModel.middleName
+            position.text = viewModel.position
+            branch.text = viewModel.branch
+            mobile.text = viewModel.mobile
+        }
+    }
 }
