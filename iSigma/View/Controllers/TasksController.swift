@@ -20,12 +20,9 @@ class TasksController: UITableViewController {
         super.viewDidLoad()
         
         viewModel = TasksViewModel()
-        viewModel?.auth() {
-            print("Успешная аутентификация!")
-            self.viewModel?.getTasksForCurrentUser{ tasks in
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+        self.viewModel?.getTasksForCurrentUser{ tasks in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(appWillReturnFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -105,10 +102,10 @@ class TasksController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let taskInfoController = storyboard.instantiateViewController(withIdentifier: "taskInfoController") as! TaskInfoController
         
-        guard let tasks = self.viewModel?.tasks else { return }
+        guard let tasks = viewModel?.tasks else { return }
         taskInfoController.navigationItem.title = "Задача"
         taskInfoController.viewModel = TaskInfoViewModel(task: tasks[indexPath.row])
-        self.navigationController?.pushViewController(taskInfoController, animated: true)
+        navigationController?.pushViewController(taskInfoController, animated: true)
     }
     
     //    MARK: - Methods
@@ -177,7 +174,7 @@ class TasksController: UITableViewController {
     }
     
     @objc func appWillReturnFromBackground() {
-        guard let viewModel = self.viewModel else { return }
+        guard let viewModel = viewModel else { return }
         viewModel.reloadTaskStates()
     }
     
