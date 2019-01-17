@@ -17,7 +17,7 @@ class MonthView: UIView {
     
     let monthName: UILabel = {
         let label = UILabel()
-        label.textColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
+        label.textColor = AppStyle.mainRedColor
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ class MonthView: UIView {
     let rightButton: UIButton = {
         let button = UIButton()
         button.setTitle(">", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1), for: .normal)
+        button.setTitleColor(AppStyle.mainRedColor, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(buttonLeftRightAction(sender:)), for: .touchUpInside)
         return button
@@ -36,7 +36,7 @@ class MonthView: UIView {
     let leftButton: UIButton = {
         let button = UIButton()
         button.setTitle("<", for: .normal)
-        button.setTitleColor(#colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1), for: .normal)
+        button.setTitleColor(AppStyle.mainRedColor, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(buttonLeftRightAction(sender:)), for: .touchUpInside)
         return button

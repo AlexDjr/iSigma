@@ -59,12 +59,12 @@ class TasksController: UITableViewController {
         viewModel.taskStates(forIndexPath: indexPath) { isSuccess, taskStates in
             if isSuccess {
                 let transitForward = self.getContextualAction(title: "Переход \n вперед", taskStates: taskStates![0])
-                transitForward.backgroundColor = #colorLiteral(red: 0.3076787591, green: 0.6730349064, blue: 0.009131425992, alpha: 1)
-                transitForward.image = #imageLiteral(resourceName: "transitForward")
+                transitForward.backgroundColor = AppStyle.transitForwardColor
+                transitForward.image = AppStyle.transitForwardImage
                 
                 let transitBackward = self.getContextualAction(title: "Переход \n назад", taskStates: taskStates![1])
-                transitBackward.backgroundColor = #colorLiteral(red: 0.6734550595, green: 0.8765394092, blue: 0.4567703605, alpha: 1)
-                transitBackward.image = #imageLiteral(resourceName: "transitBackward")
+                transitBackward.backgroundColor = AppStyle.transitBackwardColor
+                transitBackward.image = AppStyle.transitBackwardImage
                 
                 config = UISwipeActionsConfiguration(actions: [transitBackward, transitForward])
                 config!.performsFirstActionWithFullSwipe = false
@@ -91,8 +91,8 @@ class TasksController: UITableViewController {
             
             self.navigationController?.pushViewController(worklogController, animated: true)
         }
-        logWrite.backgroundColor = #colorLiteral(red: 0.4971398711, green: 0.7130244374, blue: 0.9623243213, alpha: 1)
-        logWrite.image = #imageLiteral(resourceName: "logWrite")
+        logWrite.backgroundColor = AppStyle.worklogColor
+        logWrite.image = AppStyle.worklogImage
         
         return UISwipeActionsConfiguration(actions: [logWrite])
     }

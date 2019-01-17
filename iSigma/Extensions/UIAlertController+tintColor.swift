@@ -11,6 +11,6 @@ import UIKit
 extension UIAlertController {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.view.tintColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
+        self.view.tintColor = AppStyle.mainRedColor
     }
 }

@@ -69,20 +69,20 @@ class TaskCellViewModel : CellViewModelProtocol {
         
         priorityViewCornerRadius = 12.0
         priorityViewBorderWidth = 1.0
-        priorityViewBorderColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+        priorityViewBorderColor = AppStyle.attentionPinkColor.cgColor
         
         if task.type == .nse {
-            taskTypeTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            taskTypeTextColor = AppStyle.attentionPinkColor
             taskTypeTrailingConstraintConstant = 40
             
             priorityViewIsHidden = false
             
             if task.priority == 2 {
-                priorityViewBGColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
-                priorityTextColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                priorityViewBGColor = AppStyle.attentionPinkColor.cgColor
+                priorityTextColor = AppStyle.whiteTextColor
             } else {
-                priorityViewBGColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                priorityTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+                priorityViewBGColor = AppStyle.whiteTextColor.cgColor
+                priorityTextColor = AppStyle.attentionPinkColor
             }
             priority = String(task.priority)
             
@@ -104,7 +104,7 @@ class TaskCellViewModel : CellViewModelProtocol {
             }
             
         } else {
-            taskTypeTextColor = #colorLiteral(red: 0.6078431373, green: 0.6078431373, blue: 0.6509803922, alpha: 1)
+            taskTypeTextColor = AppStyle.lightTextColor
             taskTypeTrailingConstraintConstant = 9
             
             priorityViewIsHidden = true

@@ -78,7 +78,7 @@ class WorklogTimePickerCell: UITableViewCell, UIPickerViewDelegate, UIPickerView
         case 1: pickerData = Worklog.minutes[row]
         default: break
         }
-        let attributedString = NSAttributedString(string: pickerData, attributes: [NSAttributedString.Key.foregroundColor : #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)])
+        let attributedString = NSAttributedString(string: pickerData, attributes: [NSAttributedString.Key.foregroundColor : AppStyle.pickerTextColor])
         return attributedString
     }
 }

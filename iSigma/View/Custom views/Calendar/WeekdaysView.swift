@@ -39,7 +39,7 @@ class WeekdaysView: UIView {
                 label.text = String.dateFormatter.shortStandaloneWeekdaySymbols[i+1].capitalized
             }
             label.textAlignment = .center
-            label.textColor = #colorLiteral(red: 0.6860641241, green: 0.1174660251, blue: 0.2384344041, alpha: 1)
+            label.textColor = AppStyle.mainRedColor
             stackView.addArrangedSubview(label)
         }
     }

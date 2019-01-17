@@ -79,10 +79,10 @@ class TaskInfoViewModel {
         taskProjectStage = task.projectStage
         
         if task.type == .nse {
-            taskTypeTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            taskTypeTextColor = AppStyle.attentionPinkColor
             priority = NSMutableAttributedString(string: String(task.priority),
                                                  attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-            priorityTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+            priorityTextColor = AppStyle.attentionPinkColor
             
             if let supplyPlanDate = task.supplyPlanDate {
                 let dateFormatter = DateFormatter()
@@ -90,20 +90,20 @@ class TaskInfoViewModel {
                 let dateString = dateFormatter.string(from: supplyPlanDate)
                 supplyDate = NSMutableAttributedString(string: dateString,
                                                        attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-                supplyDateTextColor = #colorLiteral(red: 1, green: 0.439357996, blue: 0.6011067629, alpha: 1)
+                supplyDateTextColor = AppStyle.attentionPinkColor
                 
                 dateFormatter.dateFormat = "HH:mm"
                 supplyTime = dateFormatter.string(from: supplyPlanDate)
                 supplyTimeIsHidden = false
             }
         } else {
-            taskTypeTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            taskTypeTextColor = AppStyle.darkTextColor
             priority = NSMutableAttributedString(string: "---",
                                                  attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
-            priorityTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            priorityTextColor = AppStyle.darkTextColor
             supplyDate = NSMutableAttributedString(string: "---",
                                                    attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
-            supplyDateTextColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            supplyDateTextColor = AppStyle.darkTextColor
             supplyTime = "---"
             supplyTimeIsHidden = true
         }
