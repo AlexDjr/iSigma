@@ -37,12 +37,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         if userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychainWrapper.string(forKey: "accessToken") != nil {
             print("STATUS: seems like isLoggedIn!")
             
-            pinTextField.isHidden = true
-            pinDescriptionMain.isHidden = true
-            pinDescriptionSecondary.isHidden = true
-            userView.isHidden = true
-            userDescription.isHidden = true
-            submitButton.isHidden = true
+            hideSteps()
             
             NetworkManager.shared.authCheck { isOk in
                 if isOk {
@@ -57,17 +52,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     }
                 } else {
                     print("STATUS: Authorization is NOT OK!")
+                    
+                    DispatchQueue.main.async {
+                        self.showUserStep()
+                    }
                 }
             }
         } else {
             print("STATUS: is NOT LoggedIn!")
             
-            pinTextField.isHidden = true
-            pinDescriptionMain.isHidden = true
-            pinDescriptionSecondary.isHidden = true
-            userView.isHidden = false
-            userDescription.isHidden = false
-            submitButton.isHidden = false
+            showUserStep()
         }
     }
     //    MARK: - UITextFieldDelegate
@@ -84,12 +78,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     print("Пин-код отправлен!")
                     
                     DispatchQueue.main.async {
-                        self.userView.isHidden = true
-                        self.userDescription.isHidden = true
-                        self.pinTextField.isHidden = false
-                        self.pinDescriptionMain.isHidden = false
-                        self.pinDescriptionSecondary.isHidden = false
-                        self.submitButton.isHidden = false
+                        self.showPinStep()
                     }
                 }
             } else {
@@ -120,5 +109,33 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 print("Укажите PIN-код!")
             }
         }
+    }
+    
+    //    MARK: - Methods
+    fileprivate func hideSteps() {
+        userView.isHidden = true
+        userDescription.isHidden = true
+        pinTextField.isHidden = true
+        pinDescriptionMain.isHidden = true
+        pinDescriptionSecondary.isHidden = true
+        submitButton.isHidden = true
+    }
+    
+    fileprivate func showUserStep() {
+        userView.isHidden = false
+        userDescription.isHidden = false
+        pinTextField.isHidden = true
+        pinDescriptionMain.isHidden = true
+        pinDescriptionSecondary.isHidden = true
+        submitButton.isHidden = false
+    }
+    
+    fileprivate func showPinStep() {
+        userView.isHidden = true
+        userDescription.isHidden = true
+        pinTextField.isHidden = false
+        pinDescriptionMain.isHidden = false
+        pinDescriptionSecondary.isHidden = false
+        submitButton.isHidden = false
     }
 }
