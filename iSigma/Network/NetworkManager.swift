@@ -17,22 +17,27 @@ class NetworkManager {
     
     static let shared = NetworkManager()
     
-    func fetchData(fromRequest request: URLRequest, completion: @escaping (Data, Int, String) -> ()) {
+    func fetchData(fromRequest request: URLRequest, completion: @escaping (Data?, Int?, String, Error?) -> ()) {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            if error != nil {
-                print("error = \(error.debugDescription)")  // check for general errors
-                return
+            if let error = error {
+                    var errorDescription = ""
+                    let errorCode = (error as NSError).code
+                    switch errorCode {
+                    case -1003:
+                        errorDescription = "Проверьте подключение к VPN!"
+                    case -1005:
+                        errorDescription = "Потеряно подключение к интернету!"
+                    case -1009:
+                        errorDescription = "Кажется, нет подключения к интернету!"
+                    default: errorDescription = "Неизвестная ошибка"
+                    }
+//                print("error = \(error.localizedDescription)")  // check for general errors
+                completion(nil, nil, errorDescription, error)
             } else {
-                
                 guard let data = data, let httpStatus = response as? HTTPURLResponse else { return }
-                
                 let responseString = String(data: data, encoding: .utf8)!
-                
-//                print("response = \(String(describing: response))")
-                
-                completion(data, httpStatus.statusCode, responseString)
+                completion(data, httpStatus.statusCode, responseString, nil)
             }
             }.resume()
     }
@@ -107,7 +112,8 @@ class NetworkManager {
         let postString = "client_id=\(appName)&username=\(user)@diasoft.ru"
         request.httpBody = postString.data(using: .utf8)
         
-        fetchData(fromRequest: request) { (data, statusCode, responseString) in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     let authPin = try JSONDecoder().decode(APIAuthPin.self, from: data)
@@ -118,7 +124,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
@@ -133,7 +139,8 @@ class NetworkManager {
         let postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=pin&pin=\(pin)&token=\(pinToken)"
         request.httpBody = postString.data(using: .utf8)
         
-        fetchData(fromRequest: request) { (data, statusCode, responseString) in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     let decoder = JSONDecoder()
@@ -146,12 +153,12 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
     
-    func authCheck(completion: @escaping (Bool)->()) {
+    func authCheck(completion: @escaping (Bool, String?, Error?)->()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         
         let url = URL(string: "http://webtst:7878/api/ems/auth/check")!
@@ -159,11 +166,16 @@ class NetworkManager {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
-            if statusCode == 200 {
-                completion(true)
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            if let error = error {
+                completion(false, description, error)
             } else {
-                completion(false)
+                guard let _ = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    completion(true, nil, nil)
+                } else {
+                    completion(false, description, nil)
+                }
             }
         }
     }
@@ -177,9 +189,10 @@ class NetworkManager {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
-                print("TASKS: \(String(describing: responseString))")
+//                print("TASKS: \(String(describing: responseString))")
                 do {
                     let tasksList = try JSONDecoder().decode([APITaskID].self, from: data)
                     var tasksIds: [Int] = []
@@ -193,7 +206,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
@@ -207,7 +220,8 @@ class NetworkManager {
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     var tasks: [Task] = []
@@ -241,7 +255,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
@@ -254,7 +268,8 @@ class NetworkManager {
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     var taskStates: [TaskState] = []
@@ -272,7 +287,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
         
@@ -284,7 +299,8 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     var worklogTypes: [WorklogType] = []
@@ -302,7 +318,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
@@ -313,7 +329,8 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     var employees: [Employee] = []
@@ -347,7 +364,7 @@ class NetworkManager {
                     print("Error serialization json: ", error)
                 }
             } else {
-                print(responseString)
+                print(description)
             }
         }
     }
@@ -398,7 +415,8 @@ class NetworkManager {
             completion(false, error.localizedDescription)
         }
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
@@ -409,7 +427,7 @@ class NetworkManager {
                     completion(false, "Error serialization json: \(error.localizedDescription)")
                 }
             } else {
-                completion(false, "statusCode = \(statusCode): \n \(responseString)")
+                completion(false, "statusCode = \(statusCode): \n \(description)")
             }
         }
     }
@@ -448,7 +466,8 @@ class NetworkManager {
             completion(false, error.localizedDescription)
         }
         
-        fetchData(fromRequest: request) { data, statusCode, responseString in
+        fetchData(fromRequest: request) { data, statusCode, description, error in
+            guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
                     let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
@@ -459,7 +478,7 @@ class NetworkManager {
                     completion(false, "Error serialization json: \(error.localizedDescription)")
                 }
             } else {
-                completion(false, "statusCode = \(statusCode): \n \(responseString)")
+                completion(false, "statusCode = \(statusCode): \n \(description)")
             }
         }
     }
