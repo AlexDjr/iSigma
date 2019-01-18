@@ -110,13 +110,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 } else {
                     if isOk {
                         print("STATUS: Authorization is OK!")
-                        let viewModel = TasksViewModel()
-                        viewModel.getTasksForCurrentUser { tasks in
+//                        let viewModel = TasksViewModel()
+//                        viewModel.getTasksForCurrentUser { tasks in
                             DispatchQueue.main.async {
                                 let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
                                 appDelegate.window?.rootViewController = tabBarController
                                 appDelegate.window?.makeKeyAndVisible()
-                            }
+//                            }
                         }
                     } else {
                         print("STATUS: Authorization is NOT OK!")

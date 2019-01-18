@@ -9,6 +9,7 @@
 import UIKit
 
 class TasksViewModel {
+    var onErrorCallback : ((String) -> ())?
     var tasks : [Task]?
     var selectedIndexPath: IndexPath?
     
@@ -40,7 +41,7 @@ class TasksViewModel {
         if let currentState = task.state {
             
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
-            proxy.loadData { objects in
+            proxy.loadData { objects, description, error in
                 let possibleStates = objects as! [TaskState]
                 for possibleState in possibleStates {
                     if possibleState.order < currentState.order {
@@ -72,14 +73,18 @@ class TasksViewModel {
     
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
         let proxy = Proxy(withKey: "tasks")
-        proxy.loadData { objects in
-            let tasks = objects as! [Task]
-            self.tasks = tasks
-            
-            //    saves possible states for each task in cache
-            self.reloadTaskStates()
-            
-            completion(tasks)
+        proxy.loadData { objects, description, error in
+            if error != nil || description != nil {
+                self.onErrorCallback?(description!)
+            } else {
+                let tasks = objects as! [Task]
+                self.tasks = tasks
+                
+                //    saves possible states for each task in cache
+                self.reloadTaskStates()
+                
+                completion(tasks)
+            }
         }
     }
     
@@ -97,7 +102,7 @@ class TasksViewModel {
         guard let tasks = tasks else { return }
         for task in tasks {
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
-            proxy.loadData { _ in }
+            proxy.loadData { _, _, _ in }
         }
     }
     

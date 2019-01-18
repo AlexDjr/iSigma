@@ -17,6 +17,13 @@ class NetworkManager {
     
     static let shared = NetworkManager()
     
+    enum APIError: Int, Error {
+        case badRequest = 400
+        case unauthorized = 401
+        case notFound = 404
+        case internalServerError = 500
+    }
+    
     func fetchData(fromRequest request: URLRequest, completion: @escaping (Data?, Int?, String, Error?) -> ()) {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -181,32 +188,39 @@ class NetworkManager {
     }
     
     //    MARK: - GET METHODS
-    func getTasksForCurrentUser(completion: @escaping ([Task]) -> ()) {
+    func getTasksForCurrentUser(completion: @escaping ([Task]?, String?, Error?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/context/assigned")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
-        request.httpMethod = "GET"
+        request.httpMethod = "POST"
         
         fetchData(fromRequest: request) { data, statusCode, description, error in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-//                print("TASKS: \(String(describing: responseString))")
-                do {
-                    let tasksList = try JSONDecoder().decode([APITaskID].self, from: data)
-                    var tasksIds: [Int] = []
-                    for task in tasksList {
-                        tasksIds.append(Int(task.id)!)
-                    }
-                    self.getTask(byIds: tasksIds, completion: { tasks in
-                            completion(tasks)
-                    })
-                } catch let error {
-                    print("Error serialization json: ", error)
-                }
+            if let error = error {
+                completion(nil, description, error)
             } else {
-                print(description)
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    //                print("TASKS: \(String(describing: responseString))")
+                    do {
+                        let tasksList = try JSONDecoder().decode([APITaskID].self, from: data)
+                        var tasksIds: [Int] = []
+                        for task in tasksList {
+                            tasksIds.append(Int(task.id)!)
+                        }
+                        self.getTask(byIds: tasksIds) { tasks in
+                            completion(tasks, nil, nil)
+                        }
+                    } catch let jsonError {
+//                        print("Error serialization json: ", jsonError)
+                        completion(nil, "Error serialization json", jsonError)
+                    }
+                } else {
+//                    print(description)
+                    let apiError = APIError.init(rawValue: statusCode)
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(apiError))", apiError)
+                }
             }
         }
     }
@@ -369,17 +383,21 @@ class NetworkManager {
         }
     }
     
-    func getData(forKey key: String, completion: @escaping ([CachableProtocol]) -> ()) {
+    func getData(forKey key: String, completion: @escaping ([CachableProtocol]?, String?, Error?) -> ()) {
         if  key == "workLogTypes" {
             getWorklogTypes { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects)
+                completion(objects, nil, nil)
             }
         }
         if key == "tasks"{
-            getTasksForCurrentUser { objects in
-                self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects)
+            getTasksForCurrentUser { objects, description, error in
+                if error != nil || description != nil {
+                    completion(nil, description, error)
+                } else {
+                    self.cache.setObject(objects! as NSArray, forKey: key as NSString)
+                    completion(objects, nil, nil)
+                }
             }
         }
         if key.hasPrefix("taskStates") {
@@ -387,13 +405,13 @@ class NetworkManager {
             let taskId = Int(components[1])!
             getTaskTransitions(taskId) { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects)
+                completion(objects, nil, nil)
             }
         }
         if key == "employees" {
             getEmployees { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects)
+                completion(objects, nil, nil)
             }
         }
     }
@@ -480,6 +498,17 @@ class NetworkManager {
             } else {
                 completion(false, "statusCode = \(statusCode): \n \(description)")
             }
+        }
+    }
+    
+    //    MARK: - Methods
+    private func getErrorDescription(_ error: APIError?) -> String {
+        guard let error = error else { return "<Описание отсутствует>" }
+        switch error {
+        case .badRequest: return "Неверный запрос!"
+        case .unauthorized: return "Пользователь не авторизован!"
+        case .notFound: return "Адрес не найден!"
+        case .internalServerError: return "Внутренняя ошибка сервера!"
         }
     }
 }

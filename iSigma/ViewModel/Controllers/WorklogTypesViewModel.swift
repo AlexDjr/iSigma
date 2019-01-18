@@ -45,7 +45,7 @@ class WorklogTypesViewModel {
     //    MARK: - Methods
     func getWorklogTypes(completion: @escaping () -> ()) {
         let proxy = Proxy(withKey: "workLogTypes")
-        proxy.loadData { objects in
+        proxy.loadData { objects, description, error in
             let worklogTypes = objects as! [WorklogType]
             self.types = worklogTypes
             self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
