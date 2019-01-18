@@ -9,7 +9,10 @@
 import UIKit
 
 extension UINavigationController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     open override var childForStatusBarStyle: UIViewController? {
-        return visibleViewController
+        return nil
     }
 }
