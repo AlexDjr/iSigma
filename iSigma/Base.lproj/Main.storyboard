@@ -988,7 +988,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Описание ошибки" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPz-vT-8Yy">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Описание ошибки" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPz-vT-8Yy">
                                 <rect key="frame" x="90.5" y="310" width="139" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1019,10 +1019,10 @@
                             <constraint firstItem="33I-ww-m3H" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oxb-LL-nZx" secondAttribute="leading" constant="40" id="PZE-Vm-eZu"/>
                             <constraint firstItem="fa3-UA-D4y" firstAttribute="centerX" secondItem="oxb-LL-nZx" secondAttribute="centerX" id="QZ3-6h-FK0"/>
                             <constraint firstItem="JA5-BL-h27" firstAttribute="top" secondItem="UgY-Cy-BnK" secondAttribute="bottom" constant="50" id="XFq-XJ-B7i"/>
-                            <constraint firstItem="aPz-vT-8Yy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ySu-Fs-8oR" secondAttribute="leading" constant="40" id="Y7J-sL-V1t"/>
+                            <constraint firstItem="aPz-vT-8Yy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ySu-Fs-8oR" secondAttribute="leading" constant="30" id="Y7J-sL-V1t"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="asU-R7-kCj" secondAttribute="trailing" constant="40" id="Yxp-UY-3si"/>
                             <constraint firstItem="XTN-N6-sZb" firstAttribute="leading" secondItem="ySu-Fs-8oR" secondAttribute="leading" constant="40" id="ZRl-yW-NB3"/>
-                            <constraint firstItem="ySu-Fs-8oR" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aPz-vT-8Yy" secondAttribute="trailing" constant="40" id="aOo-AW-16C"/>
+                            <constraint firstItem="ySu-Fs-8oR" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aPz-vT-8Yy" secondAttribute="trailing" constant="30" id="aOo-AW-16C"/>
                             <constraint firstItem="szc-yS-Bel" firstAttribute="leading" secondItem="ySu-Fs-8oR" secondAttribute="leading" id="ayd-PY-kIb"/>
                             <constraint firstItem="JA5-BL-h27" firstAttribute="centerX" secondItem="oxb-LL-nZx" secondAttribute="centerX" id="bmL-eZ-7ud"/>
                             <constraint firstItem="abw-QN-KLH" firstAttribute="top" secondItem="33I-ww-m3H" secondAttribute="bottom" constant="50" id="bqB-DV-Vt9"/>

@@ -24,12 +24,16 @@ class NetworkManager {
                     var errorDescription = ""
                     let errorCode = (error as NSError).code
                     switch errorCode {
+                    case -999:
+                        errorDescription = "Не удалось установить соединение с сервером. Проверьте соединение с интернетом"
+                    case -1001:
+                        errorDescription = "Превышено время ожидания ответа от сервера. Проверьте соединение с интернетом"
                     case -1003:
                         errorDescription = "Проверьте подключение к VPN"
                     case -1005:
                         errorDescription = "Потеряно подключение к интернету"
                     case -1009:
-                        errorDescription = "Кажется, нет подключения к интернету"
+                        errorDescription = "Кажется, вы не подключены к интернету"
                     default: errorDescription = "Неизвестная ошибка"
                     }
 //                print("error = \(error.localizedDescription)")  // check for general errors
