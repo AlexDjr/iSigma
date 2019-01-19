@@ -76,18 +76,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     UserDefaults.standard.set(true, forKey: "isLoggedIn")
                     UserDefaults.standard.synchronize()
                     
-                    let viewModel = TasksViewModel()
-                    viewModel.getTasksForCurrentUser { tasks in
-                        DispatchQueue.main.async {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-                            
-                            let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
-                            appDelegate.window?.rootViewController = tabBarController
-                            appDelegate.window?.makeKeyAndVisible()
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    }
+                    self.openApp()
                 }
             } else {
                 print("Укажите PIN-код!")
@@ -97,42 +86,24 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     //    MARK: - Methods
     fileprivate func setupView() {
-        
+        hideSteps()
         startSpinner()
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
         let userDefaults = UserDefaults.standard
         let keychainWrapper = KeychainWrapper.standard
         
         if userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychainWrapper.string(forKey: "accessToken") != nil {
             print("STATUS: seems like isLoggedIn!")
-            hideSteps()
             
             NetworkManager.shared.authCheck { isOk, errorDescription in
                 self.stopSpinner()
-                
                 if errorDescription != nil {
+                    print("STATUS: Network error!")
                     self.showError(errorDescription!)
                 } else {
                     if isOk {
                         print("STATUS: Authorization is OK!")
-                        let viewModel = TasksViewModel()
-                        viewModel.onErrorCallback = { description in
-                            DispatchQueue.main.async {
-                                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
-                                let okAction = UIAlertAction(title: "ОК", style: .default)
-                                alert.addAction(okAction)
-                                self.present(alert, animated: true, completion: nil)
-                            }
-                        }
-                        viewModel.getTasksForCurrentUser { tasks in
-                            DispatchQueue.main.async {
-                                let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
-                                appDelegate.window?.rootViewController = tabBarController
-                                appDelegate.window?.makeKeyAndVisible()
-                            }
-                        }
+                        self.openApp()
                     } else {
                         print("STATUS: Authorization is NOT OK!")
                         self.showUserStep()
@@ -142,6 +113,28 @@ class LoginController: UIViewController, UITextFieldDelegate {
         } else {
             print("STATUS: is NOT LoggedIn!")
             showUserStep()
+        }
+    }
+    
+    fileprivate func openApp() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+        let viewModel = TasksViewModel()
+        
+        viewModel.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        viewModel.getTasksForCurrentUser { tasks in
+            DispatchQueue.main.async {
+                let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
+                appDelegate.window?.rootViewController = tabBarController
+                appDelegate.window?.makeKeyAndVisible()
+            }
         }
     }
     
