@@ -63,14 +63,7 @@ class TasksViewModel {
         }
     }
     
-    //    MARK: - Methods
-    func auth(completion: @escaping () -> ()) {
-        NetworkManager.shared.auth(withUser: "adelin@diasoft.ru") {
-            print("Успешная аутентификация!")
-            completion()
-        }
-    }
-    
+    //    MARK: - Methods    
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
         let proxy = Proxy(withKey: "tasks")
         proxy.loadData { objects, errorDescription in

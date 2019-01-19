@@ -46,68 +46,8 @@ class NetworkManager {
             }.resume()
     }
     
-    //    MARK: - Auth METHODS
-//    func auth(withUser user: String, completion: @escaping () -> ()) {
-//        let url = URL(string: "http://webtst:7878/api/ems/auth/hash")!
-//
-//        var request = URLRequest(url: url)
-//        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "POST"
-//        let postString = "client_id=\(appName)&username=\(user)"
-//        request.httpBody = postString.data(using: .utf8)
-//
-//        fetchData(fromRequest: request) { (data, statusCode, responseString) in
-//            if statusCode == 200 {
-//                do {
-//                    let authHash = try JSONDecoder().decode(APIAuthHash.self, from: data)
-//                    let hash = authHash.hash
-//                    print("hash = \(hash)")
-//                    self.authToken(withHash: hash, completion: { accessToken, refreshToken in
-//                        self.accessToken = accessToken
-//                        self.refreshToken = refreshToken
-//                        print("accessToken: \(String(describing: self.accessToken))")
-//                        print("refreshToken: \(String(describing: self.refreshToken))")
-//                        completion()
-//                    })
-//                } catch {
-//                    print("JSONerror placeHolder")
-//                }
-//            } else if statusCode == 401 {
-//                print("Вам отправлено письмо с запросом на подтверждение выполнение операций в EMS. Проверьте свой почтовый ящик!")
-//            } else {
-//                print(responseString)
-//            }
-//        }
-//    }
-//
-//    func authToken(withHash hash: String, completion: @escaping (String, String) -> ()) {
-//        let url = URL(string: "http://webtst:7878/api/ems/auth/token")!
-//
-//        var request = URLRequest(url: url)
-//        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "POST"
-//        let postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=hash&hash=\(hash)"
-//        request.httpBody = postString.data(using: .utf8)
-//        
-//        fetchData(fromRequest: request) { (data, statusCode, responseString) in
-//            if statusCode == 200 {
-//                do {
-//                    let decoder = JSONDecoder()
-//                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-//                    let authToken = try decoder.decode(APIAuthToken.self, from: data)
-//                    let accessToken = authToken.accessToken
-//                    let refreshToken = authToken.refreshToken
-//                    completion(accessToken, refreshToken)
-//                } catch {
-//                    print("JSONerror placeHolder")
-//                }
-//            } else {
-//                print(responseString)
-//            }
-//        }
-//    }
-    
-    func auth(withUser user: String, completion: @escaping () -> ()) {
+    //    MARK: - Auth METHODS    
+    func auth(withUser user: String, completion: @escaping (String?) -> ()) {
         let url = URL(string: "http://webtst:7878/api/ems/auth/pin")!
         
         var request = URLRequest(url: url)
@@ -123,12 +63,18 @@ class NetworkManager {
                     let authPin = try JSONDecoder().decode(APIAuthPin.self, from: data)
                     let token = authPin.token
                     self.pinToken = token
-                        completion()
+                        completion(nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                var errorDescription = ""
+                if statusCode == 404 {
+                    errorDescription = "Указанный пользователь не найден"
+                } else {
+                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                }
+                completion(errorDescription)
             }
         }
     }
@@ -500,10 +446,10 @@ class NetworkManager {
     //    MARK: - Methods
     private func getErrorDescription(forCode code: Int) -> String {
         switch code {
-        case 400: return "Неверный запрос!"
-        case 401: return "Пользователь не авторизован!"
-        case 404: return "Адрес не найден!"
-        case 500: return "Внутренняя ошибка сервера!"
+        case 400: return "Неверный запрос"
+        case 401: return "Пользователь не авторизован"
+        case 404: return "Адрес не найден"
+        case 500: return "Внутренняя ошибка сервера"
         default: return "<Нет описания>"
         }
     }

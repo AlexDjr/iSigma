@@ -58,10 +58,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBAction func submitButtonAction(_ sender: Any) {
         if !userView.isHidden {
             if let user = userTextField.text {
-                NetworkManager.shared.auth(withUser: user) {
-                    print("Пин-код отправлен!")
-                    
-                    DispatchQueue.main.async {
+                NetworkManager.shared.auth(withUser: user) { errorDescription in
+                    if let errorDescription = errorDescription {
+                        self.showAlert(errorDescription)
+                    } else {
+                        print("Пин-код отправлен!")
                         self.showPinStep()
                     }
                 }
@@ -122,12 +123,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let viewModel = TasksViewModel()
         
         viewModel.onErrorCallback = { description in
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "ОК", style: .default)
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
-            }
+            self.showAlert(description)
         }
         viewModel.getTasksForCurrentUser { tasks in
             DispatchQueue.main.async {
@@ -184,12 +180,23 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func showPinStep() {
-        userView.isHidden = true
-        userDescription.isHidden = true
-        pinTextField.isHidden = false
-        pinDescriptionMain.isHidden = false
-        pinDescriptionSecondary.isHidden = false
-        submitButton.isHidden = false
+        DispatchQueue.main.async {
+            self.userView.isHidden = true
+            self.userDescription.isHidden = true
+            self.pinTextField.isHidden = false
+            self.pinDescriptionMain.isHidden = false
+            self.pinDescriptionSecondary.isHidden = false
+            self.submitButton.isHidden = false
+        }
+    }
+    
+    fileprivate func showAlert(_ description: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "ОК", style: .default)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc func appWillReturnFromBackground() {
