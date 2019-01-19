@@ -30,7 +30,7 @@ class EmployeesViewModel {
     //    MARK: - Methods
     func getEmployees(completion: @escaping ([Employee]?) -> ()) {
         let proxy = Proxy(withKey: "employees")
-        proxy.loadData { objects, description, error in
+        proxy.loadData { objects, errorDescription in
             let employees = objects as! [Employee]
             self.employees = employees.sorted(by: { $0.lastName == $1.lastName ? $0.firstName < $1.firstName : $0.lastName < $1.lastName })
             completion(employees)

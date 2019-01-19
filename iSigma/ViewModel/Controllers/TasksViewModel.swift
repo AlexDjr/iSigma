@@ -41,7 +41,7 @@ class TasksViewModel {
         if let currentState = task.state {
             
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
-            proxy.loadData { objects, description, error in
+            proxy.loadData { objects, errorDescription in
                 let possibleStates = objects as! [TaskState]
                 for possibleState in possibleStates {
                     if possibleState.order < currentState.order {
@@ -73,9 +73,9 @@ class TasksViewModel {
     
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
         let proxy = Proxy(withKey: "tasks")
-        proxy.loadData { objects, description, error in
-            if error != nil || description != nil {
-                self.onErrorCallback?(description!)
+        proxy.loadData { objects, errorDescription in
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
             } else {
                 let tasks = objects as! [Task]
                 self.tasks = tasks
@@ -102,7 +102,7 @@ class TasksViewModel {
         guard let tasks = tasks else { return }
         for task in tasks {
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
-            proxy.loadData { _, _, _ in }
+            proxy.loadData { _, _ in }
         }
     }
     

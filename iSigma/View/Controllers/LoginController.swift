@@ -99,10 +99,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
             
             hideSteps()
             
-            NetworkManager.shared.authCheck { isOk, description, error in
-                if error != nil {
+            NetworkManager.shared.authCheck { isOk, errorDescription in
+                if errorDescription != nil {
                     DispatchQueue.main.async {
-                        self.errorDescription.text = description
+                        self.errorDescription.text = errorDescription
                         self.errorDescription.isHidden = false
                         self.error.isHidden = false
                         self.errorImage.isHidden = false
@@ -110,13 +110,21 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 } else {
                     if isOk {
                         print("STATUS: Authorization is OK!")
-//                        let viewModel = TasksViewModel()
-//                        viewModel.getTasksForCurrentUser { tasks in
+                        let viewModel = TasksViewModel()
+                        viewModel.onErrorCallback = { description in
+                            DispatchQueue.main.async {
+                                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "ОК", style: .default)
+                                alert.addAction(okAction)
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        }
+                        viewModel.getTasksForCurrentUser { tasks in
                             DispatchQueue.main.async {
                                 let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
                                 appDelegate.window?.rootViewController = tabBarController
                                 appDelegate.window?.makeKeyAndVisible()
-//                            }
+                            }
                         }
                     } else {
                         print("STATUS: Authorization is NOT OK!")

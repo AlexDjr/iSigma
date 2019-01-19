@@ -17,14 +17,7 @@ class NetworkManager {
     
     static let shared = NetworkManager()
     
-    enum APIError: Int, Error {
-        case badRequest = 400
-        case unauthorized = 401
-        case notFound = 404
-        case internalServerError = 500
-    }
-    
-    func fetchData(fromRequest request: URLRequest, completion: @escaping (Data?, Int?, String, Error?) -> ()) {
+    func fetchData(fromRequest request: URLRequest, completion: @escaping (Data?, Int?, String?) -> ()) {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -32,19 +25,19 @@ class NetworkManager {
                     let errorCode = (error as NSError).code
                     switch errorCode {
                     case -1003:
-                        errorDescription = "Проверьте подключение к VPN!"
+                        errorDescription = "Проверьте подключение к VPN"
                     case -1005:
-                        errorDescription = "Потеряно подключение к интернету!"
+                        errorDescription = "Потеряно подключение к интернету"
                     case -1009:
-                        errorDescription = "Кажется, нет подключения к интернету!"
+                        errorDescription = "Кажется, нет подключения к интернету"
                     default: errorDescription = "Неизвестная ошибка"
                     }
 //                print("error = \(error.localizedDescription)")  // check for general errors
-                completion(nil, nil, errorDescription, error)
+                completion(nil, nil, errorDescription)
             } else {
                 guard let data = data, let httpStatus = response as? HTTPURLResponse else { return }
-                let responseString = String(data: data, encoding: .utf8)!
-                completion(data, httpStatus.statusCode, responseString, nil)
+//                let responseString = String(data: data, encoding: .utf8)!
+                completion(data, httpStatus.statusCode, nil)
             }
             }.resume()
     }
@@ -72,8 +65,8 @@ class NetworkManager {
 //                        print("refreshToken: \(String(describing: self.refreshToken))")
 //                        completion()
 //                    })
-//                } catch let error {
-//                    print("Error serialization json: ", error)
+//                } catch {
+//                    print("JSONerror placeHolder")
 //                }
 //            } else if statusCode == 401 {
 //                print("Вам отправлено письмо с запросом на подтверждение выполнение операций в EMS. Проверьте свой почтовый ящик!")
@@ -101,8 +94,8 @@ class NetworkManager {
 //                    let accessToken = authToken.accessToken
 //                    let refreshToken = authToken.refreshToken
 //                    completion(accessToken, refreshToken)
-//                } catch let error {
-//                    print("Error serialization json: ", error)
+//                } catch {
+//                    print("JSONerror placeHolder")
 //                }
 //            } else {
 //                print(responseString)
@@ -119,7 +112,7 @@ class NetworkManager {
         let postString = "client_id=\(appName)&username=\(user)@diasoft.ru"
         request.httpBody = postString.data(using: .utf8)
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -127,11 +120,11 @@ class NetworkManager {
                     let token = authPin.token
                     self.pinToken = token
                         completion()
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
     }
@@ -146,7 +139,7 @@ class NetworkManager {
         let postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=pin&pin=\(pin)&token=\(pinToken)"
         request.httpBody = postString.data(using: .utf8)
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -156,16 +149,16 @@ class NetworkManager {
                     KeychainWrapper.standard.set(authToken.accessToken, forKey: "accessToken")
                     KeychainWrapper.standard.set(authToken.refreshToken, forKey: "refreshToken")
                     completion()
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
     }
     
-    func authCheck(completion: @escaping (Bool, String?, Error?)->()) {
+    func authCheck(completion: @escaping (Bool, String?)->()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         
         let url = URL(string: "http://webtst:7878/api/ems/auth/check")!
@@ -173,32 +166,32 @@ class NetworkManager {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
-            if let error = error {
-                completion(false, description, error)
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
+            if let errorDescription = errorDescription {
+                completion(false, errorDescription)
             } else {
                 guard let _ = data, let statusCode = statusCode else { return }
                 if statusCode == 200 {
-                    completion(true, nil, nil)
+                    completion(true, nil)
                 } else {
-                    completion(false, description, nil)
+                    completion(false, nil)
                 }
             }
         }
     }
     
     //    MARK: - GET METHODS
-    func getTasksForCurrentUser(completion: @escaping ([Task]?, String?, Error?) -> ()) {
+    func getTasksForCurrentUser(completion: @escaping ([Task]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/context/assigned")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
-        request.httpMethod = "POST"
+        request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
-            if let error = error {
-                completion(nil, description, error)
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
+            if let errorDescription = errorDescription {
+                completion(nil, errorDescription)
             } else {
                 guard let data = data, let statusCode = statusCode else { return }
                 if statusCode == 200 {
@@ -210,16 +203,15 @@ class NetworkManager {
                             tasksIds.append(Int(task.id)!)
                         }
                         self.getTask(byIds: tasksIds) { tasks in
-                            completion(tasks, nil, nil)
+                            completion(tasks, nil)
                         }
-                    } catch let jsonError {
+                    } catch {
 //                        print("Error serialization json: ", jsonError)
-                        completion(nil, "Error serialization json", jsonError)
+                        completion(nil, "JSONerror placeHolder")
                     }
                 } else {
-//                    print(description)
-                    let apiError = APIError.init(rawValue: statusCode)
-                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(apiError))", apiError)
+//                    print("statusCodeError placeHolder")
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
                 }
             }
         }
@@ -234,7 +226,7 @@ class NetworkManager {
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -265,11 +257,11 @@ class NetworkManager {
                         tasks.append(task)
                     }
                     completion(tasks)
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
     }
@@ -282,7 +274,7 @@ class NetworkManager {
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -293,15 +285,15 @@ class NetworkManager {
                         if let taskState = taskState {
                             taskStates.append(taskState)
                         } else {
-                            print(print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)"))
+                            print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)")
                         }
                     }
                     completion(taskStates)
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
         
@@ -313,7 +305,7 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -328,11 +320,11 @@ class NetworkManager {
                         worklogTypes.append(worklogType)
                     }
                     completion(worklogTypes)
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
     }
@@ -343,7 +335,7 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -374,29 +366,29 @@ class NetworkManager {
                         }
                     }
                     completion(employees)
-                } catch let error {
-                    print("Error serialization json: ", error)
+                } catch {
+                    print("JSONerror placeHolder")
                 }
             } else {
-                print(description)
+                print("statusCodeError placeHolder")
             }
         }
     }
     
-    func getData(forKey key: String, completion: @escaping ([CachableProtocol]?, String?, Error?) -> ()) {
+    func getData(forKey key: String, completion: @escaping ([CachableProtocol]?, String?) -> ()) {
         if  key == "workLogTypes" {
             getWorklogTypes { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil, nil)
+                completion(objects, nil)
             }
         }
         if key == "tasks"{
-            getTasksForCurrentUser { objects, description, error in
-                if error != nil || description != nil {
-                    completion(nil, description, error)
+            getTasksForCurrentUser { objects, errorDescription in
+                if errorDescription != nil {
+                    completion(nil, errorDescription)
                 } else {
                     self.cache.setObject(objects! as NSArray, forKey: key as NSString)
-                    completion(objects, nil, nil)
+                    completion(objects, nil)
                 }
             }
         }
@@ -405,13 +397,13 @@ class NetworkManager {
             let taskId = Int(components[1])!
             getTaskTransitions(taskId) { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil, nil)
+                completion(objects, nil)
             }
         }
         if key == "employees" {
             getEmployees { objects in
                 self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil, nil)
+                completion(objects, nil)
             }
         }
     }
@@ -429,11 +421,11 @@ class NetworkManager {
         let parameters = ["issue_id": task, "time_spent": time, "type_of_work": type, "date": date] as [String : Any]
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-        } catch let error {
+        } catch {
             completion(false, error.localizedDescription)
         }
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -441,11 +433,11 @@ class NetworkManager {
                     let success = apiSuccessResponse.success
                     let details = apiSuccessResponse.details
                     completion(success, details)
-                } catch let error {
-                    completion(false, "Error serialization json: \(error.localizedDescription)")
+                } catch {
+                    completion(false, "JSONerror placeHolder")
                 }
             } else {
-                completion(false, "statusCode = \(statusCode): \n \(description)")
+                completion(false, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))")
             }
         }
     }
@@ -480,11 +472,11 @@ class NetworkManager {
                           "reason_rejection": 21] as [String : Any]
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-        } catch let error {
-            completion(false, error.localizedDescription)
+        } catch {
+            completion(false, "JSONerror placeHolder")
         }
         
-        fetchData(fromRequest: request) { data, statusCode, description, error in
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
             guard let data = data, let statusCode = statusCode else { return }
             if statusCode == 200 {
                 do {
@@ -492,23 +484,23 @@ class NetworkManager {
                     let success = apiResponse.result.success
                     let details = apiResponse.result.details
                     completion(success, details)
-                } catch let error {
-                    completion(false, "Error serialization json: \(error.localizedDescription)")
+                } catch {
+                    completion(false, "JSONerror placeHolder")
                 }
             } else {
-                completion(false, "statusCode = \(statusCode): \n \(description)")
+                completion(false, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))")
             }
         }
     }
     
     //    MARK: - Methods
-    private func getErrorDescription(_ error: APIError?) -> String {
-        guard let error = error else { return "<Описание отсутствует>" }
-        switch error {
-        case .badRequest: return "Неверный запрос!"
-        case .unauthorized: return "Пользователь не авторизован!"
-        case .notFound: return "Адрес не найден!"
-        case .internalServerError: return "Внутренняя ошибка сервера!"
+    private func getErrorDescription(forCode code: Int) -> String {
+        switch code {
+        case 400: return "Неверный запрос!"
+        case 401: return "Пользователь не авторизован!"
+        case 404: return "Адрес не найден!"
+        case 500: return "Внутренняя ошибка сервера!"
+        default: return "<Нет описания>"
         }
     }
 }

@@ -17,7 +17,7 @@ class TasksController: UITableViewController {
         
         viewModel = TasksViewModel()
         
-        self.viewModel?.onErrorCallback = { description in
+        viewModel?.onErrorCallback = { description in
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "ОК", style: .default)
@@ -26,7 +26,7 @@ class TasksController: UITableViewController {
             }
         }
         
-        self.viewModel?.getTasksForCurrentUser{ tasks in
+        viewModel?.getTasksForCurrentUser{ tasks in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

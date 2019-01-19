@@ -15,16 +15,16 @@ class Proxy {
         self.key = key
     }
     
-    func loadData(completion: @escaping ([CachableProtocol]?, String?, Error?) -> ()) {
+    func loadData(completion: @escaping ([CachableProtocol]?, String?) -> ()) {
         let networkManager = NetworkManager.shared
         if let objects = networkManager.cache.object(forKey: key as NSString) as? Array<CachableProtocol> {
-            completion(objects, nil, nil)
+            completion(objects, nil)
         } else {
-            networkManager.getData(forKey: key) { objects, description, error in
-                if error != nil || description != nil {
-                    completion(nil, description, error)
+            networkManager.getData(forKey: key) { objects, errorDescription in
+                if errorDescription != nil {
+                    completion(nil, errorDescription)
                 } else {
-                    completion(objects, nil, nil)
+                    completion(objects, nil)
                 }
             }
         }
