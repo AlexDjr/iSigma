@@ -73,11 +73,15 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         if !pinTextField.isHidden {
             if let pin = pinTextField.text {
-                NetworkManager.shared.authToken(withPin: pin) {
-                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                    UserDefaults.standard.synchronize()
+                NetworkManager.shared.authToken(withPin: pin) { errorDescription in
+                    if let errorDescription = errorDescription {
+                        self.showAlert(errorDescription)
+                    } else {
+                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                        UserDefaults.standard.synchronize()
                     
-                    self.openApp()
+                        self.openApp()
+                    }
                 }
             } else {
                 print("Укажите PIN-код!")
@@ -118,8 +122,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func openApp() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
         let viewModel = TasksViewModel()
         
         viewModel.onErrorCallback = { description in
@@ -127,6 +129,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
         viewModel.getTasksForCurrentUser { tasks in
             DispatchQueue.main.async {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let appDelegate = UIApplication.shared.delegate! as! AppDelegate
                 let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
                 appDelegate.window?.rootViewController = tabBarController
                 appDelegate.window?.makeKeyAndVisible()

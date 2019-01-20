@@ -79,7 +79,7 @@ class NetworkManager {
         }
     }
     
-    func authToken(withPin pin: String, completion: @escaping () -> ()) {
+    func authToken(withPin pin: String, completion: @escaping (String?) -> ()) {
         guard let pinToken = pinToken else { return }
         let url = URL(string: "http://webtst:7878/api/ems/auth/token")!
         
@@ -98,12 +98,18 @@ class NetworkManager {
                     let authToken = try decoder.decode(APIAuthToken.self, from: data)
                     KeychainWrapper.standard.set(authToken.accessToken, forKey: "accessToken")
                     KeychainWrapper.standard.set(authToken.refreshToken, forKey: "refreshToken")
-                    completion()
+                    completion(nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                var errorDescription = ""
+                if statusCode == 400 {
+                    errorDescription = "Указан неверный ПИН-код или истек срок его действия"
+                } else {
+                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                }
+                completion(errorDescription)
             }
         }
     }
@@ -145,29 +151,30 @@ class NetworkManager {
             } else {
                 guard let data = data, let statusCode = statusCode else { return }
                 if statusCode == 200 {
-                    //                print("TASKS: \(String(describing: responseString))")
                     do {
                         let tasksList = try JSONDecoder().decode([APITaskID].self, from: data)
                         var tasksIds: [Int] = []
                         for task in tasksList {
                             tasksIds.append(Int(task.id)!)
                         }
-                        self.getTask(byIds: tasksIds) { tasks in
-                            completion(tasks, nil)
+                        self.getTask(byIds: tasksIds) { tasks, errorDescription in
+                            if let errorDescription = errorDescription {
+                                completion(nil, errorDescription)
+                            } else {
+                                completion(tasks, nil)
+                            }
                         }
                     } catch {
-//                        print("Error serialization json: ", jsonError)
                         completion(nil, "JSONerror placeHolder")
                     }
                 } else {
-//                    print("statusCodeError placeHolder")
                     completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
                 }
             }
         }
     }
     
-    func getTask(byIds ids: [Int], completion: @escaping ([Task]) -> ()) {
+    func getTask(byIds ids: [Int], completion: @escaping ([Task]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let stringIds = ids.map{ String($0) }.joined(separator: ",")
         let url = URL(string: "http://webtst:7878/api/ems/issues/\(stringIds)?include=extra,project")!
@@ -206,17 +213,17 @@ class NetworkManager {
                         }
                         tasks.append(task)
                     }
-                    completion(tasks)
+                    completion(tasks, nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
             }
         }
     }
     
-    func getTaskTransitions(_ taskId: Int, completion: @escaping ([TaskState]) -> ()) {
+    func getTaskTransitions(_ taskId: Int, completion: @escaping ([TaskState]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/\(taskId)/transitions")!
         
@@ -238,18 +245,18 @@ class NetworkManager {
                             print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)")
                         }
                     }
-                    completion(taskStates)
+                    completion(taskStates, nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
             }
         }
         
     }
     
-    func getWorklogTypes(completion: @escaping ([WorklogType]) -> ()) {
+    func getWorklogTypes(completion: @escaping ([WorklogType]?, String?) -> ()) {
         let url = URL(string: "http://webtst:7878/api/ems/meta/model/contracts/worklog/type")!
         
         var request = URLRequest(url: url)
@@ -269,17 +276,17 @@ class NetworkManager {
                         }
                         worklogTypes.append(worklogType)
                     }
-                    completion(worklogTypes)
+                    completion(worklogTypes, nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
             }
         }
     }
     
-    func getEmployees(completion: @escaping ([Employee]) -> ()) {
+    func getEmployees(completion: @escaping ([Employee]?, String?) -> ()) {
         let url = URL(string: "http://webtst:7878/api/ems/employees/status/2")!
         
         var request = URLRequest(url: url)
@@ -315,24 +322,28 @@ class NetworkManager {
                             employees.append(employee)
                         }
                     }
-                    completion(employees)
+                    completion(employees, nil)
                 } catch {
                     print("JSONerror placeHolder")
                 }
             } else {
-                print("statusCodeError placeHolder")
+                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
             }
         }
     }
     
     func getData(forKey key: String, completion: @escaping ([CachableProtocol]?, String?) -> ()) {
         if  key == "workLogTypes" {
-            getWorklogTypes { objects in
-                self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil)
+            getWorklogTypes { objects, errorDescription in
+                if errorDescription != nil {
+                    completion(nil, errorDescription)
+                } else {
+                    self.cache.setObject(objects! as NSArray, forKey: key as NSString)
+                    completion(objects, nil)
+                }
             }
         }
-        if key == "tasks"{
+        if key == "tasks" {
             getTasksForCurrentUser { objects, errorDescription in
                 if errorDescription != nil {
                     completion(nil, errorDescription)
@@ -345,15 +356,23 @@ class NetworkManager {
         if key.hasPrefix("taskStates") {
             let components = key.components(separatedBy: "+")
             let taskId = Int(components[1])!
-            getTaskTransitions(taskId) { objects in
-                self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil)
+            getTaskTransitions(taskId) { objects, errorDescription in
+                if errorDescription != nil {
+                    completion(nil, errorDescription)
+                } else {
+                    self.cache.setObject(objects! as NSArray, forKey: key as NSString)
+                    completion(objects, nil)
+                }
             }
         }
         if key == "employees" {
-            getEmployees { objects in
-                self.cache.setObject(objects as NSArray, forKey: key as NSString)
-                completion(objects, nil)
+            getEmployees { objects, errorDescription in
+                if errorDescription != nil {
+                    completion(nil, errorDescription)
+                } else {
+                    self.cache.setObject(objects! as NSArray, forKey: key as NSString)
+                    completion(objects, nil)
+                }
             }
         }
     }
@@ -387,7 +406,13 @@ class NetworkManager {
                     completion(false, "JSONerror placeHolder")
                 }
             } else {
-                completion(false, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))")
+                var errorDescription = ""
+                if statusCode == 400 {
+                    errorDescription = "Неверные параметры запроса"
+                } else {
+                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                }
+                completion(false, errorDescription)
             }
         }
     }
@@ -438,7 +463,13 @@ class NetworkManager {
                     completion(false, "JSONerror placeHolder")
                 }
             } else {
-                completion(false, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))")
+                var errorDescription = ""
+                if statusCode == 400 {
+                    errorDescription = "Неверные параметры запроса"
+                } else {
+                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                }
+                completion(false, errorDescription)
             }
         }
     }
