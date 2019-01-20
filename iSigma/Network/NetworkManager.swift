@@ -65,7 +65,7 @@ class NetworkManager {
                     self.pinToken = token
                         completion(nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion("Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 var errorDescription = ""
@@ -100,7 +100,7 @@ class NetworkManager {
                     KeychainWrapper.standard.set(authToken.refreshToken, forKey: "refreshToken")
                     completion(nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion("Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 var errorDescription = ""
@@ -165,7 +165,7 @@ class NetworkManager {
                             }
                         }
                     } catch {
-                        completion(nil, "JSONerror placeHolder")
+                        completion(nil, "Ошибка обработки JSON\n\(#function)")
                     }
                 } else {
                     completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
@@ -215,7 +215,7 @@ class NetworkManager {
                     }
                     completion(tasks, nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion(nil, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
@@ -247,7 +247,7 @@ class NetworkManager {
                     }
                     completion(taskStates, nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion(nil, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
@@ -278,7 +278,7 @@ class NetworkManager {
                     }
                     completion(worklogTypes, nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion(nil, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
@@ -324,7 +324,7 @@ class NetworkManager {
                     }
                     completion(employees, nil)
                 } catch {
-                    print("JSONerror placeHolder")
+                    completion(nil, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
@@ -403,7 +403,7 @@ class NetworkManager {
                     let details = apiSuccessResponse.details
                     completion(success, details)
                 } catch {
-                    completion(false, "JSONerror placeHolder")
+                    completion(false, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 var errorDescription = ""
@@ -448,7 +448,7 @@ class NetworkManager {
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         } catch {
-            completion(false, "JSONerror placeHolder")
+            completion(false, "Ошибка обработки JSON\n\(#function)")
         }
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
@@ -460,7 +460,7 @@ class NetworkManager {
                     let details = apiResponse.result.details
                     completion(success, details)
                 } catch {
-                    completion(false, "JSONerror placeHolder")
+                    completion(false, "Ошибка обработки JSON\n\(#function)")
                 }
             } else {
                 var errorDescription = ""
