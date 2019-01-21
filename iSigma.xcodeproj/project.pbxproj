@@ -44,6 +44,7 @@
 		FA6FC53521E8A0CE001BD85A /* UIAlertController+tintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */; };
 		FA6FC53721E8D093001BD85A /* TaskInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */; };
 		FAB8BFF521EA6A510092654D /* EmployeesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8BFF421EA6A510092654D /* EmployeesController.swift */; };
+		FAC9035621F5F51F00FBE62B /* UINavigationController+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */; };
 		FAD4E36B21F0BFD9001CCC79 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */; };
 		FAD76B4621C7E02B0034F614 /* APIAuthHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4521C7E02B0034F614 /* APIAuthHash.swift */; };
 		FAD76B4821C7E0620034F614 /* APIAuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4721C7E0620034F614 /* APIAuthToken.swift */; };
@@ -129,6 +130,7 @@
 		FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+tintColor.swift"; sourceTree = "<group>"; };
 		FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInfoViewModel.swift; sourceTree = "<group>"; };
 		FAB8BFF421EA6A510092654D /* EmployeesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesController.swift; sourceTree = "<group>"; };
+		FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+alert.swift"; sourceTree = "<group>"; };
 		FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		FAD76B4521C7E02B0034F614 /* APIAuthHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAuthHash.swift; sourceTree = "<group>"; };
 		FAD76B4721C7E0620034F614 /* APIAuthToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAuthToken.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				FAF5998821D7B7B100A4F4B9 /* String+date.swift */,
 				FAF5998021D7955100A4F4B9 /* Date+CalendarDays.swift */,
 				FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */,
+				FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				FA6ED6E321ECB05C00727E1F /* APIEmployeeFlags.swift in Sources */,
 				FAD76B4821C7E0620034F614 /* APIAuthToken.swift in Sources */,
 				FAD76B8621CD184D0034F614 /* WorklogController.swift in Sources */,
+				FAC9035621F5F51F00FBE62B /* UINavigationController+alert.swift in Sources */,
 				FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */,
 				FA6FC53321E77D73001BD85A /* APITaskProject.swift in Sources */,
 				FAB8BFF521EA6A510092654D /* EmployeesController.swift in Sources */,

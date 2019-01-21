@@ -19,10 +19,8 @@ class TasksController: UITableViewController {
         
         viewModel?.onErrorCallback = { description in
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "ОК", style: .default)
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
+                self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
             }
         }
         
@@ -77,10 +75,8 @@ class TasksController: UITableViewController {
                 config = UISwipeActionsConfiguration(actions: [transitBackward, transitForward])
                 config!.performsFirstActionWithFullSwipe = false
             } else {
-                let alert = UIAlertController(title: "Ошибка!", message: "Для данной задачи не определено текущее состояние!", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "ОК", style: .default)
-                alert.addAction(okAction)
-                self.present(alert, animated: true, completion: nil)
+                self.presentAlert(title: "Ошибка!", message: "Для данной задачи не определено текущее состояние!", actions: okAction)
             }
         }
         
@@ -141,13 +137,11 @@ class TasksController: UITableViewController {
                         rowAnimation = UITableView.RowAnimation(rawValue: 1)
                     }
                     
-                    //    asks server to perform task transition
+                    //    asks server to perform task transition (with checking for errors)
                     viewModel.onErrorCallback = { description in
                         DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
                             let okAction = UIAlertAction(title: "ОК", style: .default)
-                            alert.addAction(okAction)
-                            self.present(alert, animated: true, completion: nil)
+                            self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
                         }
                     }
                     
@@ -160,11 +154,8 @@ class TasksController: UITableViewController {
                             }
                         } else {
                             DispatchQueue.main.async {
-                                let alert = UIAlertController(title: "Ошибка!", message: details, preferredStyle: .alert)
-                                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                                
-                                alert.addAction(okAction)
-                                self.present(alert, animated: true, completion: nil)
+                                let okAction = UIAlertAction(title: "ОК", style: .default)
+                                self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
                             }
                         }
                     }

@@ -84,7 +84,7 @@ class WorklogViewModel {
     }
 
     //    MARK: - Methods
-    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String, String?) -> ()){
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String, String) -> ()){
         NetworkManager.shared.postWorklog(task: task, time: time, type: type, date: date) { isSuccess, details, errorDescription in
             if errorDescription != nil {
                 self.onErrorCallback?(errorDescription!)
@@ -95,7 +95,7 @@ class WorklogViewModel {
                 } else {
                     title = "Ошибка!"
                 }
-                completion(title, details)
+                completion(title, details!)
             }
         }
     }

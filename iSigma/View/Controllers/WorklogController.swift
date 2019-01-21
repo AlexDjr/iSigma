@@ -184,20 +184,16 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
             
             viewModel.onErrorCallback = { description in
                 DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "ОК", style: .default)
-                    alert.addAction(okAction)
-                    self.present(alert, animated: true, completion: nil)
+                    self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
                 }
             }
             viewModel.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { title, details in
                 DispatchQueue.main.async {
-                    let alert = UIAlertController(title: title, message: details, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .default) { alert in
                         self.navigationController?.popViewController(animated: true)
                     }
-                    alert.addAction(okAction)
-                    self.present(alert, animated: true, completion: nil)
+                    self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
                 }
             }
         }
