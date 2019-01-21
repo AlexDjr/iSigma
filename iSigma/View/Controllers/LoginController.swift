@@ -48,10 +48,45 @@ class LoginController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
     //    MARK: - UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
+        submitButtonAction(textField)
         return false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else { return true }
+        
+        switch textField.tag {
+        case 1:
+            let characterSet = CharacterSet.letters
+            let validString = validatedString(characterSet, text, range, string)
+            textField.text = validString
+            return false
+        case 2:
+            let characterSet = CharacterSet.decimalDigits
+            let validString = validatedString(characterSet, text, range, string)
+    
+            if range.length == 0 && range.location == 3 {
+                view.endEditing(true)
+                textField.text = validString
+                submitButtonAction(textField)
+            }
+            textField.text = validString
+            return false
+        default:
+            return true
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(#function)
     }
     
     //    MARK: - Actions
@@ -187,6 +222,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     fileprivate func showPinStep() {
         DispatchQueue.main.async {
+            self.pinTextField.text = ""
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveLinear, animations: {
                 self.userView.alpha = 0.0
                 self.userDescription.alpha = 0.0
@@ -207,6 +243,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
             let okAction = UIAlertAction(title: "ОК", style: .default)
             self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
         }
+    }
+    
+    fileprivate func validatedString(_ characterSet: CharacterSet, _ text: String, _ range: NSRange, _ string: String) -> String {
+        let validationSet = characterSet.inverted
+        var newString = ""
+        newString = (text as NSString).replacingCharacters(in: range, with: string)
+        
+        let validComponents = newString.components(separatedBy: validationSet)
+        newString = validComponents.joined(separator: "")
+        return newString
     }
     
     @objc func appWillReturnFromBackground() {

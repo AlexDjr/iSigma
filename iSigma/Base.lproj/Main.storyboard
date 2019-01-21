@@ -939,7 +939,7 @@
                                     <action selector="submitButtonAction:" destination="s8l-tf-DyD" eventType="touchUpInside" id="lso-tC-qgs"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UgY-Cy-BnK">
+                            <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UgY-Cy-BnK">
                                 <rect key="frame" x="120" y="262.5" width="80" height="31"/>
                                 <color key="backgroundColor" red="0.44643452379999998" green="0.078027817119999995" blue="0.1581294869" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -952,7 +952,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fa3-UA-D4y">
                                 <rect key="frame" x="32.5" y="262.5" width="255" height="31"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qCD-NC-q3u">
+                                    <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qCD-NC-q3u">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="31"/>
                                         <color key="backgroundColor" red="0.44643452379999998" green="0.078027817119999995" blue="0.1581294869" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
