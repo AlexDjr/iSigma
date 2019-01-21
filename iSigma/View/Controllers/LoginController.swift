@@ -98,6 +98,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                         self.showAlert(errorDescription)
                     } else {
                         print("Пин-код отправлен!")
+                        UserDefaults.standard.set(true, forKey: "isPinSent")
+                        UserDefaults.standard.synchronize()
                         self.showPinStep()
                     }
                 }
@@ -122,6 +124,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 showAlert("Укажите PIN-код!")
             }
         }
+        UserDefaults.standard.removeObject(forKey: "isPinSent")
+        UserDefaults.standard.synchronize()
     }
     
     //    MARK: - Methods
@@ -140,6 +144,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 if isOk && userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychain.string(forKey: "accessToken") != nil {
                     print("STATUS: Authorization is OK! and isLoggedIn!")
                     self.openApp()
+                } else if userDefaults.value(forKey: "isPinSent") != nil && userDefaults.bool(forKey: "isPinSent") {
+                    print("STATUS: Authorization is NOT OK! and PIN is sent!")
+                    self.showPinStep()
                 } else {
                     print("STATUS: Authorization is NOT OK! or LoggedIn expired!")
                     self.showUserStep()
