@@ -34,6 +34,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         return .lightContent
     }
     
+    var viewModel: LoginViewModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,17 +63,17 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return true }
+        guard let text = textField.text, let viewModel = viewModel else { return true }
         
         switch textField.tag {
         case 1:
             let characterSet = CharacterSet.letters
-            let validString = validatedString(characterSet, text, range, string)
+            let validString = viewModel.validatedString(characterSet, text, range, string)
             textField.text = validString
             return false
         case 2:
             let characterSet = CharacterSet.decimalDigits
-            let validString = validatedString(characterSet, text, range, string)
+            let validString = viewModel.validatedString(characterSet, text, range, string)
     
             if range.length == 0 && range.location == 3 {
                 view.endEditing(true)
@@ -85,47 +87,37 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print(#function)
-    }
-    
     //    MARK: - Actions
     @IBAction func submitButtonAction(_ sender: Any) {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.onErrorCallback = { description in
+            self.showAlert(description)
+        }
+        //    user step
         if userView.alpha == 1.0 {
             if let user = userTextField.text {
-                NetworkManager.shared.auth(withUser: user) { errorDescription in
-                    if let errorDescription = errorDescription {
-                        self.showAlert(errorDescription)
-                    } else {
-                        print("Пин-код отправлен!")
-                        UserDefaults.standard.set(true, forKey: "isPinSent")
-                        UserDefaults.standard.synchronize()
-                        self.showPinStep()
-                    }
+                viewModel.auth(withUser: user) {
+                    viewModel.saveKey("isPinSent")
+                    self.showPinStep()
                 }
             } else {
-                showAlert("Укажите свой e-mail!")
+                showAlert("Укажите свой e-mail")
             }
         }
         
+        //    pin step
         if pinTextField.alpha == 1.0 {
             if let pin = pinTextField.text {
-                NetworkManager.shared.authToken(withPin: pin) { errorDescription in
-                    if let errorDescription = errorDescription {
-                        self.showAlert(errorDescription)
-                    } else {
-                        UserDefaults.standard.set(true, forKey: "isLoggedIn")
-                        UserDefaults.standard.synchronize()
-                        
-                        self.openApp()
-                    }
+                viewModel.authToken(withPin: pin) {
+                    viewModel.saveKey("isLoggedIn")
+                    self.openApp()
                 }
             } else {
-                showAlert("Укажите PIN-код!")
+                showAlert("Укажите PIN-код")
             }
+            viewModel.removeKey("isPinSent")
         }
-        UserDefaults.standard.removeObject(forKey: "isPinSent")
-        UserDefaults.standard.synchronize()
     }
     
     //    MARK: - Methods
@@ -133,24 +125,25 @@ class LoginController: UIViewController, UITextFieldDelegate {
         hideSteps()
         startSpinner()
         
-        NetworkManager.shared.authCheck { isOk, errorDescription in
+        viewModel = LoginViewModel()
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.onErrorCallback = { description in
             self.stopSpinner()
-            if errorDescription != nil {
-                print("STATUS: Network error!")
-                self.showError(errorDescription!)
+            DispatchQueue.main.async {
+                self.showError(description)
+            }
+        }
+        
+        viewModel.authCheck { isOk in
+            self.stopSpinner()
+            
+            if isOk && viewModel.isLoggedIn() {
+                self.openApp()
+            } else if viewModel.isPinSent() {
+                self.showPinStep()
             } else {
-                let userDefaults = UserDefaults.standard
-                let keychain = KeychainWrapper.standard
-                if isOk && userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychain.string(forKey: "accessToken") != nil {
-                    print("STATUS: Authorization is OK! and isLoggedIn!")
-                    self.openApp()
-                } else if userDefaults.value(forKey: "isPinSent") != nil && userDefaults.bool(forKey: "isPinSent") {
-                    print("STATUS: Authorization is NOT OK! and PIN is sent!")
-                    self.showPinStep()
-                } else {
-                    print("STATUS: Authorization is NOT OK! or LoggedIn expired!")
-                    self.showUserStep()
-                }
+                self.showUserStep()
             }
         }
     }
@@ -252,17 +245,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    fileprivate func validatedString(_ characterSet: CharacterSet, _ text: String, _ range: NSRange, _ string: String) -> String {
-        let validationSet = characterSet.inverted
-        var newString = ""
-        newString = (text as NSString).replacingCharacters(in: range, with: string)
-        
-        let validComponents = newString.components(separatedBy: validationSet)
-        newString = validComponents.joined(separator: "")
-        return newString
-    }
-    
-    @objc func appWillReturnFromBackground() {
+    @objc fileprivate func appWillReturnFromBackground() {
         setupView()
     }
     

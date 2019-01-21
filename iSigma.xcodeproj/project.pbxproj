@@ -88,6 +88,7 @@
 		FAFA721221E398FC001F0214 /* TaskState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721121E398FC001F0214 /* TaskState.swift */; };
 		FAFA721421E4B06B001F0214 /* APITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721321E4B06B001F0214 /* APITransition.swift */; };
 		FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721521E4BD17001F0214 /* APITargetState.swift */; };
+		FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372821F640E20062C3E3 /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -174,6 +175,7 @@
 		FAFA721121E398FC001F0214 /* TaskState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskState.swift; sourceTree = "<group>"; };
 		FAFA721321E4B06B001F0214 /* APITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITransition.swift; sourceTree = "<group>"; };
 		FAFA721521E4BD17001F0214 /* APITargetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITargetState.swift; sourceTree = "<group>"; };
+		FAFB372821F640E20062C3E3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,6 +377,7 @@
 		FAD76BA221CE92460034F614 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FAFB372821F640E20062C3E3 /* LoginViewModel.swift */,
 				FAD76B5F21CA8D000034F614 /* TasksViewModel.swift */,
 				FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */,
 				FAD76B8F21CD38F40034F614 /* WorklogViewModel.swift */,
@@ -550,6 +553,7 @@
 				FA221F1221EF5F5D00CA1616 /* KeychainWrapper.swift in Sources */,
 				FA2230C821D3B77700D602A7 /* WorklogType.swift in Sources */,
 				FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */,
+				FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */,
 				FAD76B4A21C7E8290034F614 /* Task.swift in Sources */,
 				FAD76B5321C805570034F614 /* APITaskID.swift in Sources */,
 				FA6FC52F21E611D8001BD85A /* APIResponse.swift in Sources */,
