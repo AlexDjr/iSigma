@@ -56,7 +56,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     //    MARK: - Actions
     @IBAction func submitButtonAction(_ sender: Any) {
-        if !userView.isHidden {
+        if userView.alpha == 1.0 {
             if let user = userTextField.text {
                 NetworkManager.shared.auth(withUser: user) { errorDescription in
                     if let errorDescription = errorDescription {
@@ -67,11 +67,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     }
                 }
             } else {
-                print("Укажите свой e-mail!")
+                showAlert("Укажите свой e-mail!")
             }
         }
         
-        if !pinTextField.isHidden {
+        if pinTextField.alpha == 1.0 {
             if let pin = pinTextField.text {
                 NetworkManager.shared.authToken(withPin: pin) { errorDescription in
                     if let errorDescription = errorDescription {
@@ -79,12 +79,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     } else {
                         UserDefaults.standard.set(true, forKey: "isLoggedIn")
                         UserDefaults.standard.synchronize()
-                    
+                        
                         self.openApp()
                     }
                 }
             } else {
-                print("Укажите PIN-код!")
+                showAlert("Укажите PIN-код!")
             }
         }
     }
@@ -94,47 +94,45 @@ class LoginController: UIViewController, UITextFieldDelegate {
         hideSteps()
         startSpinner()
         
-        let userDefaults = UserDefaults.standard
-        let keychainWrapper = KeychainWrapper.standard
-        
-        if userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychainWrapper.string(forKey: "accessToken") != nil {
-            print("STATUS: seems like isLoggedIn!")
-            
-            NetworkManager.shared.authCheck { isOk, errorDescription in
-                self.stopSpinner()
-                if errorDescription != nil {
-                    print("STATUS: Network error!")
-                    self.showError(errorDescription!)
+        NetworkManager.shared.authCheck { isOk, errorDescription in
+            self.stopSpinner()
+            if errorDescription != nil {
+                print("STATUS: Network error!")
+                self.showError(errorDescription!)
+            } else {
+                let userDefaults = UserDefaults.standard
+                let keychain = KeychainWrapper.standard
+                if isOk && userDefaults.value(forKey: "isLoggedIn") != nil && userDefaults.bool(forKey: "isLoggedIn") && keychain.string(forKey: "accessToken") != nil {
+                    print("STATUS: Authorization is OK! and isLoggedIn!")
+                    self.openApp()
                 } else {
-                    if isOk {
-                        print("STATUS: Authorization is OK!")
-                        self.openApp()
-                    } else {
-                        print("STATUS: Authorization is NOT OK!")
-                        self.showUserStep()
-                    }
+                    print("STATUS: Authorization is NOT OK! or LoggedIn expired!")
+                    self.showUserStep()
                 }
             }
-        } else {
-            print("STATUS: is NOT LoggedIn!")
-            showUserStep()
         }
     }
     
     fileprivate func openApp() {
-        let viewModel = TasksViewModel()
-        
-        viewModel.onErrorCallback = { description in
-            self.showAlert(description)
-        }
-        viewModel.getTasksForCurrentUser { tasks in
-            DispatchQueue.main.async {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-                let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
-                appDelegate.window?.rootViewController = tabBarController
-                appDelegate.window?.makeKeyAndVisible()
-            }
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveLinear, animations: {
+                self.hideSteps()
+            }, completion: { isFinished in
+                let viewModel = TasksViewModel()
+                
+                viewModel.onErrorCallback = { description in
+                    self.showAlert(description)
+                }
+                viewModel.getTasksForCurrentUser { tasks in
+                    DispatchQueue.main.async {
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
+                        let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
+                        appDelegate.window?.rootViewController = tabBarController
+                        appDelegate.window?.makeKeyAndVisible()
+                    }
+                }
+            })
         }
     }
     
@@ -154,43 +152,53 @@ class LoginController: UIViewController, UITextFieldDelegate {
     fileprivate func showError(_ errorDescription: String) {
         DispatchQueue.main.async {
             self.errorDescription.text = errorDescription
-            self.errorDescription.isHidden = false
-            self.error.isHidden = false
-            self.errorImage.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.errorImage.alpha = 1.0
+                self.error.alpha = 1.0
+                self.errorDescription.alpha = 1.0
+            }
         }
     }
     
     fileprivate func hideSteps() {
-        userView.isHidden = true
-        userDescription.isHidden = true
-        pinTextField.isHidden = true
-        pinDescriptionMain.isHidden = true
-        pinDescriptionSecondary.isHidden = true
-        errorImage.isHidden = true
-        error.isHidden = true
-        errorDescription.isHidden = true
-        submitButton.isHidden = true
+        userView.alpha = 0.0
+        userDescription.alpha = 0.0
+        pinTextField.alpha = 0.0
+        pinDescriptionMain.alpha = 0.0
+        pinDescriptionSecondary.alpha = 0.0
+        errorImage.alpha = 0.0
+        error.alpha = 0.0
+        errorDescription.alpha = 0.0
+        submitButton.alpha = 0.0
     }
     
     fileprivate func showUserStep() {
         DispatchQueue.main.async {
-            self.userView.isHidden = false
-            self.userDescription.isHidden = false
-            self.pinTextField.isHidden = true
-            self.pinDescriptionMain.isHidden = true
-            self.pinDescriptionSecondary.isHidden = true
-            self.submitButton.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.userView.alpha = 1.0
+                self.userDescription.alpha = 1.0
+                self.submitButton.alpha = 1.0
+            }
+            self.pinTextField.alpha = 0.0
+            self.pinDescriptionMain.alpha = 0.0
+            self.pinDescriptionSecondary.alpha = 0.0
         }
     }
     
     fileprivate func showPinStep() {
         DispatchQueue.main.async {
-            self.userView.isHidden = true
-            self.userDescription.isHidden = true
-            self.pinTextField.isHidden = false
-            self.pinDescriptionMain.isHidden = false
-            self.pinDescriptionSecondary.isHidden = false
-            self.submitButton.isHidden = false
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveLinear, animations: {
+                self.userView.alpha = 0.0
+                self.userDescription.alpha = 0.0
+                self.submitButton.alpha = 0.0
+            }, completion: { isFinished in
+                UIView.animate(withDuration: 0.5) {
+                    self.pinTextField.alpha = 1.0
+                    self.pinDescriptionMain.alpha = 1.0
+                    self.pinDescriptionSecondary.alpha = 1.0
+                    self.submitButton.alpha = 1.0
+                }
+            })
         }
     }
     
