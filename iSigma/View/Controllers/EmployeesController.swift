@@ -18,6 +18,15 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
         super.viewDidLoad()
         
         viewModel = EmployeesViewModel()
+        
+        viewModel?.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         viewModel?.getEmployees{ employees in
             DispatchQueue.main.async {
                 self.tableView.reloadData()

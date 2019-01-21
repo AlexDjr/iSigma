@@ -16,6 +16,14 @@ class WorklogTypesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let viewModel = viewModel else { return }
+        viewModel.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         viewModel.getWorklogTypes {
             DispatchQueue.main.async {
                 self.tableView.reloadData()

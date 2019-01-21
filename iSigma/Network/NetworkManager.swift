@@ -184,41 +184,45 @@ class NetworkManager {
         request.httpMethod = "GET"
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    var tasks: [Task] = []
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601
-                    let APItasks = try decoder.decode([APITask].self, from: data)
-                    for APItask in APItasks {
-                        var task = Task.init(id: Int(APItask.id)!,
-                                             subject: APItask.base.subject,
-                                             type: TaskType.Name.init(rawValue: APItask.base.typeName)!,
-                                             state: TaskState(taskType: TaskType.Name.init(rawValue: APItask.base.typeName)!, name: APItask.base.stateName),
-                                             assignee: APItask.base.assigneeName,
-                                             author: APItask.base.authorName,
-                                             priority: APItask.base.priority,
-                                             supplyPlanDate: nil,
-                                             description: APItask.extra.desc.trimmingCharacters(in: .whitespacesAndNewlines),
-                                             projectName: APItask.project.name,
-                                             projectManager: APItask.project.managerName,
-                                             projectClient: APItask.project.clientName,
-                                             projectStage: APItask.project.stageName)
-                        if task.type == .nse {
-                            task.supplyPlanDate = APItask.extra.supplyPlanDate
-                        }
-                        if task.state == nil {
-                            print("Для задачи \(task.id) не найдено соответствие состоянию \(APItask.base.stateName)")
-                        }
-                        tasks.append(task)
-                    }
-                    completion(tasks, nil)
-                } catch {
-                    completion(nil, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(nil, errorDescription)
             } else {
-                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        var tasks: [Task] = []
+                        let decoder = JSONDecoder()
+                        decoder.dateDecodingStrategy = .iso8601
+                        let APItasks = try decoder.decode([APITask].self, from: data)
+                        for APItask in APItasks {
+                            var task = Task.init(id: Int(APItask.id)!,
+                                                 subject: APItask.base.subject,
+                                                 type: TaskType.Name.init(rawValue: APItask.base.typeName)!,
+                                                 state: TaskState(taskType: TaskType.Name.init(rawValue: APItask.base.typeName)!, name: APItask.base.stateName),
+                                                 assignee: APItask.base.assigneeName,
+                                                 author: APItask.base.authorName,
+                                                 priority: APItask.base.priority,
+                                                 supplyPlanDate: nil,
+                                                 description: APItask.extra.desc.trimmingCharacters(in: .whitespacesAndNewlines),
+                                                 projectName: APItask.project.name,
+                                                 projectManager: APItask.project.managerName,
+                                                 projectClient: APItask.project.clientName,
+                                                 projectStage: APItask.project.stageName)
+                            if task.type == .nse {
+                                task.supplyPlanDate = APItask.extra.supplyPlanDate
+                            }
+                            if task.state == nil {
+                                print("Для задачи \(task.id) не найдено соответствие состоянию \(APItask.base.stateName)")
+                            }
+                            tasks.append(task)
+                        }
+                        completion(tasks, nil)
+                    } catch {
+                        completion(nil, "Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                }
             }
         }
     }
@@ -232,28 +236,31 @@ class NetworkManager {
         request.httpMethod = "GET"
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    var taskStates: [TaskState] = []
-                    let transitions = try JSONDecoder().decode([APITransition].self, from: data)
-                    for transition in transitions {
-                        let taskState = TaskState(taskStateId: transition.targetstate.id)
-                        if let taskState = taskState {
-                            taskStates.append(taskState)
-                        } else {
-                            print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)")
-                        }
-                    }
-                    completion(taskStates, nil)
-                } catch {
-                    completion(nil, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(nil, errorDescription)
             } else {
-                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        var taskStates: [TaskState] = []
+                        let transitions = try JSONDecoder().decode([APITransition].self, from: data)
+                        for transition in transitions {
+                            let taskState = TaskState(taskStateId: transition.targetstate.id)
+                            if let taskState = taskState {
+                                taskStates.append(taskState)
+                            } else {
+                                print("Для задачи \(taskId) не найдено соответствие возможному состоянию с ID = \(transition.targetstate.id)")
+                            }
+                        }
+                        completion(taskStates, nil)
+                    } catch {
+                        completion(nil, "Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                }
             }
         }
-        
     }
     
     func getWorklogTypes(completion: @escaping ([WorklogType]?, String?) -> ()) {
@@ -263,25 +270,29 @@ class NetworkManager {
         request.httpMethod = "GET"
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    var worklogTypes: [WorklogType] = []
-                    let APIworklogTypes = try JSONDecoder().decode(APIWorklogTypes.self, from: data)
-                    
-                    for member in APIworklogTypes.members {
-                        var worklogType = WorklogType(id: member.value, name: member.name, isOften: false)
-                        if member.name.oneOf(other: "Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
-                            worklogType.isOften = true
-                        }
-                        worklogTypes.append(worklogType)
-                    }
-                    completion(worklogTypes, nil)
-                } catch {
-                    completion(nil, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(nil, errorDescription)
             } else {
-                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        var worklogTypes: [WorklogType] = []
+                        let APIworklogTypes = try JSONDecoder().decode(APIWorklogTypes.self, from: data)
+                        
+                        for member in APIworklogTypes.members {
+                            var worklogType = WorklogType(id: member.value, name: member.name, isOften: false)
+                            if member.name.oneOf(other: "Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
+                                worklogType.isOften = true
+                            }
+                            worklogTypes.append(worklogType)
+                        }
+                        completion(worklogTypes, nil)
+                    } catch {
+                        completion(nil, "Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                }
             }
         }
     }
@@ -293,41 +304,45 @@ class NetworkManager {
         request.httpMethod = "GET"
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    var employees: [Employee] = []
-                    let apiEmployees = try JSONDecoder().decode([APIEmployee].self, from: data)
-                    for apiEmployee in apiEmployees {
-                        if !(apiEmployee.flags.isTech || apiEmployee.flags.doNotShowInPhonebook) {
-                            let employee = Employee(id: apiEmployee.id,
-                                                    headId: apiEmployee.headId,
-                                                    lastName: apiEmployee.lastName,
-                                                    firstName: apiEmployee.firstName,
-                                                    middleName: apiEmployee.middleName,
-                                                    fullName: apiEmployee.fullName,
-                                                    brief: apiEmployee.brief,
-                                                    headFullName: apiEmployee.headFullName,
-                                                    branch: apiEmployee.branch,
-                                                    email: apiEmployee.email,
-                                                    skype: apiEmployee.skype,
-                                                    room: apiEmployee.room,
-                                                    phone: apiEmployee.phone,
-                                                    mobile: apiEmployee.mobile,
-                                                    position: apiEmployee.position,
-                                                    topDepartmentId: apiEmployee.topDepartmentId,
-                                                    topDepartment: apiEmployee.topDepartment,
-                                                    department: apiEmployee.department,
-                                                    departmentId: apiEmployee.departmentId)
-                            employees.append(employee)
-                        }
-                    }
-                    completion(employees, nil)
-                } catch {
-                    completion(nil, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(nil, errorDescription)
             } else {
-                completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        var employees: [Employee] = []
+                        let apiEmployees = try JSONDecoder().decode([APIEmployee].self, from: data)
+                        for apiEmployee in apiEmployees {
+                            if !(apiEmployee.flags.isTech || apiEmployee.flags.doNotShowInPhonebook) {
+                                let employee = Employee(id: apiEmployee.id,
+                                                        headId: apiEmployee.headId,
+                                                        lastName: apiEmployee.lastName,
+                                                        firstName: apiEmployee.firstName,
+                                                        middleName: apiEmployee.middleName,
+                                                        fullName: apiEmployee.fullName,
+                                                        brief: apiEmployee.brief,
+                                                        headFullName: apiEmployee.headFullName,
+                                                        branch: apiEmployee.branch,
+                                                        email: apiEmployee.email,
+                                                        skype: apiEmployee.skype,
+                                                        room: apiEmployee.room,
+                                                        phone: apiEmployee.phone,
+                                                        mobile: apiEmployee.mobile,
+                                                        position: apiEmployee.position,
+                                                        topDepartmentId: apiEmployee.topDepartmentId,
+                                                        topDepartment: apiEmployee.topDepartment,
+                                                        department: apiEmployee.department,
+                                                        departmentId: apiEmployee.departmentId)
+                                employees.append(employee)
+                            }
+                        }
+                        completion(employees, nil)
+                    } catch {
+                        completion(nil, "Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    completion(nil, "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))\n\(#function)")
+                }
             }
         }
     }
@@ -378,7 +393,7 @@ class NetworkManager {
     }
     
     //    MARK: - POST METHODS
-    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (Bool, String) -> ()) {
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/worklog/context/add")!
         
@@ -391,34 +406,38 @@ class NetworkManager {
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         } catch {
-            completion(false, error.localizedDescription)
+            completion(false, nil, "Ошибка обработки JSON\n\(#function)")
         }
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
-                    let success = apiSuccessResponse.success
-                    let details = apiSuccessResponse.details
-                    completion(success, details)
-                } catch {
-                    completion(false, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(false, nil, errorDescription)
             } else {
-                var errorDescription = ""
-                if statusCode == 400 {
-                    errorDescription = "Неверные параметры запроса"
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        let apiSuccessResponse = try JSONDecoder().decode(APISuccessResponse.self, from: data)
+                        let success = apiSuccessResponse.success
+                        let details = apiSuccessResponse.details
+                        completion(success, details, nil)
+                    } catch {
+                        completion(false, nil, "Ошибка обработки JSON\n\(#function)")
+                    }
                 } else {
-                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    var errorDescription = ""
+                    if statusCode == 400 {
+                        errorDescription = "Неверные параметры запроса"
+                    } else {
+                        errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    }
+                    completion(false, nil, errorDescription)
                 }
-                completion(false, errorDescription)
             }
         }
     }
     
     //    MARK: - PUT METHODS
-    func putTaskTransition(taskId: Int, from: Int, to: Int, completion: @escaping (Bool, String) -> ()) {
+    func putTaskTransition(taskId: Int, from: Int, to: Int, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/transfer")!
         
@@ -426,7 +445,6 @@ class NetworkManager {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
-        
         let parameters = ["username": "",
                           "state_source": "",
                           "from": from,
@@ -448,28 +466,32 @@ class NetworkManager {
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         } catch {
-            completion(false, "Ошибка обработки JSON\n\(#function)")
+            completion(false, nil, "Ошибка обработки JSON\n\(#function)")
         }
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
-                    let success = apiResponse.result.success
-                    let details = apiResponse.result.details
-                    completion(success, details)
-                } catch {
-                    completion(false, "Ошибка обработки JSON\n\(#function)")
-                }
+            if let errorDescription = errorDescription {
+                completion(false, nil, errorDescription)
             } else {
-                var errorDescription = ""
-                if statusCode == 400 {
-                    errorDescription = "Неверные параметры запроса"
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+                        let success = apiResponse.result.success
+                        let details = apiResponse.result.details
+                        completion(success, details, nil)
+                    } catch {
+                        completion(false, nil, "Ошибка обработки JSON\n\(#function)")
+                    }
                 } else {
-                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    var errorDescription = ""
+                    if statusCode == 400 {
+                        errorDescription = "Неверные параметры запроса"
+                    } else {
+                        errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    }
+                    completion(false, nil, errorDescription)
                 }
-                completion(false, errorDescription)
             }
         }
     }

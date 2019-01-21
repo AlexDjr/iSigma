@@ -42,6 +42,8 @@ class TasksViewModel {
             
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
             proxy.loadData { objects, errorDescription in
+            //    not throwing any error with errorDescription into onErrorCallback here,
+            //    so in case of error instead of showing alert tableView's row couldn't be swiped right at all
                 let possibleStates = objects as! [TaskState]
                 for possibleState in possibleStates {
                     if possibleState.order < currentState.order {
@@ -63,7 +65,7 @@ class TasksViewModel {
         }
     }
     
-    //    MARK: - Methods    
+    //    MARK: - Methods
     func getTasksForCurrentUser(completion: @escaping ([Task]?) -> ()) {
         let proxy = Proxy(withKey: "tasks")
         proxy.loadData { objects, errorDescription in
@@ -96,6 +98,22 @@ class TasksViewModel {
         for task in tasks {
             let proxy = Proxy(withKey: "taskStates+\(task.id)")
             proxy.loadData { _, _ in }
+        }
+    }
+    
+    func putTaskTransition(taskId: Int, from: Int, to: Int, completion: @escaping (Bool, String?) -> ()) {
+        NetworkManager.shared.putTaskTransition(taskId: taskId, from: from, to: to) { isSuccess, details, errorDescription in
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                if isSuccess {
+                    NetworkManager.shared.cache.removeObject(forKey: "tasks")
+                    NetworkManager.shared.cache.removeObject(forKey: "taskStates+\(taskId)" as NSString)
+                    completion(true, details)
+                } else {
+                    completion(false, details)
+                }
+            }
         }
     }
     

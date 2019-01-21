@@ -62,6 +62,8 @@ class TasksController: UITableViewController {
         guard let viewModel = self.viewModel else { return nil }
         
         var config: UISwipeActionsConfiguration? = nil
+        //    not showing any alert from onErrorCallback here
+        //    so in case of error row couldn't be swiped right at all
         viewModel.taskStates(forIndexPath: indexPath) { isSuccess, taskStates in
             if isSuccess {
                 let transitForward = self.getContextualAction(title: "Переход \n вперед", taskStates: taskStates![0])
@@ -140,10 +142,17 @@ class TasksController: UITableViewController {
                     }
                     
                     //    asks server to perform task transition
-                    NetworkManager.shared.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
+                    viewModel.onErrorCallback = { description in
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Ошибка!", message: description, preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "ОК", style: .default)
+                            alert.addAction(okAction)
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }
+                    
+                    viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
                         if isSuccess {
-                            NetworkManager.shared.cache.removeObject(forKey: "tasks")
-                            NetworkManager.shared.cache.removeObject(forKey: "taskStates+\(task.id)" as NSString)
                             viewModel.getTasksForCurrentUser{ tasks in
                                 DispatchQueue.main.async {
                                     self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)

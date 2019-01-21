@@ -9,6 +9,7 @@
 import UIKit
 
 class WorklogViewModel {
+    var onErrorCallback : ((String) -> ())?
     var task : Task?
     var timePickerValue : String
     var worklogType : WorklogType?
@@ -83,6 +84,22 @@ class WorklogViewModel {
     }
 
     //    MARK: - Methods
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String, String?) -> ()){
+        NetworkManager.shared.postWorklog(task: task, time: time, type: type, date: date) { isSuccess, details, errorDescription in
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                var title = ""
+                if isSuccess {
+                    title = "Успешно!"
+                } else {
+                    title = "Ошибка!"
+                }
+                completion(title, details)
+            }
+        }
+    }
+    
     func getAjustedDate(from string: String) -> String {
         let date = string.date
         let formatter = DateFormatter()

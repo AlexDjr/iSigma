@@ -9,6 +9,7 @@
 import UIKit
 
 class EmployeesViewModel {
+    var onErrorCallback : ((String) -> ())?
     var employees : [Employee]?
     var selectedIndexPath: IndexPath?
     
@@ -31,9 +32,13 @@ class EmployeesViewModel {
     func getEmployees(completion: @escaping ([Employee]?) -> ()) {
         let proxy = Proxy(withKey: "employees")
         proxy.loadData { objects, errorDescription in
-            let employees = objects as! [Employee]
-            self.employees = employees.sorted(by: { $0.lastName == $1.lastName ? $0.firstName < $1.firstName : $0.lastName < $1.lastName })
-            completion(employees)
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                let employees = objects as! [Employee]
+                self.employees = employees.sorted(by: { $0.lastName == $1.lastName ? $0.firstName < $1.firstName : $0.lastName < $1.lastName })
+                completion(employees)
+            }
         }
     }
 }

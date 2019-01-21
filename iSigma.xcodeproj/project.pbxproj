@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA221F0221EE5B6700CA1616 /* EmployeeInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F0121EE5B6700CA1616 /* EmployeeInfoViewModel.swift */; };
+		FA221F0421EE5BDB00CA1616 /* EmployeeInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F0321EE5BDB00CA1616 /* EmployeeInfoController.swift */; };
+		FA221F0621EF3CFD00CA1616 /* APIAuthPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F0521EF3CFD00CA1616 /* APIAuthPin.swift */; };
+		FA221F0821EF402F00CA1616 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F0721EF402F00CA1616 /* LoginController.swift */; };
+		FA221F1121EF5F5D00CA1616 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F0F21EF5F5D00CA1616 /* KeychainItemAccessibility.swift */; };
+		FA221F1221EF5F5D00CA1616 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA221F1021EF5F5D00CA1616 /* KeychainWrapper.swift */; };
 		FA2230C821D3B77700D602A7 /* WorklogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2230C721D3B77700D602A7 /* WorklogType.swift */; };
 		FA2230CA21D3C48700D602A7 /* APIWorklogTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2230C921D3C48700D602A7 /* APIWorklogTypes.swift */; };
 		FA2230CC21D3C50700D602A7 /* APIWorklogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2230CB21D3C50700D602A7 /* APIWorklogType.swift */; };
@@ -18,7 +24,6 @@
 		FA3093A521C3DA1300A3B417 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3093A421C3DA1300A3B417 /* AppDelegate.swift */; };
 		FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3093A621C3DA1300A3B417 /* TasksController.swift */; };
 		FA3093AA21C3DA1300A3B417 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3093A821C3DA1300A3B417 /* Main.storyboard */; };
-		FA3093AC21C3DA1400A3B417 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA3093AB21C3DA1400A3B417 /* Assets.xcassets */; };
 		FA3093AF21C3DA1400A3B417 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3093AD21C3DA1400A3B417 /* LaunchScreen.storyboard */; };
 		FA3093BE21C3E43500A3B417 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3093BD21C3E43500A3B417 /* NetworkManager.swift */; };
 		FA679A3C21D0E93B00FA6B93 /* SubmitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA679A3B21D0E93B00FA6B93 /* SubmitView.swift */; };
@@ -26,6 +31,20 @@
 		FA679A4221D11B0D00FA6B93 /* SubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA679A4121D11B0D00FA6B93 /* SubmitButton.swift */; };
 		FA679A4421D11B6600FA6B93 /* SubmitButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA679A4321D11B6600FA6B93 /* SubmitButtonViewModel.swift */; };
 		FA679A4621D134DD00FA6B93 /* PickerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA679A4521D134DD00FA6B93 /* PickerDelegateProtocol.swift */; };
+		FA685F3E21DCDDE2004D029F /* APISuccessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA685F3D21DCDDE2004D029F /* APISuccessResponse.swift */; };
+		FA6ED6DF21EC9AEC00727E1F /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6DE21EC9AEC00727E1F /* Employee.swift */; };
+		FA6ED6E121EC9B2A00727E1F /* APIEmployee.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6E021EC9B2A00727E1F /* APIEmployee.swift */; };
+		FA6ED6E321ECB05C00727E1F /* APIEmployeeFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6E221ECB05C00727E1F /* APIEmployeeFlags.swift */; };
+		FA6ED6E521ECDD2800727E1F /* EmployeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6E421ECDD2800727E1F /* EmployeeCell.swift */; };
+		FA6ED6E721EDCD7900727E1F /* EmployeesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6E621EDCD7900727E1F /* EmployeesViewModel.swift */; };
+		FA6ED6E921EDCF7F00727E1F /* EmployeeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6ED6E821EDCF7F00727E1F /* EmployeeCellViewModel.swift */; };
+		FA6FC52F21E611D8001BD85A /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC52E21E611D8001BD85A /* APIResponse.swift */; };
+		FA6FC53121E74CAA001BD85A /* TaskInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53021E74CAA001BD85A /* TaskInfoController.swift */; };
+		FA6FC53321E77D73001BD85A /* APITaskProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53221E77D73001BD85A /* APITaskProject.swift */; };
+		FA6FC53521E8A0CE001BD85A /* UIAlertController+tintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */; };
+		FA6FC53721E8D093001BD85A /* TaskInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */; };
+		FAB8BFF521EA6A510092654D /* EmployeesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8BFF421EA6A510092654D /* EmployeesController.swift */; };
+		FAD4E36B21F0BFD9001CCC79 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */; };
 		FAD76B4621C7E02B0034F614 /* APIAuthHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4521C7E02B0034F614 /* APIAuthHash.swift */; };
 		FAD76B4821C7E0620034F614 /* APIAuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4721C7E0620034F614 /* APIAuthToken.swift */; };
 		FAD76B4A21C7E8290034F614 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B4921C7E8290034F614 /* Task.swift */; };
@@ -41,7 +60,7 @@
 		FAD76B8621CD184D0034F614 /* WorklogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8521CD184D0034F614 /* WorklogController.swift */; };
 		FAD76B8821CD24DD0034F614 /* WorklogTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8721CD24DD0034F614 /* WorklogTaskCell.swift */; };
 		FAD76B8A21CD25030034F614 /* WorklogDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8921CD25030034F614 /* WorklogDetailsCell.swift */; };
-		FAD76B8C21CD251A0034F614 /* WorklogTimePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8B21CD251A0034F614 /* WorklogTimePickerCell.swift */; };
+		FAD76B8C21CD251A0034F614 /* WorkLogTimePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8B21CD251A0034F614 /* WorkLogTimePickerCell.swift */; };
 		FAD76B9021CD38F40034F614 /* WorklogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B8F21CD38F40034F614 /* WorklogViewModel.swift */; };
 		FAD76B9421CD3A170034F614 /* WorklogDetailsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B9321CD3A170034F614 /* WorklogDetailsCellViewModel.swift */; };
 		FAD76B9621CD3A270034F614 /* WorklogTimePickerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B9521CD3A270034F614 /* WorklogTimePickerCellViewModel.swift */; };
@@ -50,9 +69,33 @@
 		FAD76B9F21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B9E21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift */; };
 		FAD76BA121CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76BA021CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift */; };
 		FAD76BA721CFE4810034F614 /* Worklog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76BA621CFE4810034F614 /* Worklog.swift */; };
+		FAF5996A21D5130000A4F4B9 /* SubmitDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996921D5130000A4F4B9 /* SubmitDelegateProtocol.swift */; };
+		FAF5996C21D761BC00A4F4B9 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996B21D761BC00A4F4B9 /* Proxy.swift */; };
+		FAF5996E21D76E8500A4F4B9 /* CachableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996D21D76E8500A4F4B9 /* CachableProtocol.swift */; };
+		FAF5997721D78A9A00A4F4B9 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5997621D78A9A00A4F4B9 /* CalendarController.swift */; };
+		FAF5997B21D78B4D00A4F4B9 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5997821D78B4D00A4F4B9 /* CalendarView.swift */; };
+		FAF5997C21D78B4D00A4F4B9 /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5997921D78B4D00A4F4B9 /* MonthView.swift */; };
+		FAF5997D21D78B4D00A4F4B9 /* WeekdaysView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5997A21D78B4D00A4F4B9 /* WeekdaysView.swift */; };
+		FAF5998121D7955100A4F4B9 /* Date+CalendarDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5998021D7955100A4F4B9 /* Date+CalendarDays.swift */; };
+		FAF5998321D795D900A4F4B9 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5998221D795D900A4F4B9 /* CalendarCell.swift */; };
+		FAF5998721D7B69D00A4F4B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAF5998621D7B69D00A4F4B9 /* Assets.xcassets */; };
+		FAF5998921D7B7B100A4F4B9 /* String+date.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5998821D7B7B100A4F4B9 /* String+date.swift */; };
+		FAFA720821DF94B5001F0214 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA720721DF94B5001F0214 /* CalendarViewModel.swift */; };
+		FAFA720A21DF994B001F0214 /* CalendarCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA720921DF994B001F0214 /* CalendarCellViewModel.swift */; };
+		FAFA720C21E0AA4F001F0214 /* CalendarDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA720B21E0AA4F001F0214 /* CalendarDelegateProtocol.swift */; };
+		FAFA721021E39896001F0214 /* TaskType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA720F21E39896001F0214 /* TaskType.swift */; };
+		FAFA721221E398FC001F0214 /* TaskState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721121E398FC001F0214 /* TaskState.swift */; };
+		FAFA721421E4B06B001F0214 /* APITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721321E4B06B001F0214 /* APITransition.swift */; };
+		FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721521E4BD17001F0214 /* APITargetState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA221F0121EE5B6700CA1616 /* EmployeeInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeInfoViewModel.swift; sourceTree = "<group>"; };
+		FA221F0321EE5BDB00CA1616 /* EmployeeInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeInfoController.swift; sourceTree = "<group>"; };
+		FA221F0521EF3CFD00CA1616 /* APIAuthPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAuthPin.swift; sourceTree = "<group>"; };
+		FA221F0721EF402F00CA1616 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		FA221F0F21EF5F5D00CA1616 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
+		FA221F1021EF5F5D00CA1616 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		FA2230C721D3B77700D602A7 /* WorklogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogType.swift; sourceTree = "<group>"; };
 		FA2230C921D3C48700D602A7 /* APIWorklogTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIWorklogTypes.swift; sourceTree = "<group>"; };
 		FA2230CB21D3C50700D602A7 /* APIWorklogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIWorklogType.swift; sourceTree = "<group>"; };
@@ -65,7 +108,6 @@
 		FA3093A421C3DA1300A3B417 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA3093A621C3DA1300A3B417 /* TasksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksController.swift; sourceTree = "<group>"; };
 		FA3093A921C3DA1300A3B417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FA3093AB21C3DA1400A3B417 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA3093AE21C3DA1400A3B417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA3093B021C3DA1400A3B417 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA3093BD21C3E43500A3B417 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -74,6 +116,20 @@
 		FA679A4121D11B0D00FA6B93 /* SubmitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitButton.swift; sourceTree = "<group>"; };
 		FA679A4321D11B6600FA6B93 /* SubmitButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitButtonViewModel.swift; sourceTree = "<group>"; };
 		FA679A4521D134DD00FA6B93 /* PickerDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDelegateProtocol.swift; sourceTree = "<group>"; };
+		FA685F3D21DCDDE2004D029F /* APISuccessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISuccessResponse.swift; sourceTree = "<group>"; };
+		FA6ED6DE21EC9AEC00727E1F /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		FA6ED6E021EC9B2A00727E1F /* APIEmployee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEmployee.swift; sourceTree = "<group>"; };
+		FA6ED6E221ECB05C00727E1F /* APIEmployeeFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEmployeeFlags.swift; sourceTree = "<group>"; };
+		FA6ED6E421ECDD2800727E1F /* EmployeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCell.swift; sourceTree = "<group>"; };
+		FA6ED6E621EDCD7900727E1F /* EmployeesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesViewModel.swift; sourceTree = "<group>"; };
+		FA6ED6E821EDCF7F00727E1F /* EmployeeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCellViewModel.swift; sourceTree = "<group>"; };
+		FA6FC52E21E611D8001BD85A /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		FA6FC53021E74CAA001BD85A /* TaskInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInfoController.swift; sourceTree = "<group>"; };
+		FA6FC53221E77D73001BD85A /* APITaskProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITaskProject.swift; sourceTree = "<group>"; };
+		FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+tintColor.swift"; sourceTree = "<group>"; };
+		FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInfoViewModel.swift; sourceTree = "<group>"; };
+		FAB8BFF421EA6A510092654D /* EmployeesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesController.swift; sourceTree = "<group>"; };
+		FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		FAD76B4521C7E02B0034F614 /* APIAuthHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAuthHash.swift; sourceTree = "<group>"; };
 		FAD76B4721C7E0620034F614 /* APIAuthToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAuthToken.swift; sourceTree = "<group>"; };
 		FAD76B4921C7E8290034F614 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -89,7 +145,7 @@
 		FAD76B8521CD184D0034F614 /* WorklogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogController.swift; sourceTree = "<group>"; };
 		FAD76B8721CD24DD0034F614 /* WorklogTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogTaskCell.swift; sourceTree = "<group>"; };
 		FAD76B8921CD25030034F614 /* WorklogDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsCell.swift; sourceTree = "<group>"; };
-		FAD76B8B21CD251A0034F614 /* WorklogTimePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogTimePickerCell.swift; sourceTree = "<group>"; };
+		FAD76B8B21CD251A0034F614 /* WorkLogTimePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkLogTimePickerCell.swift; sourceTree = "<group>"; };
 		FAD76B8F21CD38F40034F614 /* WorklogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogViewModel.swift; sourceTree = "<group>"; };
 		FAD76B9321CD3A170034F614 /* WorklogDetailsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsCellViewModel.swift; sourceTree = "<group>"; };
 		FAD76B9521CD3A270034F614 /* WorklogTimePickerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogTimePickerCellViewModel.swift; sourceTree = "<group>"; };
@@ -98,6 +154,24 @@
 		FAD76B9E21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsTypeCellViewModel.swift; sourceTree = "<group>"; };
 		FAD76BA021CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsDateCellViewModel.swift; sourceTree = "<group>"; };
 		FAD76BA621CFE4810034F614 /* Worklog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worklog.swift; sourceTree = "<group>"; };
+		FAF5996921D5130000A4F4B9 /* SubmitDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitDelegateProtocol.swift; sourceTree = "<group>"; };
+		FAF5996B21D761BC00A4F4B9 /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
+		FAF5996D21D76E8500A4F4B9 /* CachableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachableProtocol.swift; sourceTree = "<group>"; };
+		FAF5997621D78A9A00A4F4B9 /* CalendarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarController.swift; sourceTree = "<group>"; };
+		FAF5997821D78B4D00A4F4B9 /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		FAF5997921D78B4D00A4F4B9 /* MonthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
+		FAF5997A21D78B4D00A4F4B9 /* WeekdaysView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekdaysView.swift; sourceTree = "<group>"; };
+		FAF5998021D7955100A4F4B9 /* Date+CalendarDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+CalendarDays.swift"; sourceTree = "<group>"; };
+		FAF5998221D795D900A4F4B9 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		FAF5998621D7B69D00A4F4B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FAF5998821D7B7B100A4F4B9 /* String+date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+date.swift"; sourceTree = "<group>"; };
+		FAFA720721DF94B5001F0214 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		FAFA720921DF994B001F0214 /* CalendarCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCellViewModel.swift; sourceTree = "<group>"; };
+		FAFA720B21E0AA4F001F0214 /* CalendarDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegateProtocol.swift; sourceTree = "<group>"; };
+		FAFA720F21E39896001F0214 /* TaskType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskType.swift; sourceTree = "<group>"; };
+		FAFA721121E398FC001F0214 /* TaskState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskState.swift; sourceTree = "<group>"; };
+		FAFA721321E4B06B001F0214 /* APITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITransition.swift; sourceTree = "<group>"; };
+		FAFA721521E4BD17001F0214 /* APITargetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITargetState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +185,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA221F0E21EF5F4200CA1616 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				FA221F1021EF5F5D00CA1616 /* KeychainWrapper.swift */,
+				FA221F0F21EF5F5D00CA1616 /* KeychainItemAccessibility.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
 		FA30939821C3DA1200A3B417 = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +215,9 @@
 			children = (
 				FA3093A421C3DA1300A3B417 /* AppDelegate.swift */,
 				FAD76B6321CAAE160034F614 /* Box.swift */,
+				FAF5996B21D761BC00A4F4B9 /* Proxy.swift */,
+				FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */,
+				FA221F0E21EF5F4200CA1616 /* Keychain */,
 				FAD76B4321C7DFAE0034F614 /* Network */,
 				FAD76B5D21C95FE20034F614 /* Extensions */,
 				FAD76B9921CD3F310034F614 /* Protocols */,
@@ -139,8 +225,8 @@
 				FAD76B5E21CA8CC40034F614 /* ViewModel */,
 				FAD76B5821C903CA0034F614 /* View */,
 				FA3093A821C3DA1300A3B417 /* Main.storyboard */,
-				FA3093AB21C3DA1400A3B417 /* Assets.xcassets */,
 				FA3093AD21C3DA1400A3B417 /* LaunchScreen.storyboard */,
+				FAF5998621D7B69D00A4F4B9 /* Assets.xcassets */,
 				FA3093B021C3DA1400A3B417 /* Info.plist */,
 			);
 			path = iSigma;
@@ -149,6 +235,7 @@
 		FA679A3D21D0E94100FA6B93 /* Custom views */ = {
 			isa = PBXGroup;
 			children = (
+				FAF5996F21D7887200A4F4B9 /* Calendar */,
 				FA679A4121D11B0D00FA6B93 /* SubmitButton.swift */,
 				FA679A3B21D0E93B00FA6B93 /* SubmitView.swift */,
 			);
@@ -177,13 +264,21 @@
 			isa = PBXGroup;
 			children = (
 				FAD76B4521C7E02B0034F614 /* APIAuthHash.swift */,
+				FA221F0521EF3CFD00CA1616 /* APIAuthPin.swift */,
 				FAD76B4721C7E0620034F614 /* APIAuthToken.swift */,
+				FA6FC52E21E611D8001BD85A /* APIResponse.swift */,
+				FA685F3D21DCDDE2004D029F /* APISuccessResponse.swift */,
 				FAD76B5221C805570034F614 /* APITaskID.swift */,
 				FAD76B4E21C7EB410034F614 /* APITask.swift */,
 				FAD76B5021C7EBA00034F614 /* APITaskBase.swift */,
 				FAD76B5B21C9583F0034F614 /* APITaskExtra.swift */,
+				FA6FC53221E77D73001BD85A /* APITaskProject.swift */,
+				FAFA721321E4B06B001F0214 /* APITransition.swift */,
+				FAFA721521E4BD17001F0214 /* APITargetState.swift */,
 				FA2230C921D3C48700D602A7 /* APIWorklogTypes.swift */,
 				FA2230CB21D3C50700D602A7 /* APIWorklogType.swift */,
+				FA6ED6E021EC9B2A00727E1F /* APIEmployee.swift */,
+				FA6ED6E221ECB05C00727E1F /* APIEmployeeFlags.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,8 +287,11 @@
 			isa = PBXGroup;
 			children = (
 				FAD76B4921C7E8290034F614 /* Task.swift */,
+				FAFA720F21E39896001F0214 /* TaskType.swift */,
+				FAFA721121E398FC001F0214 /* TaskState.swift */,
 				FAD76BA621CFE4810034F614 /* Worklog.swift */,
 				FA2230C721D3B77700D602A7 /* WorklogType.swift */,
+				FA6ED6DE21EC9AEC00727E1F /* Employee.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -214,8 +312,10 @@
 				FAD76B5621C901C60034F614 /* TaskCell.swift */,
 				FAD76B8721CD24DD0034F614 /* WorklogTaskCell.swift */,
 				FAD76B8921CD25030034F614 /* WorklogDetailsCell.swift */,
-				FAD76B8B21CD251A0034F614 /* WorklogTimePickerCell.swift */,
+				FAD76B8B21CD251A0034F614 /* WorkLogTimePickerCell.swift */,
 				FA2230D521D3E65300D602A7 /* WorklogTypesCell.swift */,
+				FAF5998221D795D900A4F4B9 /* CalendarCell.swift */,
+				FA6ED6E421ECDD2800727E1F /* EmployeeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -223,9 +323,14 @@
 		FAD76B5A21C903D80034F614 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FA221F0721EF402F00CA1616 /* LoginController.swift */,
 				FA3093A621C3DA1300A3B417 /* TasksController.swift */,
+				FA6FC53021E74CAA001BD85A /* TaskInfoController.swift */,
 				FAD76B8521CD184D0034F614 /* WorklogController.swift */,
 				FA2230CF21D3C91B00D602A7 /* WorklogTypesController.swift */,
+				FAF5997621D78A9A00A4F4B9 /* CalendarController.swift */,
+				FAB8BFF421EA6A510092654D /* EmployeesController.swift */,
+				FA221F0321EE5BDB00CA1616 /* EmployeeInfoController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -235,6 +340,9 @@
 			children = (
 				FAD76B5421C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift */,
 				FA2230CD21D3C73C00D602A7 /* Equatable+oneOf.swift */,
+				FAF5998821D7B7B100A4F4B9 /* String+date.swift */,
+				FAF5998021D7955100A4F4B9 /* Date+CalendarDays.swift */,
+				FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -254,6 +362,9 @@
 			children = (
 				FAD76B9A21CD3F630034F614 /* CellViewModelProtocol.swift */,
 				FA679A4521D134DD00FA6B93 /* PickerDelegateProtocol.swift */,
+				FAF5996921D5130000A4F4B9 /* SubmitDelegateProtocol.swift */,
+				FAF5996D21D76E8500A4F4B9 /* CachableProtocol.swift */,
+				FAFA720B21E0AA4F001F0214 /* CalendarDelegateProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -262,8 +373,12 @@
 			isa = PBXGroup;
 			children = (
 				FAD76B5F21CA8D000034F614 /* TasksViewModel.swift */,
+				FA6FC53621E8D093001BD85A /* TaskInfoViewModel.swift */,
 				FAD76B8F21CD38F40034F614 /* WorklogViewModel.swift */,
 				FA2230D121D3CC1500D602A7 /* WorklogTypesViewModel.swift */,
+				FAFA720721DF94B5001F0214 /* CalendarViewModel.swift */,
+				FA6ED6E621EDCD7900727E1F /* EmployeesViewModel.swift */,
+				FA221F0121EE5B6700CA1616 /* EmployeeInfoViewModel.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -278,8 +393,20 @@
 				FAD76BA021CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift */,
 				FAD76B9521CD3A270034F614 /* WorklogTimePickerCellViewModel.swift */,
 				FA2230D321D3CCD400D602A7 /* WorklogTypesCellViewModel.swift */,
+				FAFA720921DF994B001F0214 /* CalendarCellViewModel.swift */,
+				FA6ED6E821EDCF7F00727E1F /* EmployeeCellViewModel.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		FAF5996F21D7887200A4F4B9 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				FAF5997821D78B4D00A4F4B9 /* CalendarView.swift */,
+				FAF5997921D78B4D00A4F4B9 /* MonthView.swift */,
+				FAF5997A21D78B4D00A4F4B9 /* WeekdaysView.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,7 +468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3093AF21C3DA1400A3B417 /* LaunchScreen.storyboard in Resources */,
-				FA3093AC21C3DA1400A3B417 /* Assets.xcassets in Resources */,
+				FAF5998721D7B69D00A4F4B9 /* Assets.xcassets in Resources */,
 				FA3093AA21C3DA1300A3B417 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,45 +481,82 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAD76B8A21CD25030034F614 /* WorklogDetailsCell.swift in Sources */,
+				FAF5996E21D76E8500A4F4B9 /* CachableProtocol.swift in Sources */,
 				FAD76B4621C7E02B0034F614 /* APIAuthHash.swift in Sources */,
 				FA3093BE21C3E43500A3B417 /* NetworkManager.swift in Sources */,
+				FA221F0621EF3CFD00CA1616 /* APIAuthPin.swift in Sources */,
 				FAD76B5121C7EBA00034F614 /* APITaskBase.swift in Sources */,
+				FA685F3E21DCDDE2004D029F /* APISuccessResponse.swift in Sources */,
+				FA6ED6E921EDCF7F00727E1F /* EmployeeCellViewModel.swift in Sources */,
+				FAF5997B21D78B4D00A4F4B9 /* CalendarView.swift in Sources */,
+				FA6ED6E321ECB05C00727E1F /* APIEmployeeFlags.swift in Sources */,
 				FAD76B4821C7E0620034F614 /* APIAuthToken.swift in Sources */,
 				FAD76B8621CD184D0034F614 /* WorklogController.swift in Sources */,
 				FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */,
+				FA6FC53321E77D73001BD85A /* APITaskProject.swift in Sources */,
+				FAB8BFF521EA6A510092654D /* EmployeesController.swift in Sources */,
+				FA6ED6E521ECDD2800727E1F /* EmployeeCell.swift in Sources */,
+				FA221F0421EE5BDB00CA1616 /* EmployeeInfoController.swift in Sources */,
 				FAD76B9021CD38F40034F614 /* WorklogViewModel.swift in Sources */,
 				FAD76B4F21C7EB410034F614 /* APITask.swift in Sources */,
 				FA2230D021D3C91B00D602A7 /* WorklogTypesController.swift in Sources */,
+				FAF5996C21D761BC00A4F4B9 /* Proxy.swift in Sources */,
 				FAD76B5521C8FFB20034F614 /* UINavigationBar+childForStatusBarStyle.swift in Sources */,
 				FA2230D621D3E65300D602A7 /* WorklogTypesCell.swift in Sources */,
+				FA221F0221EE5B6700CA1616 /* EmployeeInfoViewModel.swift in Sources */,
+				FAFA720821DF94B5001F0214 /* CalendarViewModel.swift in Sources */,
 				FA679A3F21D0EAF600FA6B93 /* SubmitViewViewModel.swift in Sources */,
 				FAD76B9621CD3A270034F614 /* WorklogTimePickerCellViewModel.swift in Sources */,
 				FA679A3C21D0E93B00FA6B93 /* SubmitView.swift in Sources */,
+				FA6FC53721E8D093001BD85A /* TaskInfoViewModel.swift in Sources */,
 				FA2230CC21D3C50700D602A7 /* APIWorklogType.swift in Sources */,
 				FAD76B8821CD24DD0034F614 /* WorklogTaskCell.swift in Sources */,
+				FAFA721221E398FC001F0214 /* TaskState.swift in Sources */,
 				FAD76BA721CFE4810034F614 /* Worklog.swift in Sources */,
 				FAD76B9F21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift in Sources */,
 				FAD76B6221CA8D590034F614 /* TaskCellViewModel.swift in Sources */,
 				FA2230CE21D3C73C00D602A7 /* Equatable+oneOf.swift in Sources */,
+				FAF5996A21D5130000A4F4B9 /* SubmitDelegateProtocol.swift in Sources */,
+				FAFA720A21DF994B001F0214 /* CalendarCellViewModel.swift in Sources */,
 				FA679A4621D134DD00FA6B93 /* PickerDelegateProtocol.swift in Sources */,
 				FAD76B9B21CD3F630034F614 /* CellViewModelProtocol.swift in Sources */,
 				FA679A4421D11B6600FA6B93 /* SubmitButtonViewModel.swift in Sources */,
+				FAF5998321D795D900A4F4B9 /* CalendarCell.swift in Sources */,
+				FAFA721021E39896001F0214 /* TaskType.swift in Sources */,
 				FA2230CA21D3C48700D602A7 /* APIWorklogTypes.swift in Sources */,
+				FAFA721421E4B06B001F0214 /* APITransition.swift in Sources */,
+				FAF5998921D7B7B100A4F4B9 /* String+date.swift in Sources */,
+				FA6ED6E121EC9B2A00727E1F /* APIEmployee.swift in Sources */,
 				FAD76B9421CD3A170034F614 /* WorklogDetailsCellViewModel.swift in Sources */,
-				FAD76B8C21CD251A0034F614 /* WorklogTimePickerCell.swift in Sources */,
+				FAD76B8C21CD251A0034F614 /* WorkLogTimePickerCell.swift in Sources */,
+				FAF5997D21D78B4D00A4F4B9 /* WeekdaysView.swift in Sources */,
 				FA2230D421D3CCD400D602A7 /* WorklogTypesCellViewModel.swift in Sources */,
+				FAF5997721D78A9A00A4F4B9 /* CalendarController.swift in Sources */,
+				FA6FC53521E8A0CE001BD85A /* UIAlertController+tintColor.swift in Sources */,
 				FA2230D221D3CC1500D602A7 /* WorklogTypesViewModel.swift in Sources */,
+				FAD4E36B21F0BFD9001CCC79 /* AppStyle.swift in Sources */,
+				FA221F1121EF5F5D00CA1616 /* KeychainItemAccessibility.swift in Sources */,
+				FAFA720C21E0AA4F001F0214 /* CalendarDelegateProtocol.swift in Sources */,
+				FA6ED6DF21EC9AEC00727E1F /* Employee.swift in Sources */,
 				FAD76B6021CA8D000034F614 /* TasksViewModel.swift in Sources */,
+				FAF5998121D7955100A4F4B9 /* Date+CalendarDays.swift in Sources */,
+				FA6FC53121E74CAA001BD85A /* TaskInfoController.swift in Sources */,
 				FAD76B9D21CE4F2E0034F614 /* WorklogDetailsTimeCellViewModel.swift in Sources */,
 				FAD76B6421CAAE160034F614 /* Box.swift in Sources */,
+				FA221F1221EF5F5D00CA1616 /* KeychainWrapper.swift in Sources */,
 				FA2230C821D3B77700D602A7 /* WorklogType.swift in Sources */,
 				FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */,
 				FAD76B4A21C7E8290034F614 /* Task.swift in Sources */,
 				FAD76B5321C805570034F614 /* APITaskID.swift in Sources */,
+				FA6FC52F21E611D8001BD85A /* APIResponse.swift in Sources */,
 				FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */,
 				FA679A4221D11B0D00FA6B93 /* SubmitButton.swift in Sources */,
+				FAF5997C21D78B4D00A4F4B9 /* MonthView.swift in Sources */,
+				FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */,
 				FAD76BA121CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift in Sources */,
+				FA221F0821EF402F00CA1616 /* LoginController.swift in Sources */,
 				FA3093A521C3DA1300A3B417 /* AppDelegate.swift in Sources */,
+				FA6ED6E721EDCD7900727E1F /* EmployeesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 import UIKit
 
 class WorklogTypesViewModel {
-    
+    var onErrorCallback : ((String) -> ())?    
     var types: [WorklogType]?
     var typesOftenUsed: [WorklogType]?
     
@@ -46,10 +46,14 @@ class WorklogTypesViewModel {
     func getWorklogTypes(completion: @escaping () -> ()) {
         let proxy = Proxy(withKey: "workLogTypes")
         proxy.loadData { objects, errorDescription in
-            let worklogTypes = objects as! [WorklogType]
-            self.types = worklogTypes
-            self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
-            completion()
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                let worklogTypes = objects as! [WorklogType]
+                self.types = worklogTypes
+                self.typesOftenUsed = worklogTypes.filter{ $0.isOften == true }
+                completion()
+            }
         }
     }
 }
