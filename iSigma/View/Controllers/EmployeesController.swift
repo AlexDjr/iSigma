@@ -25,6 +25,7 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        extendedLayoutIncludesOpaqueBars = true
         viewModel = EmployeesViewModel()
         
         viewModel?.onErrorCallback = { description in
