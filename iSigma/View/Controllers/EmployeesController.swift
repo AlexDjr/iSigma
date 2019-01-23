@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmployeesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
+class EmployeesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,11 +20,13 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
         return text.isEmpty
     }
     private var isFiltering: Bool {
-        return searchController.isActive && !searchBarIsEmpty
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty || searchBarScopeIsFiltering)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //    this (plus constraints to superview for tableView in storyboard) fixes strange scrolling behavior when tapping on status bar
         extendedLayoutIncludesOpaqueBars = true
         viewModel = EmployeesViewModel()
         
@@ -78,11 +80,25 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     //    MARK: - UISearchResultsUpdating
     func updateSearchResults(for searchController: UISearchController) {
         guard let viewModel = viewModel else { return }
-        viewModel.filteredContentForSearchText(searchController.searchBar.text!)
+        let searchBar = searchController.searchBar
+        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        viewModel.filterContentForSearchText(searchBar.text!, searchBarIsEmpty: searchBarIsEmpty, scope: scope)
         tableView.reloadData()
     }
     
-        //    MARK: - Methods
+    //    MARK: - UISearchBarDelegate
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        guard let viewModel = viewModel else { return }
+        viewModel.filterContentForSearchText(searchBar.text!, searchBarIsEmpty: searchBarIsEmpty, scope: searchBar.scopeButtonTitles![selectedScope])
+        tableView.reloadData()
+    }
+    
+    //    MARK: - UIScrollViewDelegate
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchController.searchBar.endEditing(true)
+    }
+    
+    //    MARK: - Methods
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -91,5 +107,11 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
         searchController.searchBar.placeholder = "Поиск..."
         navigationItem.searchController = searchController
         definesPresentationContext = true
+        searchController.searchBar.scopeButtonTitles = ["Все", "Отдел/Команда", "Департамент"]
+        searchController.searchBar.delegate = self
+        //    changing width of first element so all titles would fit in
+        if let segmentedControl = searchController.searchBar.searchSubviewForViewOfKind(UISegmentedControl.self) as? UISegmentedControl {
+            segmentedControl.setWidth(64, forSegmentAt: 0)
+        }
     }
 }

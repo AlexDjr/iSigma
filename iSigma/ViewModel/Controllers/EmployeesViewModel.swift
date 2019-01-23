@@ -51,12 +51,25 @@ class EmployeesViewModel {
         }
     }
     
-    func filteredContentForSearchText(_ searchText: String) {
-        guard let employees = employees else { return }
+    func filterContentForSearchText(_ searchText: String, searchBarIsEmpty: Bool, scope: String = "Все") {
+        guard let employees = employees, let currentUser = getCurrentUser() else { return }
         filteredEmployees = employees.filter { (employee: Employee) -> Bool in
-            return employee.lastName.lowercased().contains(searchText.lowercased()) ||
-                employee.firstName.lowercased().contains(searchText.lowercased()) ||
-                employee.mobile.lowercased().contains(searchText.lowercased())
+            
+            var doesCategoryMatch = true
+            if scope == "Отдел/Команда" {
+                doesCategoryMatch = employee.departmentId == currentUser.departmentId
+            }
+            if scope == "Департамент" {
+                doesCategoryMatch = employee.topDepartmentId == currentUser.topDepartmentId
+            }
+            
+            if searchBarIsEmpty {
+                return doesCategoryMatch
+            }
+            
+            return doesCategoryMatch && (employee.lastName.lowercased().contains(searchText.lowercased()) ||
+                                        employee.firstName.lowercased().contains(searchText.lowercased()) ||
+                                        employee.mobile.lowercased().contains(searchText.lowercased()))
         }
     }
     
@@ -67,5 +80,13 @@ class EmployeesViewModel {
         } else {
             return employees
         }
+    }
+    
+    private func getCurrentUser() -> Employee? {
+        guard let employees = employees, let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") else { return nil }
+        let currentUser = employees.first { (employee) -> Bool in
+            return employee.email == currentUserEmail
+        }
+        return currentUser
     }
 }

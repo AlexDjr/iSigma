@@ -89,6 +89,7 @@
 		FAFA721421E4B06B001F0214 /* APITransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721321E4B06B001F0214 /* APITransition.swift */; };
 		FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721521E4BD17001F0214 /* APITargetState.swift */; };
 		FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372821F640E20062C3E3 /* LoginViewModel.swift */; };
+		FAFB372B21F8BB490062C3E3 /* UIView+searchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -176,6 +177,7 @@
 		FAFA721321E4B06B001F0214 /* APITransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITransition.swift; sourceTree = "<group>"; };
 		FAFA721521E4BD17001F0214 /* APITargetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITargetState.swift; sourceTree = "<group>"; };
 		FAFB372821F640E20062C3E3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+searchSubview.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +350,7 @@
 				FAF5998021D7955100A4F4B9 /* Date+CalendarDays.swift */,
 				FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */,
 				FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */,
+				FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 				FAD76BA721CFE4810034F614 /* Worklog.swift in Sources */,
 				FAD76B9F21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift in Sources */,
 				FAD76B6221CA8D590034F614 /* TaskCellViewModel.swift in Sources */,
+				FAFB372B21F8BB490062C3E3 /* UIView+searchSubview.swift in Sources */,
 				FA2230CE21D3C73C00D602A7 /* Equatable+oneOf.swift in Sources */,
 				FAF5996A21D5130000A4F4B9 /* SubmitDelegateProtocol.swift in Sources */,
 				FAFA720A21DF994B001F0214 /* CalendarCellViewModel.swift in Sources */,
