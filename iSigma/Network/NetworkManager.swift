@@ -57,24 +57,28 @@ class NetworkManager {
         request.httpBody = postString.data(using: .utf8)
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    let authPin = try JSONDecoder().decode(APIAuthPin.self, from: data)
-                    let token = authPin.token
-                    self.pinToken = token
-                        completion(nil)
-                } catch {
-                    completion("Ошибка обработки JSON\n\(#function)")
-                }
-            } else {
-                var errorDescription = ""
-                if statusCode == 404 {
-                    errorDescription = "Указанный пользователь не найден"
-                } else {
-                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
-                }
+            if let errorDescription = errorDescription {
                 completion(errorDescription)
+            } else {
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        let authPin = try JSONDecoder().decode(APIAuthPin.self, from: data)
+                        let token = authPin.token
+                        self.pinToken = token
+                        completion(nil)
+                    } catch {
+                        completion("Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    var errorDescription = ""
+                    if statusCode == 404 {
+                        errorDescription = "Указанный пользователь не найден"
+                    } else {
+                        errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    }
+                    completion(errorDescription)
+                }
             }
         }
     }
@@ -90,36 +94,41 @@ class NetworkManager {
         request.httpBody = postString.data(using: .utf8)
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
-            guard let data = data, let statusCode = statusCode else { return }
-            if statusCode == 200 {
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    let authToken = try decoder.decode(APIAuthToken.self, from: data)
-                    KeychainWrapper.standard.set(authToken.accessToken, forKey: "accessToken")
-                    KeychainWrapper.standard.set(authToken.refreshToken, forKey: "refreshToken")
-                    completion(nil)
-                } catch {
-                    completion("Ошибка обработки JSON\n\(#function)")
-                }
-            } else {
-                var errorDescription = ""
-                if statusCode == 400 {
-                    errorDescription = "Указан неверный ПИН-код или истек срок его действия"
-                } else {
-                    errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
-                }
+            if let errorDescription = errorDescription {
                 completion(errorDescription)
+            } else {
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        let decoder = JSONDecoder()
+                        decoder.keyDecodingStrategy = .convertFromSnakeCase
+                        let authToken = try decoder.decode(APIAuthToken.self, from: data)
+                        KeychainWrapper.standard.set(authToken.accessToken, forKey: "accessToken")
+                        KeychainWrapper.standard.set(authToken.refreshToken, forKey: "refreshToken")
+                        completion(nil)
+                    } catch {
+                        completion("Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    var errorDescription = ""
+                    if statusCode == 400 {
+                        errorDescription = "Указан неверный ПИН-код или истек срок его действия"
+                    } else {
+                        errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    }
+                    completion(errorDescription)
+                }
             }
         }
     }
     
     func authCheck(completion: @escaping (Bool, String?)->()) {
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        
         let url = URL(string: "http://webtst:7878/api/ems/auth/check")!
         var request = URLRequest(url: url)
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
+        
+        if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
+        }
         request.httpMethod = "GET"
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
