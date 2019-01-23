@@ -61,8 +61,13 @@ class LoginViewModel {
         }
     }
     
-    func saveKey(_ key: String) {
+    func setTrue(forKey key: String) {
         UserDefaults.standard.set(true, forKey: key)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func setString(_ string: String, forKey key: String) {
+        UserDefaults.standard.set(string + "@diasoft.ru", forKey: key)
         UserDefaults.standard.synchronize()
     }
     

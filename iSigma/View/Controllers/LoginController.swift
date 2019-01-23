@@ -98,7 +98,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         if userView.alpha == 1.0 {
             if let user = userTextField.text {
                 viewModel.auth(withUser: user) {
-                    viewModel.saveKey("isPinSent")
+                    viewModel.setString(user, forKey: "currentUserEmail")
+                    viewModel.setTrue(forKey: "isPinSent")
                     self.showPinStep()
                 }
             } else {
@@ -110,7 +111,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         if pinTextField.alpha == 1.0 {
             if let pin = pinTextField.text {
                 viewModel.authToken(withPin: pin) {
-                    viewModel.saveKey("isLoggedIn")
+                    viewModel.setTrue(forKey: "isLoggedIn")
                     self.openApp()
                 }
             } else {
