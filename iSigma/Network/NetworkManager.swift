@@ -336,7 +336,7 @@ class NetworkManager {
                                                         skype: apiEmployee.skype,
                                                         room: apiEmployee.room,
                                                         phone: apiEmployee.phone,
-                                                        mobile: apiEmployee.mobile,
+                                                        mobile: self.getFormattedMobile(apiEmployee.mobile),
                                                         position: apiEmployee.position,
                                                         topDepartmentId: apiEmployee.topDepartmentId,
                                                         topDepartment: apiEmployee.topDepartment,
@@ -514,5 +514,33 @@ class NetworkManager {
         case 500: return "Внутренняя ошибка сервера"
         default: return "<Нет описания>"
         }
+    }
+    
+    private func getFormattedMobile(_ phone: String) -> String {
+        let digitSet = CharacterSet.decimalDigits
+        let separatorSet = CharacterSet(charactersIn: ".,;")
+        var phoneDigits = ""
+        
+        for char in phone.unicodeScalars.reversed() {
+            if digitSet.contains(char) {
+                phoneDigits.insert(Character(char), at: phoneDigits.startIndex)
+            }
+            if separatorSet.contains(char) {
+                phoneDigits.removeAll()
+            }
+        }
+        
+        if phoneDigits.count < 10 {
+            phoneDigits.removeAll()
+        } else {
+            //    vietnamese numbers
+            if phoneDigits.hasPrefix("84") {
+                phoneDigits = "+" + phoneDigits
+            //    other (russian) numbers
+            } else {
+                phoneDigits = "+7" + phoneDigits.suffix(10)
+            }
+        }
+        return phoneDigits
     }
 }
