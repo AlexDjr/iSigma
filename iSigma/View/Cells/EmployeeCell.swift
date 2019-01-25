@@ -29,6 +29,16 @@ class EmployeeCell: UITableViewCell {
             position.text = viewModel.position
             branch.text = viewModel.branch
             mobile.text = viewModel.mobile
+            
+            mobile.isUserInteractionEnabled = true
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(makeACall))
+            mobile.addGestureRecognizer(gestureRecognizer)
         }
+    }
+    
+    @objc func makeACall(){
+        let cleanNumber = mobile.text!.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        guard let number = URL(string: "tel://" + cleanNumber) else { return }
+        UIApplication.shared.open(number)
     }
 }

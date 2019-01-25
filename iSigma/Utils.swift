@@ -40,7 +40,7 @@ class Utils {
         if number.hasPrefix("84") {
             mask = "+XX (XXX) XXX-XXXX"
         } else {
-            mask = "+X (XXX) XXX-XXXX"
+            mask = "+X (XXX) XXX-XX-XX"
         }
         
         var result = ""
