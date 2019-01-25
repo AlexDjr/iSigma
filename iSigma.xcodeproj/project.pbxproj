@@ -90,6 +90,7 @@
 		FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA721521E4BD17001F0214 /* APITargetState.swift */; };
 		FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372821F640E20062C3E3 /* LoginViewModel.swift */; };
 		FAFB372B21F8BB490062C3E3 /* UIView+searchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */; };
+		FAFB372D21FB01080062C3E3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372C21FB01080062C3E3 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,6 +179,7 @@
 		FAFA721521E4BD17001F0214 /* APITargetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITargetState.swift; sourceTree = "<group>"; };
 		FAFB372821F640E20062C3E3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+searchSubview.swift"; sourceTree = "<group>"; };
+		FAFB372C21FB01080062C3E3 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +225,7 @@
 				FAD76B6321CAAE160034F614 /* Box.swift */,
 				FAF5996B21D761BC00A4F4B9 /* Proxy.swift */,
 				FAD4E36A21F0BFD9001CCC79 /* AppStyle.swift */,
+				FAFB372C21FB01080062C3E3 /* Utils.swift */,
 				FA221F0E21EF5F4200CA1616 /* Keychain */,
 				FAD76B4321C7DFAE0034F614 /* Network */,
 				FAD76B5D21C95FE20034F614 /* Extensions */,
@@ -518,6 +521,7 @@
 				FA679A3F21D0EAF600FA6B93 /* SubmitViewViewModel.swift in Sources */,
 				FAD76B9621CD3A270034F614 /* WorklogTimePickerCellViewModel.swift in Sources */,
 				FA679A3C21D0E93B00FA6B93 /* SubmitView.swift in Sources */,
+				FAFB372D21FB01080062C3E3 /* Utils.swift in Sources */,
 				FA6FC53721E8D093001BD85A /* TaskInfoViewModel.swift in Sources */,
 				FA2230CC21D3C50700D602A7 /* APIWorklogType.swift in Sources */,
 				FAD76B8821CD24DD0034F614 /* WorklogTaskCell.swift in Sources */,

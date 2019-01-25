@@ -39,6 +39,6 @@ class EmployeeCellViewModel {
         middleName = employee.middleName
         position = employee.position
         branch = employee.branch
-        mobile = employee.mobile
+        mobile = Utils.getFormattedNumber(employee.mobile)
     }
 }
