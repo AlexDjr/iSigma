@@ -6,7 +6,7 @@
 //  Copyright © 2019 Alex Delin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Utils {
     static func getOnlyMobile(_ number: String) -> String {
@@ -57,5 +57,24 @@ class Utils {
             }
         }
         return result
+    }
+    
+    static func makeACall(_ number: String) {
+        let cleanNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        guard let number = URL(string: "tel://" + cleanNumber) else { return }
+        UIApplication.shared.open(number)
+    }
+    
+    static func makeASkypeCall(_ skypeID: String) {
+        if UIApplication.shared.canOpenURL(URL(string: "skype:")!) {
+            UIApplication.shared.open(URL(string: "skype:\(skypeID)")!)
+        } else {
+            UIApplication.shared.open(URL(string: "https://itunes.apple.com/in/app/skype/id304878510?mt=8")!)
+        }
+    }
+    
+    static func sendEmail(_ email: String) {
+        guard let email = URL(string: "mailto:\(email)") else { return }
+        UIApplication.shared.open(email)
     }
 }
