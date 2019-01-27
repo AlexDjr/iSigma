@@ -9,6 +9,7 @@
 import UIKit
 
 class EmployeeInfoViewModel {
+    var onErrorCallback : ((String) -> ())?
     var employee : Employee
     
     var email: String
@@ -28,6 +29,7 @@ class EmployeeInfoViewModel {
     var headFullNameTextColor: UIColor
     var topDepartment: String
     var department: String
+    var headId: String
     
     init(employee: Employee) {
         self.employee = employee
@@ -49,6 +51,7 @@ class EmployeeInfoViewModel {
         self.headFullNameTextColor = UIColor.clear
         self.topDepartment = ""
         self.department = ""
+        self.headId = ""
         
         setupViewModel()
     }
@@ -91,5 +94,19 @@ class EmployeeInfoViewModel {
         
         topDepartment = employee.topDepartment
         department = employee.department
+        headId = employee.headId
+    }
+    
+    //    MARK: - Methods
+    func getEmployees(completion: @escaping ([Employee]?) -> ()) {
+        let proxy = Proxy(withKey: "employees")
+        proxy.loadData { objects, errorDescription in
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                let employees = objects as! [Employee]
+                completion(employees)
+            }
+        }
     }
 }

@@ -64,6 +64,12 @@ class EmployeeInfoController: UIViewController {
             skype.addGestureRecognizer(gestureRecognizer)
         }
         
+        if viewModel.headFullName != "" {
+            headFullName.isUserInteractionEnabled = true
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showEmployee))
+            headFullName.addGestureRecognizer(gestureRecognizer)
+        }
+        
     }
     
     @objc func sendEmail() {
@@ -79,6 +85,36 @@ class EmployeeInfoController: UIViewController {
     @objc func makeASkypeCall() {
         guard let skype = viewModel?.skype else { return }
         Utils.makeASkypeCall(skype)
+    }
+    
+    @objc func showEmployee() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+            }
+        }
+        
+        viewModel.getEmployees { employees in
+            let employee = employees!.first { (employee) -> Bool in
+                employee.id == viewModel.headId
+            }
+            
+            if let employee = employee {
+                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+                let employeeInfoController = storyboard.instantiateViewController(withIdentifier: "employeeInfoController") as! EmployeeInfoController
+                employeeInfoController.navigationItem.title = "Руководитель"
+                employeeInfoController.viewModel = EmployeeInfoViewModel(employee: employee)
+                self.navigationController?.pushViewController(employeeInfoController, animated: true)
+            } else {
+                DispatchQueue.main.async {
+                    let okAction = UIAlertAction(title: "ОК", style: .default)
+                    self.presentAlert(title: "Ошибка!", message: "Данный сотрудник не доступен", actions: okAction)
+                }
+            }
+        }
     }
 
 }
