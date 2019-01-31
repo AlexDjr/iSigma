@@ -17,6 +17,19 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     var currentWorklogType: WorklogType?
     var currentWorklogDate: String?
     
+    let spinner: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .gray
+        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        view.hidesWhenStopped = true
+        return view
+    }()
+    var loadingView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -155,6 +168,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     
     //    MARK: SubmitDelegateProtocol
     func submitButtonAction() {
+        setLoadingScreen()
         if currentWorklogType == nil {
             setWarningCell(at: IndexPath(item: 2, section: 1))
         } else {
@@ -164,6 +178,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
                 DispatchQueue.main.async {
                     let okAction = UIAlertAction(title: "ОК", style: .default)
                     self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                    self.removeLoadingScreen()
                 }
             }
             viewModel.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { details in
@@ -172,6 +187,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
                         self.navigationController?.popViewController(animated: true)
                     }
                     self.presentAlert(title: "Успешно!", message: details, actions: okAction)
+                    self.removeLoadingScreen()
                 }
             }
         }
@@ -207,6 +223,33 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-
+    private func setLoadingScreen() {
+        spinner.startAnimating()
+        tableView.isScrollEnabled = false
+        tableView.alpha = 0.3
+        
+        let newLoadingView = UIView()
+        
+        view.addSubview(newLoadingView)
+        newLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        newLoadingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        newLoadingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        newLoadingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        newLoadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        newLoadingView.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.centerXAnchor.constraint(equalTo: newLoadingView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: newLoadingView.centerYAnchor).isActive = true
+        
+        loadingView = newLoadingView
+    }
+    
+    private func removeLoadingScreen() {
+        spinner.stopAnimating()
+        loadingView.isHidden = true
+        tableView.isScrollEnabled = true
+        tableView.alpha = 1.0
+    }
 
 }

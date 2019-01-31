@@ -13,6 +13,18 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     var viewModel: EmployeesViewModel?
+    let spinner: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .gray
+        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        view.hidesWhenStopped = true
+        return view
+    }()
+    var loadingView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
     
     private var searchController = UISearchController(searchResultsController: nil)
     private var searchBarIsEmpty: Bool {
@@ -30,15 +42,18 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
         extendedLayoutIncludesOpaqueBars = true
         viewModel = EmployeesViewModel()
         
+        setLoadingScreen()
         viewModel?.onErrorCallback = { description in
             DispatchQueue.main.async {
                 let okAction = UIAlertAction(title: "ОК", style: .default)
                 self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                self.removeLoadingScreen(false)
             }
         }
         viewModel?.getEmployees{ employees in
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.removeLoadingScreen(true)
             }
         }
         
@@ -112,6 +127,37 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
         //    changing width of first element so all titles would fit in
         if let segmentedControl = searchController.searchBar.searchSubviewForViewOfKind(UISegmentedControl.self) as? UISegmentedControl {
             segmentedControl.setWidth(64, forSegmentAt: 0)
+        }
+    }
+    
+    private func setLoadingScreen() {
+        spinner.startAnimating()
+        tableView.isScrollEnabled = false
+        tableView.alpha = 0.0
+        
+        let newLoadingView = UIView()
+        
+        view.addSubview(newLoadingView)
+        newLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        newLoadingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        newLoadingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        newLoadingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        newLoadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        newLoadingView.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.centerXAnchor.constraint(equalTo: newLoadingView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: newLoadingView.centerYAnchor).isActive = true
+        
+        loadingView = newLoadingView
+    }
+    
+    private func removeLoadingScreen(_ isOk: Bool) {
+        spinner.stopAnimating()
+        loadingView.isHidden = true
+        if isOk {
+            tableView.isScrollEnabled = true
+            tableView.alpha = 1.0
         }
     }
 }
