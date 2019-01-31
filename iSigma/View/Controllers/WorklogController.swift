@@ -146,6 +146,37 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
+    //    MARK: PickerDelegateProtocol
+    func pickerDidSelectRow(value: String) {
+        сurrentPickerValue = value
+        let indexPath = IndexPath(row: 0, section: 1)
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
+    
+    //    MARK: SubmitDelegateProtocol
+    func submitButtonAction() {
+        if currentWorklogType == nil {
+            setWarningCell(at: IndexPath(item: 2, section: 1))
+        } else {
+            guard let viewModel = viewModel,let taskId = viewModel.task?.id, let time = сurrentPickerValue, let typeId = currentWorklogType?.id, let date = currentWorklogDate else { return }
+            
+            viewModel.onErrorCallback = { description in
+                DispatchQueue.main.async {
+                    let okAction = UIAlertAction(title: "ОК", style: .default)
+                    self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                }
+            }
+            viewModel.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { details in
+                DispatchQueue.main.async {
+                    let okAction = UIAlertAction(title: "OK", style: .default) { alert in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    self.presentAlert(title: "Успешно!", message: details, actions: okAction)
+                }
+            }
+        }
+    }
+    
     //    MARK: Methods
     private func setSubmitView() {
         guard let viewModel = viewModel else { return }
@@ -168,38 +199,6 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         view.bringSubviewToFront(submitView)
     }
     
-    //    MARK: PickerDelegateProtocol
-    func pickerDidSelectRow(value: String) {
-        сurrentPickerValue = value
-        let indexPath = IndexPath(row: 0, section: 1)
-        tableView.reloadRows(at: [indexPath], with: .none)
-    }
-    
-    //    MARK: SubmitDelegateProtocol
-    func submitButtonAction() {
-        if currentWorklogType == nil {
-            setWarningCell(at: IndexPath(item: 2, section: 1))
-        } else {
-            guard let viewModel = viewModel,let taskId = viewModel.task?.id, let time = сurrentPickerValue, let typeId = currentWorklogType?.id, let date = currentWorklogDate else { return }
-            
-            viewModel.onErrorCallback = { description in
-                DispatchQueue.main.async {
-                    let okAction = UIAlertAction(title: "ОК", style: .default)
-                    self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
-                }
-            }
-            viewModel.postWorklog(task: String(taskId), time: time, type: typeId, date: date) { title, details in
-                DispatchQueue.main.async {
-                    let okAction = UIAlertAction(title: "OK", style: .default) { alert in
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
-                }
-            }
-        }
-    }
-    
-    //    MARK: Methods
     private func setWarningCell(at indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         UIView.animate(withDuration: 1.5) {

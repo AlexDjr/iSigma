@@ -84,18 +84,16 @@ class WorklogViewModel {
     }
 
     //    MARK: - Methods
-    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String, String) -> ()){
+    func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String) -> ()){
         NetworkManager.shared.postWorklog(task: task, time: time, type: type, date: date) { isSuccess, details, errorDescription in
             if errorDescription != nil {
                 self.onErrorCallback?(errorDescription!)
             } else {
-                var title = ""
                 if isSuccess {
-                    title = "Успешно!"
+                    completion(details!)
                 } else {
-                    title = "Ошибка!"
+                    self.onErrorCallback?(details!)
                 }
-                completion(title, details!)
             }
         }
     }
