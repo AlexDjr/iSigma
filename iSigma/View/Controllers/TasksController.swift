@@ -99,7 +99,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let logWrite = UIContextualAction(style: .destructive, title: "Списание") { (action, view, nil) in
+        let logWrite = UIContextualAction(style: .destructive, title: "Списание") { (action, view, completion) in
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogController") as! WorklogController
             
@@ -108,6 +108,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             worklogController.viewModel = viewModel.viewModelForSelectedItem()
             worklogController.navigationItem.title = "Списание"
             self.navigationController?.pushViewController(worklogController, animated: true)
+            completion(false)
         }
         logWrite.backgroundColor = AppStyle.worklogColor
         logWrite.image = AppStyle.worklogImage
@@ -128,7 +129,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     //    MARK: - Methods
     func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
-        let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, nil) in
+        let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, completion) in
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
             actionSheet.addAction(cancelAction)
@@ -177,9 +178,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                             }
                         }
                     }
-                    DispatchQueue.main.async {
-                        self.tableView.isEditing = false
-                    }
+                    completion(false)
                 }
             }
             
@@ -206,7 +205,6 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         spinner.startAnimating()
         loadingView = Utils.getLoadingView(view: view, spinner: spinner)
         tableView.isScrollEnabled = false
-        tableView.setEditing(false, animated: true)
         tableView.alpha = 0.3
     }
     
