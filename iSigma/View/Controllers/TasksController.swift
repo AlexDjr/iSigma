@@ -151,6 +151,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                     } else {
                         rowAnimation = UITableView.RowAnimation(rawValue: 1)
                     }
+                    let actionIndex = rowAnimation?.rawValue ?? 0
                     
                     self.setLoadingScreen()
                     //    asks server to perform task transition (with checking for errors)
@@ -168,6 +169,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                                 DispatchQueue.main.async {
                                     self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
                                     self.removeLoadingScreen()
+                                    self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
                                 }
                             }
                         } else {
@@ -215,5 +217,17 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.alpha = 1.0
     }
     
+    private func highlightCell(at indexPath: IndexPath, for index: Int) {
+        let cell = tableView.cellForRow(at: indexPath)
+        UIView.animate(withDuration: 1.5) {
+            if index == 1 {
+                cell?.layer.backgroundColor = AppStyle.transitBackwardColor.withAlphaComponent(0.6).cgColor
+            }
+            if index == 2 {
+                cell?.layer.backgroundColor = AppStyle.transitForwardColor.withAlphaComponent(0.6).cgColor
+            }
+            cell?.layer.backgroundColor = AppStyle.whiteTextColor.cgColor
+        }
+    }
 }
 
