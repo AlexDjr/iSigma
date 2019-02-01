@@ -8,10 +8,25 @@
 
 import UIKit
 
-class TasksController: UITableViewController {
+class TasksController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     var viewModel: TasksViewModel?
 
+    let spinner: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .gray
+        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        view.hidesWhenStopped = true
+        return view
+    }()
+    var loadingView : UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,11 +52,11 @@ class TasksController: UITableViewController {
     }
     
     //    MARK: - UITableViewDataSource
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.numberOfRowsInSection(section) ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell
 
         guard let taskCell = cell, let viewModel = viewModel else { return UITableViewCell() }
@@ -52,11 +67,11 @@ class TasksController: UITableViewController {
     }
     
     //    MARK: - UITableViewDelegate
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel?.heightForRowAt(forIndexPath: indexPath) ?? 44
     }
     
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let viewModel = self.viewModel else { return nil }
         
         var config: UISwipeActionsConfiguration? = nil
@@ -83,7 +98,7 @@ class TasksController: UITableViewController {
         return config
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let logWrite = UIContextualAction(style: .destructive, title: "Списание") { (action, view, nil) in
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogController") as! WorklogController
@@ -92,7 +107,6 @@ class TasksController: UITableViewController {
             viewModel.selectItem(atIndexPath: indexPath)
             worklogController.viewModel = viewModel.viewModelForSelectedItem()
             worklogController.navigationItem.title = "Списание"
-            
             self.navigationController?.pushViewController(worklogController, animated: true)
         }
         logWrite.backgroundColor = AppStyle.worklogColor
@@ -101,7 +115,7 @@ class TasksController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [logWrite])
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let taskInfoController = storyboard.instantiateViewController(withIdentifier: "taskInfoController") as! TaskInfoController
@@ -137,11 +151,13 @@ class TasksController: UITableViewController {
                         rowAnimation = UITableView.RowAnimation(rawValue: 1)
                     }
                     
+                    self.setLoadingScreen()
                     //    asks server to perform task transition (with checking for errors)
                     viewModel.onErrorCallback = { description in
                         DispatchQueue.main.async {
                             let okAction = UIAlertAction(title: "ОК", style: .default)
                             self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                            self.removeLoadingScreen()
                         }
                     }
                     
@@ -150,12 +166,14 @@ class TasksController: UITableViewController {
                             viewModel.getTasksForCurrentUser{ tasks in
                                 DispatchQueue.main.async {
                                     self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
+                                    self.removeLoadingScreen()
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
                                 let okAction = UIAlertAction(title: "ОК", style: .default)
                                 self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
+                                self.removeLoadingScreen()
                             }
                         }
                     }
@@ -182,6 +200,21 @@ class TasksController: UITableViewController {
     @objc func appWillReturnFromBackground() {
         guard let viewModel = viewModel else { return }
         viewModel.reloadTaskStates()
+    }
+    
+    private func setLoadingScreen() {
+        spinner.startAnimating()
+        loadingView = Utils.getLoadingView(view: view, spinner: spinner)
+        tableView.isScrollEnabled = false
+        tableView.setEditing(false, animated: true)
+        tableView.alpha = 0.3
+    }
+    
+    private func removeLoadingScreen() {
+        spinner.stopAnimating()
+        loadingView.isHidden = true
+        tableView.isScrollEnabled = true
+        tableView.alpha = 1.0
     }
     
 }

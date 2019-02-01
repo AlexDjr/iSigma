@@ -132,24 +132,10 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     
     private func setLoadingScreen() {
         spinner.startAnimating()
+        loadingView = Utils.getLoadingView(view: view, spinner: spinner)
         tableView.isScrollEnabled = false
         tableView.alpha = 0.0
         
-        let newLoadingView = UIView()
-        
-        view.addSubview(newLoadingView)
-        newLoadingView.translatesAutoresizingMaskIntoConstraints = false
-        newLoadingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        newLoadingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        newLoadingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        newLoadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        newLoadingView.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.centerXAnchor.constraint(equalTo: newLoadingView.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: newLoadingView.centerYAnchor).isActive = true
-        
-        loadingView = newLoadingView
     }
     
     private func removeLoadingScreen(_ isOk: Bool) {

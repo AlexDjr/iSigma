@@ -168,10 +168,10 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     
     //    MARK: SubmitDelegateProtocol
     func submitButtonAction() {
-        setLoadingScreen()
         if currentWorklogType == nil {
             setWarningCell(at: IndexPath(item: 2, section: 1))
         } else {
+            setLoadingScreen()
             guard let viewModel = viewModel,let taskId = viewModel.task?.id, let time = сurrentPickerValue, let typeId = currentWorklogType?.id, let date = currentWorklogDate else { return }
             
             viewModel.onErrorCallback = { description in
@@ -225,24 +225,9 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     
     private func setLoadingScreen() {
         spinner.startAnimating()
+        loadingView = Utils.getLoadingView(view: view, spinner: spinner)
         tableView.isScrollEnabled = false
         tableView.alpha = 0.3
-        
-        let newLoadingView = UIView()
-        
-        view.addSubview(newLoadingView)
-        newLoadingView.translatesAutoresizingMaskIntoConstraints = false
-        newLoadingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        newLoadingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        newLoadingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        newLoadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        newLoadingView.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.centerXAnchor.constraint(equalTo: newLoadingView.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: newLoadingView.centerYAnchor).isActive = true
-        
-        loadingView = newLoadingView
     }
     
     private func removeLoadingScreen() {

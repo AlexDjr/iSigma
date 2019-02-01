@@ -77,4 +77,22 @@ class Utils {
         guard let email = URL(string: "mailto:\(email)") else { return }
         UIApplication.shared.open(email)
     }
+    
+    static func getLoadingView(view: UIView, spinner: UIActivityIndicatorView) -> UIView {        
+        let loadingView = UIView()
+        
+        view.addSubview(loadingView)
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        loadingView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        loadingView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        loadingView.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor).isActive = true
+        
+        return loadingView
+    }
 }
