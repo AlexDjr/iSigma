@@ -146,6 +146,24 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             let actionSheetAssignee = UIAlertController(title: nil, message: "Изменить ответственного по задаче?", preferredStyle: .actionSheet)
             actionSheetAssignee.addAction(cancelAction)
             
+            //    sets action sheet with task assignee names
+            let actionSheetChooseAssignee = UIAlertController(title: nil, message: "Выберите ответственного", preferredStyle: .actionSheet)
+            actionSheetChooseAssignee.addAction(cancelAction)
+            
+            let customView = UIView()
+            customView.backgroundColor = .green
+            actionSheetChooseAssignee.view.addSubview(customView)
+            
+            customView.translatesAutoresizingMaskIntoConstraints = false
+            customView.leftAnchor.constraint(equalTo: actionSheetChooseAssignee.view.leftAnchor, constant: 10).isActive = true
+            customView.rightAnchor.constraint(equalTo: actionSheetChooseAssignee.view.rightAnchor, constant: -10).isActive = true
+            customView.topAnchor.constraint(equalTo: actionSheetChooseAssignee.view.topAnchor, constant: 45).isActive = true
+            customView.bottomAnchor.constraint(equalTo: actionSheetChooseAssignee.view.bottomAnchor, constant: -57 - 8 - 10).isActive = true
+            
+            actionSheetChooseAssignee.view.translatesAutoresizingMaskIntoConstraints = false
+            actionSheetChooseAssignee.view.heightAnchor.constraint(equalToConstant: 450).isActive = true
+            
+            
             //    sets handler logic for element of actionSheetStates
             let handlerStates = { (action: UIAlertAction!) -> () in
                 if let index = actionSheetStates.actions.firstIndex(where: {$0 === action}) {
@@ -158,7 +176,12 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             let handlerAssignee = { (action: UIAlertAction!) -> () in
                 if let indexStates = self.selectedTaskStateIndex {
                     if let indexAssignee = actionSheetAssignee.actions.firstIndex(where: {$0 === action}) {
-                        self.changeTaskState(title: title, taskStates: taskStates, indexState: indexStates, indexAssignee: indexAssignee)
+                        if indexAssignee == 1 {
+                            self.changeTaskState(title: title, taskStates: taskStates, indexState: indexStates)
+                        }
+                        if indexAssignee == 2 {
+                            self.present(actionSheetChooseAssignee, animated: true, completion: nil)
+                        }
                     }
                     completion(false)
                 }
@@ -217,56 +240,48 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func changeTaskState(title: String, taskStates: [TaskState], indexState: Int, indexAssignee: Int) {
-        //    if the same assignee
-        if indexAssignee == 1 {
-            guard let viewModel = self.viewModel else { return }
-            let task = viewModel.viewModelForSelectedItem()!.task!
-            
-            let currentTaskState = task.state!.serverId
-            let nextTaskState = taskStates[indexState - 1].serverId
-            
-            var rowAnimation: UITableView.RowAnimation? = nil
-            if title == "Переход \n вперед" {
-                rowAnimation = UITableView.RowAnimation(rawValue: 2)
-            } else {
-                rowAnimation = UITableView.RowAnimation(rawValue: 1)
+    private func changeTaskState(title: String, taskStates: [TaskState], indexState: Int) {
+        guard let viewModel = self.viewModel else { return }
+        let task = viewModel.viewModelForSelectedItem()!.task!
+        
+        let currentTaskState = task.state!.serverId
+        let nextTaskState = taskStates[indexState - 1].serverId
+        
+        var rowAnimation: UITableView.RowAnimation? = nil
+        if title == "Переход \n вперед" {
+            rowAnimation = UITableView.RowAnimation(rawValue: 2)
+        } else {
+            rowAnimation = UITableView.RowAnimation(rawValue: 1)
+        }
+        let actionIndex = rowAnimation?.rawValue ?? 0
+        
+        self.setLoadingScreen()
+        
+        //    asks server to perform task transition (with checking for errors)
+        viewModel.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                self.removeLoadingScreen()
             }
-            let actionIndex = rowAnimation?.rawValue ?? 0
-            
-            self.setLoadingScreen()
-            
-            //    asks server to perform task transition (with checking for errors)
-            viewModel.onErrorCallback = { description in
+        }
+        
+        viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
+            if isSuccess {
+                viewModel.getTasksForCurrentUser{ tasks in
+                    DispatchQueue.main.async {
+                        self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
+                        self.removeLoadingScreen()
+                        self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
+                    }
+                }
+            } else {
                 DispatchQueue.main.async {
                     let okAction = UIAlertAction(title: "ОК", style: .default)
-                    self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                    self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
                     self.removeLoadingScreen()
                 }
             }
-            
-            viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
-                if isSuccess {
-                    viewModel.getTasksForCurrentUser{ tasks in
-                        DispatchQueue.main.async {
-                            self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
-                            self.removeLoadingScreen()
-                            self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        let okAction = UIAlertAction(title: "ОК", style: .default)
-                        self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
-                        self.removeLoadingScreen()
-                    }
-                }
-            }
-        }
-    
-        //    if changing assignee
-        if indexAssignee == 2 {
-            print("Other")
         }
     }
 }
