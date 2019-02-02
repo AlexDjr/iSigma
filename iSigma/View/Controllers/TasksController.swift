@@ -13,6 +13,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     @IBOutlet weak var tableView: UITableView!
     
     var viewModel: TasksViewModel?
+    var selectedTaskStateIndex: Int?
 
     let spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
@@ -130,70 +131,56 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     //    MARK: - Methods
     func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
         let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, completion) in
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            //    sets action sheet with task states
+            var actionSheetStatesMessage = ""
+            if taskStates.isEmpty {
+                actionSheetStatesMessage = "Нет доступных состояний"
+            } else {
+                actionSheetStatesMessage = "Выберите новое состояние задачи"
+            }
+            let actionSheetStates = UIAlertController(title: nil, message: actionSheetStatesMessage, preferredStyle: .actionSheet)
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-            actionSheet.addAction(cancelAction)
+            actionSheetStates.addAction(cancelAction)
             
-            //    sets handler logic for element of actionSheet
-            let handler = { (action: UIAlertAction!) -> () in
-                if let index = actionSheet.actions.firstIndex(where: {$0 === action}) {
-                    
-                    guard let viewModel = self.viewModel else { return }
-                    let cellViewModel = viewModel.viewModelForSelectedItem()!
-                    
-                    let task = cellViewModel.task!
-                    let currentTaskState = task.state!.serverId
-                    let nextTaskState = taskStates[index - 1].serverId
-                    
-                    var rowAnimation: UITableView.RowAnimation? = nil
-                    if title == "Переход \n вперед" {
-                        rowAnimation = UITableView.RowAnimation(rawValue: 2)
-                    } else {
-                        rowAnimation = UITableView.RowAnimation(rawValue: 1)
-                    }
-                    let actionIndex = rowAnimation?.rawValue ?? 0
-                    
-                    self.setLoadingScreen()
-                    //    asks server to perform task transition (with checking for errors)
-                    viewModel.onErrorCallback = { description in
-                        DispatchQueue.main.async {
-                            let okAction = UIAlertAction(title: "ОК", style: .default)
-                            self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
-                            self.removeLoadingScreen()
-                        }
-                    }
-                    
-                    viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
-                        if isSuccess {
-                            viewModel.getTasksForCurrentUser{ tasks in
-                                DispatchQueue.main.async {
-                                    self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
-                                    self.removeLoadingScreen()
-                                    self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
-                                }
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                let okAction = UIAlertAction(title: "ОК", style: .default)
-                                self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
-                                self.removeLoadingScreen()
-                            }
-                        }
+            //    sets action sheet with task assignee options
+            let actionSheetAssignee = UIAlertController(title: nil, message: "Изменить ответственного по задаче?", preferredStyle: .actionSheet)
+            actionSheetAssignee.addAction(cancelAction)
+            
+            //    sets handler logic for element of actionSheetStates
+            let handlerStates = { (action: UIAlertAction!) -> () in
+                if let index = actionSheetStates.actions.firstIndex(where: {$0 === action}) {
+                    self.selectedTaskStateIndex = index
+                    self.present(actionSheetAssignee, animated: true, completion: nil)
+                }
+            }
+            
+            //    sets handler logic for element of actionSheetAssignee
+            let handlerAssignee = { (action: UIAlertAction!) -> () in
+                if let indexStates = self.selectedTaskStateIndex {
+                    if let indexAssignee = actionSheetAssignee.actions.firstIndex(where: {$0 === action}) {
+                        self.changeTaskState(title: title, taskStates: taskStates, indexState: indexStates, indexAssignee: indexAssignee)
                     }
                     completion(false)
                 }
             }
             
-            //    sets actions (elements) for actionSheet
+            //    sets actions (elements) for actionSheetStates
             for taskState in taskStates {
                 var title = taskState.name
                 if taskState.isFinal {
                     title = "⚑ " + title
                 }
-                let action = UIAlertAction(title: title, style: .default, handler: handler)
-                actionSheet.addAction(action)
+                let actionState = UIAlertAction(title: title, style: .default, handler: handlerStates)
+                actionSheetStates.addAction(actionState)
             }
-            self.present(actionSheet, animated: true, completion: nil)
+            
+            //    sets actions (elements) for actionSheetAssignee
+            let sameAssigneeAction = UIAlertAction(title: "Оставить себя", style: .default, handler: handlerAssignee)
+            let otherAssigneeAction = UIAlertAction(title: "Изменить", style: .default, handler: handlerAssignee)
+            actionSheetAssignee.addAction(sameAssigneeAction)
+            actionSheetAssignee.addAction(otherAssigneeAction)
+            
+            self.present(actionSheetStates, animated: true, completion: nil)
         }
         return contextualAction
     }
@@ -227,6 +214,59 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 cell?.layer.backgroundColor = AppStyle.transitForwardColor.withAlphaComponent(0.6).cgColor
             }
             cell?.layer.backgroundColor = AppStyle.whiteTextColor.cgColor
+        }
+    }
+    
+    private func changeTaskState(title: String, taskStates: [TaskState], indexState: Int, indexAssignee: Int) {
+        //    if the same assignee
+        if indexAssignee == 1 {
+            guard let viewModel = self.viewModel else { return }
+            let task = viewModel.viewModelForSelectedItem()!.task!
+            
+            let currentTaskState = task.state!.serverId
+            let nextTaskState = taskStates[indexState - 1].serverId
+            
+            var rowAnimation: UITableView.RowAnimation? = nil
+            if title == "Переход \n вперед" {
+                rowAnimation = UITableView.RowAnimation(rawValue: 2)
+            } else {
+                rowAnimation = UITableView.RowAnimation(rawValue: 1)
+            }
+            let actionIndex = rowAnimation?.rawValue ?? 0
+            
+            self.setLoadingScreen()
+            
+            //    asks server to perform task transition (with checking for errors)
+            viewModel.onErrorCallback = { description in
+                DispatchQueue.main.async {
+                    let okAction = UIAlertAction(title: "ОК", style: .default)
+                    self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                    self.removeLoadingScreen()
+                }
+            }
+            
+            viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
+                if isSuccess {
+                    viewModel.getTasksForCurrentUser{ tasks in
+                        DispatchQueue.main.async {
+                            self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
+                            self.removeLoadingScreen()
+                            self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let okAction = UIAlertAction(title: "ОК", style: .default)
+                        self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
+                        self.removeLoadingScreen()
+                    }
+                }
+            }
+        }
+    
+        //    if changing assignee
+        if indexAssignee == 2 {
+            print("Other")
         }
     }
 }
