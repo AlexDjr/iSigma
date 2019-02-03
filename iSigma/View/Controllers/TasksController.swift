@@ -149,19 +149,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             //    sets action sheet with task assignee names
             let actionSheetChooseAssignee = UIAlertController(title: nil, message: "Выберите ответственного", preferredStyle: .actionSheet)
             actionSheetChooseAssignee.addAction(cancelAction)
-            
-            let customView = UIView()
-            customView.backgroundColor = .green
-            actionSheetChooseAssignee.view.addSubview(customView)
-            
-            customView.translatesAutoresizingMaskIntoConstraints = false
-            customView.leftAnchor.constraint(equalTo: actionSheetChooseAssignee.view.leftAnchor, constant: 10).isActive = true
-            customView.rightAnchor.constraint(equalTo: actionSheetChooseAssignee.view.rightAnchor, constant: -10).isActive = true
-            customView.topAnchor.constraint(equalTo: actionSheetChooseAssignee.view.topAnchor, constant: 45).isActive = true
-            customView.bottomAnchor.constraint(equalTo: actionSheetChooseAssignee.view.bottomAnchor, constant: -57 - 8 - 10).isActive = true
-            
-            actionSheetChooseAssignee.view.translatesAutoresizingMaskIntoConstraints = false
-            actionSheetChooseAssignee.view.heightAnchor.constraint(equalToConstant: 450).isActive = true
+            self.setupCollectionViewController(for: actionSheetChooseAssignee)
             
             
             //    sets handler logic for element of actionSheetStates
@@ -198,7 +186,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             }
             
             //    sets actions (elements) for actionSheetAssignee
-            let sameAssigneeAction = UIAlertAction(title: "Оставить себя", style: .default, handler: handlerAssignee)
+            let sameAssigneeAction = UIAlertAction(title: "Не изменять", style: .default, handler: handlerAssignee)
             let otherAssigneeAction = UIAlertAction(title: "Изменить", style: .default, handler: handlerAssignee)
             actionSheetAssignee.addAction(sameAssigneeAction)
             actionSheetAssignee.addAction(otherAssigneeAction)
@@ -283,6 +271,27 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 }
             }
         }
+    }
+    
+    private func setupCollectionViewController(for alertController: UIAlertController) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let assigneesController = storyboard.instantiateViewController(withIdentifier: "assigneesController") as! AssigneesController
+        alertController.addChild(assigneesController)
+        
+        assigneesController.view.backgroundColor = .clear
+        assigneesController.collectionView.backgroundColor = .clear
+        alertController.view.addSubview(assigneesController.view)
+        
+        assigneesController.view.translatesAutoresizingMaskIntoConstraints = false
+        assigneesController.view.leftAnchor.constraint(equalTo: alertController.view.leftAnchor, constant: 10).isActive = true
+        assigneesController.view.rightAnchor.constraint(equalTo: alertController.view.rightAnchor, constant: -10).isActive = true
+        assigneesController.view.topAnchor.constraint(equalTo: alertController.view.topAnchor, constant: 45).isActive = true
+        assigneesController.view.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -57 - 8 - 10).isActive = true
+        
+        alertController.view.translatesAutoresizingMaskIntoConstraints = false
+        alertController.view.heightAnchor.constraint(equalToConstant: 450).isActive = true
+        
+        assigneesController.didMove(toParent: alertController)
     }
 }
 

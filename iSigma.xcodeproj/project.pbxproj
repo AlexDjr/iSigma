@@ -91,6 +91,10 @@
 		FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372821F640E20062C3E3 /* LoginViewModel.swift */; };
 		FAFB372B21F8BB490062C3E3 /* UIView+searchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */; };
 		FAFB372D21FB01080062C3E3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB372C21FB01080062C3E3 /* Utils.swift */; };
+		FAFD2E4622073B0A00DD1952 /* AssigneeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4522073B0A00DD1952 /* AssigneeCell.swift */; };
+		FAFD2E4822073B5500DD1952 /* AssigneeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */; };
+		FAFD2E4C2207423C00DD1952 /* AssigneesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */; };
+		FAFD2E4E22074A0D00DD1952 /* AssigneesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,6 +184,10 @@
 		FAFB372821F640E20062C3E3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+searchSubview.swift"; sourceTree = "<group>"; };
 		FAFB372C21FB01080062C3E3 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		FAFD2E4522073B0A00DD1952 /* AssigneeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeCell.swift; sourceTree = "<group>"; };
+		FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeCellViewModel.swift; sourceTree = "<group>"; };
+		FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneesController.swift; sourceTree = "<group>"; };
+		FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +333,7 @@
 				FA2230D521D3E65300D602A7 /* WorklogTypesCell.swift */,
 				FAF5998221D795D900A4F4B9 /* CalendarCell.swift */,
 				FA6ED6E421ECDD2800727E1F /* EmployeeCell.swift */,
+				FAFD2E4522073B0A00DD1952 /* AssigneeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -340,6 +349,7 @@
 				FAF5997621D78A9A00A4F4B9 /* CalendarController.swift */,
 				FAB8BFF421EA6A510092654D /* EmployeesController.swift */,
 				FA221F0321EE5BDB00CA1616 /* EmployeeInfoController.swift */,
+				FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -391,6 +401,7 @@
 				FAFA720721DF94B5001F0214 /* CalendarViewModel.swift */,
 				FA6ED6E621EDCD7900727E1F /* EmployeesViewModel.swift */,
 				FA221F0121EE5B6700CA1616 /* EmployeeInfoViewModel.swift */,
+				FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -407,6 +418,7 @@
 				FA2230D321D3CCD400D602A7 /* WorklogTypesCellViewModel.swift */,
 				FAFA720921DF994B001F0214 /* CalendarCellViewModel.swift */,
 				FA6ED6E821EDCF7F00727E1F /* EmployeeCellViewModel.swift */,
+				FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -529,15 +541,18 @@
 				FAD76BA721CFE4810034F614 /* Worklog.swift in Sources */,
 				FAD76B9F21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift in Sources */,
 				FAD76B6221CA8D590034F614 /* TaskCellViewModel.swift in Sources */,
+				FAFD2E4822073B5500DD1952 /* AssigneeCellViewModel.swift in Sources */,
 				FAFB372B21F8BB490062C3E3 /* UIView+searchSubview.swift in Sources */,
 				FA2230CE21D3C73C00D602A7 /* Equatable+oneOf.swift in Sources */,
 				FAF5996A21D5130000A4F4B9 /* SubmitDelegateProtocol.swift in Sources */,
+				FAFD2E4E22074A0D00DD1952 /* AssigneesViewModel.swift in Sources */,
 				FAFA720A21DF994B001F0214 /* CalendarCellViewModel.swift in Sources */,
 				FA679A4621D134DD00FA6B93 /* PickerDelegateProtocol.swift in Sources */,
 				FAD76B9B21CD3F630034F614 /* CellViewModelProtocol.swift in Sources */,
 				FA679A4421D11B6600FA6B93 /* SubmitButtonViewModel.swift in Sources */,
 				FAF5998321D795D900A4F4B9 /* CalendarCell.swift in Sources */,
 				FAFA721021E39896001F0214 /* TaskType.swift in Sources */,
+				FAFD2E4622073B0A00DD1952 /* AssigneeCell.swift in Sources */,
 				FA2230CA21D3C48700D602A7 /* APIWorklogTypes.swift in Sources */,
 				FAFA721421E4B06B001F0214 /* APITransition.swift in Sources */,
 				FAF5998921D7B7B100A4F4B9 /* String+date.swift in Sources */,
@@ -564,6 +579,7 @@
 				FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */,
 				FAD76B4A21C7E8290034F614 /* Task.swift in Sources */,
 				FAD76B5321C805570034F614 /* APITaskID.swift in Sources */,
+				FAFD2E4C2207423C00DD1952 /* AssigneesController.swift in Sources */,
 				FA6FC52F21E611D8001BD85A /* APIResponse.swift in Sources */,
 				FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */,
 				FA679A4221D11B0D00FA6B93 /* SubmitButton.swift in Sources */,
