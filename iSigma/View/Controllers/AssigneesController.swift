@@ -13,6 +13,7 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
     @IBOutlet weak var collectionView: UICollectionView!
     
     var viewModel: AssigneesViewModel?
+    var callback: ((Employee) -> ())?
     let spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
         view.style = .gray
@@ -51,7 +52,6 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
         return viewModel?.numberOfRowsInSection(section) ?? 0
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "assigneeCell", for: indexPath) as? AssigneeCell
         
@@ -60,6 +60,11 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
         assigneeCell.viewModel = cellViewModel
         
         return assigneeCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cellViewModel = viewModel?.cellViewModel(forIndexPath: indexPath) else { return }
+        callback?(cellViewModel.employee)
     }
     
     private func setLoadingScreen() {

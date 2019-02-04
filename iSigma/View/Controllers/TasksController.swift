@@ -149,8 +149,20 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             //    sets action sheet with task assignee names
             let actionSheetChooseAssignee = UIAlertController(title: nil, message: "Выберите ответственного", preferredStyle: .actionSheet)
             actionSheetChooseAssignee.addAction(cancelAction)
-            self.setupCollectionViewController(for: actionSheetChooseAssignee)
-            
+            let assigneesController = self.setupCollectionViewController(for: actionSheetChooseAssignee)
+            assigneesController.callback = { result in
+                if let indexStates = self.selectedTaskStateIndex {
+                    let employee = result as Employee
+                    if employee.email != "" {
+                        self.changeTaskState(assignedEmail: employee.email, title: title, taskStates: taskStates, indexState: indexStates)
+                        self.dismiss(animated: true, completion: nil)
+                    } else {
+                        self.dismiss(animated: true, completion: nil)
+                        let okAction = UIAlertAction(title: "ОК", style: .default)
+                        self.presentAlert(title: "Ошибка!", message: "Невозможно перевести задачу на данного работника, так как его email не определен", actions: okAction)
+                    }
+                }
+            }
             
             //    sets handler logic for element of actionSheetStates
             let handlerStates = { (action: UIAlertAction!) -> () in
@@ -165,7 +177,12 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 if let indexStates = self.selectedTaskStateIndex {
                     if let indexAssignee = actionSheetAssignee.actions.firstIndex(where: {$0 === action}) {
                         if indexAssignee == 1 {
-                            self.changeTaskState(title: title, taskStates: taskStates, indexState: indexStates)
+                            if let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") {
+                                self.changeTaskState(assignedEmail: currentUserEmail, title: title, taskStates: taskStates, indexState: indexStates)
+                            } else {
+                                let okAction = UIAlertAction(title: "ОК", style: .default)
+                                self.presentAlert(title: "Ошибка!", message: "Неудалось определить текущего пользователя", actions: okAction)
+                            }
                         }
                         if indexAssignee == 2 {
                             self.present(actionSheetChooseAssignee, animated: true, completion: nil)
@@ -228,7 +245,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func changeTaskState(title: String, taskStates: [TaskState], indexState: Int) {
+    private func changeTaskState(assignedEmail: String, title: String, taskStates: [TaskState], indexState: Int) {
         guard let viewModel = self.viewModel else { return }
         let task = viewModel.viewModelForSelectedItem()!.task!
         
@@ -254,7 +271,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             }
         }
         
-        viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState) { isSuccess, details in
+        viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState, assignedEmail: assignedEmail) { isSuccess, details in
             if isSuccess {
                 viewModel.getTasksForCurrentUser{ tasks in
                     DispatchQueue.main.async {
@@ -273,7 +290,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func setupCollectionViewController(for alertController: UIAlertController) {
+    private func setupCollectionViewController(for alertController: UIAlertController) -> AssigneesController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let assigneesController = storyboard.instantiateViewController(withIdentifier: "assigneesController") as! AssigneesController
         alertController.addChild(assigneesController)
@@ -292,6 +309,8 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         alertController.view.heightAnchor.constraint(equalToConstant: 450).isActive = true
         
         assigneesController.didMove(toParent: alertController)
+        
+        return assigneesController
     }
 }
 

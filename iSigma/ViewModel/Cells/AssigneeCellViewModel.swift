@@ -9,7 +9,7 @@
 import UIKit
 
 class AssigneeCellViewModel: CellViewModelProtocol {
-    private var employee : Employee
+    var employee : Employee
     
     var photo: UIImage
     var lastName: String

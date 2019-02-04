@@ -446,7 +446,7 @@ class NetworkManager {
     }
     
     //    MARK: - PUT METHODS
-    func putTaskTransition(taskId: Int, from: Int, to: Int, completion: @escaping (Bool, String?, String?) -> ()) {
+    func putTaskTransition(taskId: Int, from: Int, to: Int, assignedEmail: String, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/transfer")!
         
@@ -458,7 +458,7 @@ class NetworkManager {
                           "state_source": "",
                           "from": from,
                           "to": to,
-                          "assigned": "adelin@diasoft.ru",
+                          "assigned": assignedEmail,
                           "notes": "",
                           "worklog": ["time_spent": "00:01",
                                       "type_of_work": 1],
