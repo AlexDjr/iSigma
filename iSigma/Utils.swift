@@ -95,4 +95,7 @@ class Utils {
         
         return loadingView
     }
+    
+    static let settingsSections = ["Списания"]
+    static let settingsRows = [["Тип по умолчанию"]]
 }

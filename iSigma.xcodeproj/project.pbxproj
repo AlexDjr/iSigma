@@ -95,6 +95,10 @@
 		FAFD2E4822073B5500DD1952 /* AssigneeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */; };
 		FAFD2E4C2207423C00DD1952 /* AssigneesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */; };
 		FAFD2E4E22074A0D00DD1952 /* AssigneesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */; };
+		FAFD2E50220892CC00DD1952 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E4F220892CC00DD1952 /* SettingsCell.swift */; };
+		FAFD2E52220892E400DD1952 /* SettingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E51220892E400DD1952 /* SettingsCellViewModel.swift */; };
+		FAFD2E542208940700DD1952 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E532208940700DD1952 /* SettingsController.swift */; };
+		FAFD2E56220895B800DD1952 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E55220895B800DD1952 /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,6 +192,10 @@
 		FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeCellViewModel.swift; sourceTree = "<group>"; };
 		FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneesController.swift; sourceTree = "<group>"; };
 		FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneesViewModel.swift; sourceTree = "<group>"; };
+		FAFD2E4F220892CC00DD1952 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		FAFD2E51220892E400DD1952 /* SettingsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellViewModel.swift; sourceTree = "<group>"; };
+		FAFD2E532208940700DD1952 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		FAFD2E55220895B800DD1952 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +342,7 @@
 				FAF5998221D795D900A4F4B9 /* CalendarCell.swift */,
 				FA6ED6E421ECDD2800727E1F /* EmployeeCell.swift */,
 				FAFD2E4522073B0A00DD1952 /* AssigneeCell.swift */,
+				FAFD2E4F220892CC00DD1952 /* SettingsCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -350,6 +359,7 @@
 				FAB8BFF421EA6A510092654D /* EmployeesController.swift */,
 				FA221F0321EE5BDB00CA1616 /* EmployeeInfoController.swift */,
 				FAFD2E4B2207423C00DD1952 /* AssigneesController.swift */,
+				FAFD2E532208940700DD1952 /* SettingsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -402,6 +412,7 @@
 				FA6ED6E621EDCD7900727E1F /* EmployeesViewModel.swift */,
 				FA221F0121EE5B6700CA1616 /* EmployeeInfoViewModel.swift */,
 				FAFD2E4D22074A0D00DD1952 /* AssigneesViewModel.swift */,
+				FAFD2E55220895B800DD1952 /* SettingsViewModel.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -419,6 +430,7 @@
 				FAFA720921DF994B001F0214 /* CalendarCellViewModel.swift */,
 				FA6ED6E821EDCF7F00727E1F /* EmployeeCellViewModel.swift */,
 				FAFD2E4722073B5500DD1952 /* AssigneeCellViewModel.swift */,
+				FAFD2E51220892E400DD1952 /* SettingsCellViewModel.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -510,6 +522,7 @@
 				FA3093BE21C3E43500A3B417 /* NetworkManager.swift in Sources */,
 				FA221F0621EF3CFD00CA1616 /* APIAuthPin.swift in Sources */,
 				FAD76B5121C7EBA00034F614 /* APITaskBase.swift in Sources */,
+				FAFD2E50220892CC00DD1952 /* SettingsCell.swift in Sources */,
 				FA685F3E21DCDDE2004D029F /* APISuccessResponse.swift in Sources */,
 				FA6ED6E921EDCF7F00727E1F /* EmployeeCellViewModel.swift in Sources */,
 				FAF5997B21D78B4D00A4F4B9 /* CalendarView.swift in Sources */,
@@ -519,6 +532,7 @@
 				FAC9035621F5F51F00FBE62B /* UINavigationController+alert.swift in Sources */,
 				FA3093A721C3DA1300A3B417 /* TasksController.swift in Sources */,
 				FA6FC53321E77D73001BD85A /* APITaskProject.swift in Sources */,
+				FAFD2E542208940700DD1952 /* SettingsController.swift in Sources */,
 				FAB8BFF521EA6A510092654D /* EmployeesController.swift in Sources */,
 				FA6ED6E521ECDD2800727E1F /* EmployeeCell.swift in Sources */,
 				FA221F0421EE5BDB00CA1616 /* EmployeeInfoController.swift in Sources */,
@@ -531,6 +545,7 @@
 				FA221F0221EE5B6700CA1616 /* EmployeeInfoViewModel.swift in Sources */,
 				FAFA720821DF94B5001F0214 /* CalendarViewModel.swift in Sources */,
 				FA679A3F21D0EAF600FA6B93 /* SubmitViewViewModel.swift in Sources */,
+				FAFD2E52220892E400DD1952 /* SettingsCellViewModel.swift in Sources */,
 				FAD76B9621CD3A270034F614 /* WorklogTimePickerCellViewModel.swift in Sources */,
 				FA679A3C21D0E93B00FA6B93 /* SubmitView.swift in Sources */,
 				FAFB372D21FB01080062C3E3 /* Utils.swift in Sources */,
@@ -574,6 +589,7 @@
 				FAD76B9D21CE4F2E0034F614 /* WorklogDetailsTimeCellViewModel.swift in Sources */,
 				FAD76B6421CAAE160034F614 /* Box.swift in Sources */,
 				FA221F1221EF5F5D00CA1616 /* KeychainWrapper.swift in Sources */,
+				FAFD2E56220895B800DD1952 /* SettingsViewModel.swift in Sources */,
 				FA2230C821D3B77700D602A7 /* WorklogType.swift in Sources */,
 				FAD76B5721C901C60034F614 /* TaskCell.swift in Sources */,
 				FAFB372921F640E20062C3E3 /* LoginViewModel.swift in Sources */,
