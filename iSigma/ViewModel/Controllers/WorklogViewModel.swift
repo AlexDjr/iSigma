@@ -17,8 +17,8 @@ class WorklogViewModel {
     
     init(task: Task) {
         self.task = task
-        self.timePickerValue = "08:00"
-        self.worklogType = nil //WorklogType(id: 1, name: "Разработка", isOften: true) // подтягивать тип, указанный в настройках иначе nil
+        self.timePickerValue = "08:00"        
+        self.worklogType = Utils.getWorklogType(forKey: "settingsDefaultWorklogType")        
         
         self.worklogDate = String.dateFormatter.string(from:Date())
     }

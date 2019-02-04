@@ -11,11 +11,12 @@ import UIKit
 class SettingsController: UITableViewController {
 
     var viewModel: SettingsViewModel?
-    var currentWorklogType: WorklogType?
+    var defaultWorklogType: WorklogType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = SettingsViewModel()
+        defaultWorklogType = Utils.getWorklogType(forKey: "settingsDefaultWorklogType")
     }
 
 
@@ -33,7 +34,7 @@ class SettingsController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! SettingsCell
         let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath) as! SettingsCellViewModel
-        cellViewModel.value = Box(currentWorklogType?.name)
+        cellViewModel.value = Box(defaultWorklogType?.name)
         cell.viewModel = cellViewModel
         
         return cell
@@ -51,12 +52,12 @@ class SettingsController: UITableViewController {
         
         let worklogTypesController = storyboard.instantiateViewController(withIdentifier: "worklogTypesController") as! WorklogTypesController
         worklogTypesController.hidesBottomBarWhenPushed = true
-        let viewModel = WorklogTypesViewModel()
-        worklogTypesController.viewModel = viewModel
+        worklogTypesController.viewModel = WorklogTypesViewModel()
         worklogTypesController.navigationItem.title = "Типы работ"
         self.navigationController?.pushViewController(worklogTypesController, animated: true)
         worklogTypesController.callback = { result in
-            self.currentWorklogType = result
+            self.defaultWorklogType = result
+            Utils.setObject(self.defaultWorklogType!, forKey: "settingsDefaultWorklogType")
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.reloadRows(at: [indexPath], with: .none)
         }
