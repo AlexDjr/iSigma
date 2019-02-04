@@ -159,7 +159,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                     } else {
                         self.dismiss(animated: true, completion: nil)
                         let okAction = UIAlertAction(title: "ОК", style: .default)
-                        self.presentAlert(title: "Ошибка!", message: "Невозможно перевести задачу на данного работника, так как его email не определен", actions: okAction)
+                        self.presentAlert(title: "Ошибка!", message: "Невозможно перевести задачу на данного сотрудника, так как его email не определен", actions: okAction)
                     }
                 }
             }
@@ -300,13 +300,13 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         alertController.view.addSubview(assigneesController.view)
         
         assigneesController.view.translatesAutoresizingMaskIntoConstraints = false
-        assigneesController.view.leftAnchor.constraint(equalTo: alertController.view.leftAnchor, constant: 10).isActive = true
-        assigneesController.view.rightAnchor.constraint(equalTo: alertController.view.rightAnchor, constant: -10).isActive = true
+        assigneesController.view.leftAnchor.constraint(equalTo: alertController.view.leftAnchor).isActive = true
+        assigneesController.view.rightAnchor.constraint(equalTo: alertController.view.rightAnchor).isActive = true
         assigneesController.view.topAnchor.constraint(equalTo: alertController.view.topAnchor, constant: 45).isActive = true
-        assigneesController.view.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -57 - 8 - 10).isActive = true
+        assigneesController.view.bottomAnchor.constraint(equalTo: alertController.view.bottomAnchor, constant: -57 - 8).isActive = true
         
         alertController.view.translatesAutoresizingMaskIntoConstraints = false
-        alertController.view.heightAnchor.constraint(equalToConstant: 450).isActive = true
+        alertController.view.heightAnchor.constraint(equalToConstant: 470).isActive = true
         
         assigneesController.didMove(toParent: alertController)
         

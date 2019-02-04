@@ -8,9 +8,12 @@
 
 import UIKit
 
-class AssigneesController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class AssigneesController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var scopeControl: UISegmentedControl!
+    @IBOutlet weak var cancelButton: UIButton!
     
     var viewModel: AssigneesViewModel?
     var callback: ((Employee) -> ())?
@@ -27,6 +30,13 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
         return view
     }()
     
+    private var searchController = UISearchController(searchResultsController: nil)
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isFiltering = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = AssigneesViewModel()
@@ -41,38 +51,87 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
         }
         viewModel?.getEmployees{ employees in
             DispatchQueue.main.async {
-                self.collectionView.reloadData()
+                self.filterAndReload()
                 self.removeLoadingScreen(true)
             }
         }
+        setupSearchController()
     }
     
     //    MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel?.numberOfRowsInSection(section) ?? 0
+        return viewModel?.numberOfRowsInSection(section, isFiltering: isFiltering) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "assigneeCell", for: indexPath) as? AssigneeCell
         
         guard let assigneeCell = cell, let viewModel = viewModel else { return UICollectionViewCell() }
-        let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath)
+        let cellViewModel = viewModel.cellViewModel(forIndexPath: indexPath, isFiltering: isFiltering)
         assigneeCell.viewModel = cellViewModel
         
         return assigneeCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cellViewModel = viewModel?.cellViewModel(forIndexPath: indexPath) else { return }
+        guard let cellViewModel = viewModel?.cellViewModel(forIndexPath: indexPath, isFiltering: isFiltering) else { return }
         callback?(cellViewModel.employee)
     }
     
+    //    MARK: - UISearchBarDelegate
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        isFiltering = true;
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        isFiltering = true;
+        filterAndReload()
+    }
+    
+    //    MARK: - UIScrollViewDelegate
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchBar.endEditing(true)
+    }
+    
+    //    MARK: - Methods
+    private func setupSearchController() {
+        searchBar.delegate = self
+        scopeControl.selectedSegmentIndex = 1
+        scopeControl.addTarget(self, action: #selector(scopeChanged), for: .valueChanged)
+        cancelButton.addTarget(self, action: #selector(cancelSearch), for: .touchUpInside)
+    }
+    
+    @objc private func scopeChanged() {
+        if scopeControl.selectedSegmentIndex == 0 && searchBarIsEmpty {
+            isFiltering = false
+        } else {
+            isFiltering = true
+        }
+        filterAndReload()
+    }
+    
+    @objc private func cancelSearch() {
+        searchBar.text = nil
+        searchBar.endEditing(true)
+        filterAndReload()
+    }
+    
+    private func filterAndReload() {
+        guard let viewModel = viewModel else { return }
+        let scope = scopeControl.titleForSegment(at: scopeControl.selectedSegmentIndex)!
+        viewModel.filterContentForSearchText(searchBar.text!, searchBarIsEmpty: searchBarIsEmpty, scope: scope)
+        collectionView.reloadData()
+    }
+
     private func setLoadingScreen() {
         spinner.startAnimating()
         loadingView = Utils.getLoadingView(view: view, spinner: spinner)
         collectionView.isScrollEnabled = false
         collectionView.alpha = 0.0
-        
     }
     
     private func removeLoadingScreen(_ isOk: Bool) {
@@ -83,6 +142,5 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
             collectionView.alpha = 1.0
         }
     }
-    
     
 }

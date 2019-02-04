@@ -722,18 +722,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="EDa-R7-Awb">
-                                <rect key="frame" x="0.0" y="5" width="320" height="563"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="EDa-R7-Awb">
+                                <rect key="frame" x="0.0" y="85" width="320" height="483"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SWn-Kg-g7I">
                                     <size key="itemSize" width="60" height="82"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="assigneeCell" id="ohb-CK-GF3" customClass="AssigneeCell" customModule="iSigma" customModuleProvider="target">
-                                        <rect key="frame" x="5" y="0.0" width="60" height="82"/>
+                                        <rect key="frame" x="10" y="0.0" width="60" height="82"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="60" height="82"/>
@@ -785,18 +785,57 @@
                                     <outlet property="delegate" destination="0QD-JP-qs1" id="C6D-ra-Wdk"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="okh-DU-ez0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aNj-wV-ceZ">
+                                        <rect key="frame" x="10" y="0.0" width="300" height="29"/>
+                                        <segments>
+                                            <segment title="Все" width="64"/>
+                                            <segment title="Отдел/Команда"/>
+                                            <segment title="Департамент"/>
+                                        </segments>
+                                    </segmentedControl>
+                                    <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Поиск..." translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kZw-tc-NwW">
+                                        <rect key="frame" x="2" y="28" width="250" height="56"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cXh-Cx-8Vg">
+                                        <rect key="frame" x="254" y="41" width="56" height="30"/>
+                                        <state key="normal" title="Отмена"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="cXh-Cx-8Vg" firstAttribute="leading" secondItem="kZw-tc-NwW" secondAttribute="trailing" constant="2" id="7Ln-y2-PbW"/>
+                                    <constraint firstItem="kZw-tc-NwW" firstAttribute="top" secondItem="aNj-wV-ceZ" secondAttribute="bottom" id="8ao-9b-Mux"/>
+                                    <constraint firstItem="cXh-Cx-8Vg" firstAttribute="centerY" secondItem="kZw-tc-NwW" secondAttribute="centerY" id="M8w-Oe-vQ1"/>
+                                    <constraint firstAttribute="trailing" secondItem="aNj-wV-ceZ" secondAttribute="trailing" constant="10" id="UZb-S9-HGi"/>
+                                    <constraint firstAttribute="height" constant="85" id="gdx-Bb-4Rm"/>
+                                    <constraint firstAttribute="trailing" secondItem="cXh-Cx-8Vg" secondAttribute="trailing" constant="10" id="k9R-5i-fbw"/>
+                                    <constraint firstItem="kZw-tc-NwW" firstAttribute="leading" secondItem="okh-DU-ez0" secondAttribute="leading" constant="2" id="mRP-5h-wg5"/>
+                                    <constraint firstItem="aNj-wV-ceZ" firstAttribute="top" secondItem="okh-DU-ez0" secondAttribute="top" id="obG-aX-FaS"/>
+                                    <constraint firstItem="aNj-wV-ceZ" firstAttribute="leading" secondItem="okh-DU-ez0" secondAttribute="leading" constant="10" id="z2V-ZX-p3P"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="EDa-R7-Awb" firstAttribute="top" secondItem="TdU-fa-stn" secondAttribute="top" constant="5" id="5L7-JL-JyC"/>
+                            <constraint firstItem="EDa-R7-Awb" firstAttribute="top" secondItem="okh-DU-ez0" secondAttribute="bottom" id="I70-6y-1xv"/>
                             <constraint firstAttribute="bottom" secondItem="EDa-R7-Awb" secondAttribute="bottom" id="P4X-Sb-sz6"/>
+                            <constraint firstItem="okh-DU-ez0" firstAttribute="trailing" secondItem="plj-Rl-nkX" secondAttribute="trailing" id="WmI-J7-5OK"/>
                             <constraint firstItem="EDa-R7-Awb" firstAttribute="leading" secondItem="TdU-fa-stn" secondAttribute="leading" id="XES-Ns-hgv"/>
+                            <constraint firstItem="okh-DU-ez0" firstAttribute="leading" secondItem="plj-Rl-nkX" secondAttribute="leading" id="aya-KR-9i8"/>
                             <constraint firstAttribute="trailing" secondItem="EDa-R7-Awb" secondAttribute="trailing" id="crJ-Vz-gus"/>
+                            <constraint firstItem="okh-DU-ez0" firstAttribute="top" secondItem="TdU-fa-stn" secondAttribute="top" id="uaw-3v-78c"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="plj-Rl-nkX"/>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="cXh-Cx-8Vg" id="gp7-L5-cbb"/>
                         <outlet property="collectionView" destination="EDa-R7-Awb" id="g24-gk-Kgn"/>
+                        <outlet property="scopeControl" destination="aNj-wV-ceZ" id="MhT-VY-fl5"/>
+                        <outlet property="searchBar" destination="kZw-tc-NwW" id="Wvp-ge-FBz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OsU-F4-GmS" userLabel="First Responder" sceneMemberID="firstResponder"/>
