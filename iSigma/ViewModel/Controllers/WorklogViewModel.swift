@@ -73,15 +73,6 @@ class WorklogViewModel {
     func  heightForFooterInSection(_ section: Int) -> CGFloat {
         return 4
     }
-    
-    //    MARK: - SubmitView
-    func heightForSubmitView() -> CGFloat {
-        return 59
-    }
-    
-    func xForSubmitView() -> CGFloat {
-        return 0
-    }
 
     //    MARK: - Methods
     func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (String) -> ()){

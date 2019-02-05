@@ -9,16 +9,13 @@
 import UIKit
 
 class SubmitViewViewModel {
-    var viewOrigin: CGPoint
-    var viewSize: CGSize
     var viewBGColor: CGColor
-    
+    var viewHeightConstraintConst: CGFloat
     var buttonConstraintConst: CGFloat
     
-    init(origin: CGPoint, size: CGSize) {
-        self.viewOrigin = origin
-        self.viewSize = size
+    init() {
         self.viewBGColor = UIColor.clear.cgColor
+        self.viewHeightConstraintConst = 58.0
         self.buttonConstraintConst = 9.0
     }
 }

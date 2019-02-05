@@ -16,8 +16,6 @@ class SubmitView: UIView {
     weak var viewModel: SubmitViewViewModel? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
-            self.frame.size = viewModel.viewSize
-            self.frame.origin = viewModel.viewOrigin
             self.layer.backgroundColor = viewModel.viewBGColor
             
             self.addSubview(submitButton)

@@ -195,24 +195,20 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     
     //    MARK: - Methods
     private func setSubmitView() {
-        guard let viewModel = viewModel else { return }
-        
-        let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
-        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
-        
-        let width : CGFloat = view.frame.width
-        let height : CGFloat = viewModel.heightForSubmitView()
-        let x : CGFloat = viewModel.xForSubmitView()
-        let y : CGFloat = view.frame.height - navBarHeight - UIApplication.shared.statusBarFrame.height - tabBarHeight - height
-        
         let submitView = SubmitView()
-        let submitViewModel = SubmitViewViewModel(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
+        let submitViewModel = SubmitViewViewModel()
         submitView.viewModel = submitViewModel
         
-        submitView.delegate = self
+        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         
-        view.addSubview(submitView)
-        view.bringSubviewToFront(submitView)
+        self.view.addSubview(submitView)
+        submitView.translatesAutoresizingMaskIntoConstraints = false
+        submitView.heightAnchor.constraint(equalToConstant: submitViewModel.viewHeightConstraintConst).isActive = true
+        submitView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -tabBarHeight).isActive = true
+        submitView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        submitView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        
+        submitView.delegate = self
     }
     
     private func setWarningCell(at indexPath: IndexPath) {
