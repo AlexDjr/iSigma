@@ -60,22 +60,7 @@ class LoginViewModel {
             return false
         }
     }
-    
-    func setTrue(forKey key: String) {
-        UserDefaults.standard.set(true, forKey: key)
-        UserDefaults.standard.synchronize()
-    }
-    
-    func setString(_ string: String, forKey key: String) {
-        UserDefaults.standard.set(string + "@diasoft.ru", forKey: key)
-        UserDefaults.standard.synchronize()
-    }
-    
-    func removeKey(_ key: String) {
-        UserDefaults.standard.removeObject(forKey: key)
-        UserDefaults.standard.synchronize()
-    }
-    
+
     func validatedString(_ characterSet: CharacterSet, _ text: String, _ range: NSRange, _ string: String) -> String {
         let validationSet = characterSet.inverted
         var newString = ""

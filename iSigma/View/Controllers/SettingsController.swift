@@ -16,7 +16,7 @@ class SettingsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = SettingsViewModel()
-        defaultWorklogType = Utils.getWorklogType(forKey: "settingsDefaultWorklogType")
+        defaultWorklogType = UserDefaults.getObject(ofType: WorklogType.self, forKey: "settingsDefaultWorklogType") as? WorklogType
     }
 
 
@@ -57,7 +57,7 @@ class SettingsController: UITableViewController {
         self.navigationController?.pushViewController(worklogTypesController, animated: true)
         worklogTypesController.callback = { result in
             self.defaultWorklogType = result
-            Utils.setObject(self.defaultWorklogType!, forKey: "settingsDefaultWorklogType")
+            UserDefaults.setObject(self.defaultWorklogType!, forKey: "settingsDefaultWorklogType")
             let indexPath = IndexPath(row: 0, section: 0)
             tableView.reloadRows(at: [indexPath], with: .none)
         }

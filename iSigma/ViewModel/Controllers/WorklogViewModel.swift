@@ -17,8 +17,8 @@ class WorklogViewModel {
     
     init(task: Task) {
         self.task = task
-        self.timePickerValue = "08:00"        
-        self.worklogType = Utils.getWorklogType(forKey: "settingsDefaultWorklogType")        
+        self.timePickerValue = "08:00"
+        self.worklogType = UserDefaults.getObject(ofType: WorklogType.self, forKey: "settingsDefaultWorklogType") as? WorklogType
         
         self.worklogDate = String.dateFormatter.string(from:Date())
     }

@@ -99,6 +99,7 @@
 		FAFD2E52220892E400DD1952 /* SettingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E51220892E400DD1952 /* SettingsCellViewModel.swift */; };
 		FAFD2E542208940700DD1952 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E532208940700DD1952 /* SettingsController.swift */; };
 		FAFD2E56220895B800DD1952 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E55220895B800DD1952 /* SettingsViewModel.swift */; };
+		FAFD2E5A2209CCB200DD1952 /* UserDefaults+setObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFD2E592209CCB200DD1952 /* UserDefaults+setObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -196,6 +197,7 @@
 		FAFD2E51220892E400DD1952 /* SettingsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellViewModel.swift; sourceTree = "<group>"; };
 		FAFD2E532208940700DD1952 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		FAFD2E55220895B800DD1952 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		FAFD2E592209CCB200DD1952 /* UserDefaults+setObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+setObject.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -374,6 +376,7 @@
 				FA6FC53421E8A0CE001BD85A /* UIAlertController+tintColor.swift */,
 				FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */,
 				FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */,
+				FAFD2E592209CCB200DD1952 /* UserDefaults+setObject.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 				FAFD2E4C2207423C00DD1952 /* AssigneesController.swift in Sources */,
 				FA6FC52F21E611D8001BD85A /* APIResponse.swift in Sources */,
 				FAD76B5C21C9583F0034F614 /* APITaskExtra.swift in Sources */,
+				FAFD2E5A2209CCB200DD1952 /* UserDefaults+setObject.swift in Sources */,
 				FA679A4221D11B0D00FA6B93 /* SubmitButton.swift in Sources */,
 				FAF5997C21D78B4D00A4F4B9 /* MonthView.swift in Sources */,
 				FAFA721621E4BD17001F0214 /* APITargetState.swift in Sources */,

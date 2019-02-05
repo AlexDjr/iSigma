@@ -96,20 +96,6 @@ class Utils {
         return loadingView
     }
     
-    static func setObject(_ object: WorklogType, forKey key: String) {
-        if let encoded = try? JSONEncoder().encode(object) {
-            UserDefaults.standard.set(encoded, forKey: key)
-        }
-    }
-    
-    static func getWorklogType(forKey key: String) -> WorklogType? {
-        var worklogType: WorklogType? = nil
-        if let objectData = UserDefaults.standard.data(forKey: key) {
-            worklogType = try? JSONDecoder().decode(WorklogType.self, from: objectData)
-        }
-        return worklogType
-    }
-    
     static let settingsSections = ["Списания"]
     static let settingsRows = [["Тип по умолчанию"]]
 }
