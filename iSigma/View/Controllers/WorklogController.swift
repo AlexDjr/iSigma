@@ -159,14 +159,14 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-    //    MARK: PickerDelegateProtocol
+    //    MARK: - PickerDelegateProtocol
     func pickerDidSelectRow(value: String) {
         сurrentPickerValue = value
         let indexPath = IndexPath(row: 0, section: 1)
         tableView.reloadRows(at: [indexPath], with: .none)
     }
     
-    //    MARK: SubmitDelegateProtocol
+    //    MARK: - SubmitDelegateProtocol
     func submitButtonAction() {
         if currentWorklogType == nil {
             setWarningCell(at: IndexPath(item: 2, section: 1))
@@ -193,7 +193,7 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-    //    MARK: Methods
+    //    MARK: - Methods
     private func setSubmitView() {
         guard let viewModel = viewModel else { return }
         

@@ -67,16 +67,16 @@ class WorklogViewModel {
     }
     
     func  heightForHeaderInSection(_ section: Int) -> CGFloat {
-        return 4
+        return 0.0001
     }
     
     func  heightForFooterInSection(_ section: Int) -> CGFloat {
-        return 0.0001
+        return 4
     }
     
     //    MARK: - SubmitView
     func heightForSubmitView() -> CGFloat {
-        return 54
+        return 59
     }
     
     func xForSubmitView() -> CGFloat {
