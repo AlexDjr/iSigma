@@ -1186,10 +1186,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="szc-yS-Bel">
-                                <rect key="frame" x="0.0" y="20" width="320" height="77"/>
+                                <rect key="frame" x="0.0" y="45" width="320" height="50"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="45t-no-LGA">
-                                        <rect key="frame" x="20" y="10" width="280" height="57"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dolphin" translatesAutoresizingMaskIntoConstraints="NO" id="45t-no-LGA">
+                                        <rect key="frame" x="20" y="10" width="280" height="30"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.69386887549999998" green="0.15620434280000001" blue="0.23320567610000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1197,7 +1197,7 @@
                                     <constraint firstAttribute="trailing" secondItem="45t-no-LGA" secondAttribute="trailing" constant="20" id="A80-ZX-9lH"/>
                                     <constraint firstItem="45t-no-LGA" firstAttribute="top" secondItem="szc-yS-Bel" secondAttribute="top" constant="10" id="MPm-ko-g1q"/>
                                     <constraint firstAttribute="bottom" secondItem="45t-no-LGA" secondAttribute="bottom" constant="10" id="PeG-ua-uXb"/>
-                                    <constraint firstAttribute="height" constant="77" id="axH-q6-0lv"/>
+                                    <constraint firstAttribute="height" constant="50" id="axH-q6-0lv"/>
                                     <constraint firstItem="45t-no-LGA" firstAttribute="leading" secondItem="szc-yS-Bel" secondAttribute="leading" constant="20" id="kuf-fy-lYk"/>
                                 </constraints>
                             </view>
@@ -1300,7 +1300,7 @@
                             <constraint firstItem="abw-QN-KLH" firstAttribute="top" secondItem="33I-ww-m3H" secondAttribute="bottom" constant="50" id="bqB-DV-Vt9"/>
                             <constraint firstItem="abw-QN-KLH" firstAttribute="top" secondItem="asU-R7-kCj" secondAttribute="bottom" constant="50" id="gSs-eL-4m9"/>
                             <constraint firstItem="aPz-vT-8Yy" firstAttribute="centerX" secondItem="oxb-LL-nZx" secondAttribute="centerX" id="jjc-oh-cKD"/>
-                            <constraint firstItem="szc-yS-Bel" firstAttribute="top" secondItem="ySu-Fs-8oR" secondAttribute="top" id="kFL-5W-Kwf"/>
+                            <constraint firstItem="szc-yS-Bel" firstAttribute="top" secondItem="ySu-Fs-8oR" secondAttribute="top" constant="25" id="kFL-5W-Kwf"/>
                             <constraint firstItem="ySu-Fs-8oR" firstAttribute="trailing" secondItem="XTN-N6-sZb" secondAttribute="trailing" constant="40" id="kmv-ee-4W7"/>
                             <constraint firstItem="XTN-N6-sZb" firstAttribute="top" secondItem="Gs3-5I-EGf" secondAttribute="bottom" constant="40" id="qX2-ph-1yh"/>
                             <constraint firstItem="ySu-Fs-8oR" firstAttribute="trailing" secondItem="szc-yS-Bel" secondAttribute="trailing" id="tOt-fz-A0A"/>
@@ -1456,8 +1456,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="dolphin" width="60.479999542236328" height="40.319999694824219"/>
         <image name="error" width="75" height="75"/>
-        <image name="logo" width="77.279998779296875" height="77.279998779296875"/>
         <image name="tabBar0" width="37.5" height="37.5"/>
         <image name="tabBar1" width="40" height="40"/>
         <image name="tabBar2" width="40" height="40"/>
