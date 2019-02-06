@@ -101,7 +101,7 @@ class TasksViewModel {
         }
     }
     
-    func putTaskTransition(taskId: Int, from: Int, to: Int, assignedEmail: String, completion: @escaping (Bool, String) -> ()) {
+    func putTaskTransition(taskId: Int, from: Int, to: Int, assignedEmail: String?, completion: @escaping (Bool, String) -> ()) {
         NetworkManager.shared.putTaskTransition(taskId: taskId, from: from, to: to, assignedEmail: assignedEmail) { isSuccess, details, errorDescription in
             if errorDescription != nil {
                 self.onErrorCallback?(errorDescription!)

@@ -187,6 +187,9 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                         if indexAssignee == 2 {
                             self.present(actionSheetChooseAssignee, animated: true, completion: nil)
                         }
+                        if indexAssignee == 3 {
+                            self.changeTaskState(assignedEmail: nil, title: title, taskStates: taskStates, indexState: indexStates)
+                        }
                     }
                     completion(false)
                 }
@@ -205,8 +208,10 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             //    sets actions (elements) for actionSheetAssignee
             let sameAssigneeAction = UIAlertAction(title: "Не изменять", style: .default, handler: handlerAssignee)
             let otherAssigneeAction = UIAlertAction(title: "Изменить", style: .default, handler: handlerAssignee)
+            let autoAssigneeAction = UIAlertAction(title: "Автоматически", style: .default, handler: handlerAssignee)
             actionSheetAssignee.addAction(sameAssigneeAction)
             actionSheetAssignee.addAction(otherAssigneeAction)
+            actionSheetAssignee.addAction(autoAssigneeAction)
             
             self.present(actionSheetStates, animated: true, completion: nil)
         }
@@ -245,7 +250,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func changeTaskState(assignedEmail: String, title: String, taskStates: [TaskState], indexState: Int) {
+    private func changeTaskState(assignedEmail: String?, title: String, taskStates: [TaskState], indexState: Int) {
         guard let viewModel = self.viewModel else { return }
         let task = viewModel.viewModelForSelectedItem()!.task!
         
@@ -273,11 +278,16 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         
         viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState, assignedEmail: assignedEmail) { isSuccess, details in
             if isSuccess {
+                let currentTasksCount = viewModel.tasks?.count ?? 0
                 viewModel.getTasksForCurrentUser{ tasks in
                     DispatchQueue.main.async {
-                        self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
+                        if currentTasksCount > tasks?.count ?? 0 {
+                            self.tableView.deleteRows(at: [viewModel.selectedIndexPath!], with: .left)
+                        } else {
+                            self.tableView.reloadRows(at: [viewModel.selectedIndexPath!], with: rowAnimation!)
+                            self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
+                        }
                         self.removeLoadingScreen()
-                        self.highlightCell(at: viewModel.selectedIndexPath!, for: actionIndex)
                     }
                 }
             } else {
