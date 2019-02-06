@@ -13,7 +13,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     @IBOutlet weak var tableView: UITableView!
     
     var viewModel: TasksViewModel?
-    var selectedTaskStateIndex: Int?
+    var selectedTaskState: TaskState?
 
     let spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
@@ -156,10 +156,10 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             actionSheetChooseAssignee.addAction(cancelAction)
             let assigneesController = self.setupCollectionViewController(for: actionSheetChooseAssignee)
             assigneesController.callback = { result in
-                if let indexStates = self.selectedTaskStateIndex {
+                if let selectedTaskState = self.selectedTaskState {
                     let employee = result as Employee
                     if employee.email != "" {
-                        self.changeTaskState(assignedEmail: employee.email, title: title, taskStates: taskStates, indexState: indexStates)
+                        self.changeTaskState(assignedEmail: employee.email, title: title, taskState: selectedTaskState)
                         self.dismiss(animated: true, completion: nil)
                     } else {
                         self.dismiss(animated: true, completion: nil)
@@ -173,7 +173,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             let handlerStates = { (action: UIAlertAction!) -> () in
                 if let index = actionSheetStates.actions.firstIndex(where: {$0 === action}) {
                     let selectedTaskState = taskStates[index - 1]
-                    self.selectedTaskStateIndex = index
+                    self.selectedTaskState = selectedTaskState
                     if selectedTaskState.isFinal {
                         self.present(actionSheetConfirmFinal, animated: true, completion: nil)
                     } else {
@@ -184,10 +184,10 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             
             //    sets handler logic for element of actionSheetConfirmFinal
             let handlerConfirmFinal = { (action: UIAlertAction!) -> () in
-                if let indexStates = self.selectedTaskStateIndex {
+                if let selectedTaskState = self.selectedTaskState {
                     if let indexAssignee = actionSheetConfirmFinal.actions.firstIndex(where: {$0 === action}) {
                         if indexAssignee == 1 {
-                            self.changeTaskState(assignedEmail: nil, title: title, taskStates: taskStates, indexState: indexStates)
+                            self.changeTaskState(assignedEmail: nil, title: title, taskState: selectedTaskState)
                         }
                         if indexAssignee == 2 {
                             self.dismiss(animated: true, completion: nil)
@@ -199,11 +199,11 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             
             //    sets handler logic for element of actionSheetAssignee
             let handlerAssignee = { (action: UIAlertAction!) -> () in
-                if let indexStates = self.selectedTaskStateIndex {
+                if let selectedTaskState = self.selectedTaskState {
                     if let indexAssignee = actionSheetAssignee.actions.firstIndex(where: {$0 === action}) {
                         if indexAssignee == 1 {
                             if let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") {
-                                self.changeTaskState(assignedEmail: currentUserEmail, title: title, taskStates: taskStates, indexState: indexStates)
+                                self.changeTaskState(assignedEmail: currentUserEmail, title: title, taskState: selectedTaskState)
                             } else {
                                 let okAction = UIAlertAction(title: "ОК", style: .default)
                                 self.presentAlert(title: "Ошибка!", message: "Неудалось определить текущего пользователя", actions: okAction)
@@ -213,7 +213,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                             self.present(actionSheetChooseAssignee, animated: true, completion: nil)
                         }
                         if indexAssignee == 3 {
-                            self.changeTaskState(assignedEmail: nil, title: title, taskStates: taskStates, indexState: indexStates)
+                            self.changeTaskState(assignedEmail: nil, title: title, taskState: selectedTaskState)
                         }
                     }
                     completion(false)
@@ -222,10 +222,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             
             //    sets actions (elements) for actionSheetStates
             for taskState in taskStates {
-                var title = taskState.name
-                if taskState.isFinal {
-                    title = "⚑ " + title
-                }
+                let title = taskState.isFinal ? "⚑ " + taskState.name : taskState.name
                 let actionState = UIAlertAction(title: title, style: .default, handler: handlerStates)
                 actionSheetStates.addAction(actionState)
             }
@@ -281,12 +278,12 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func changeTaskState(assignedEmail: String?, title: String, taskStates: [TaskState], indexState: Int) {
+    private func changeTaskState(assignedEmail: String?, title: String, taskState: TaskState) {
         guard let viewModel = self.viewModel else { return }
         let task = viewModel.viewModelForSelectedItem()!.task!
         
-        let currentTaskState = task.state!.serverId
-        let nextTaskState = taskStates[indexState - 1].serverId
+        let currentTaskStateId = task.state!.serverId
+        let nextTaskStateId = taskState.serverId
         
         var rowAnimation: UITableView.RowAnimation? = nil
         if title == "Переход \n вперед" {
@@ -307,7 +304,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             }
         }
         
-        viewModel.putTaskTransition(taskId: task.id, from: currentTaskState, to: nextTaskState, assignedEmail: assignedEmail) { isSuccess, details in
+        viewModel.putTaskTransition(taskId: task.id, from: currentTaskStateId, to: nextTaskStateId, assignedEmail: assignedEmail) { isSuccess, details in
             if isSuccess {
                 let currentTasksCount = viewModel.tasks?.count ?? 0
                 viewModel.getTasksForCurrentUser{ tasks in
