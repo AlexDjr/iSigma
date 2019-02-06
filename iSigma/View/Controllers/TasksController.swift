@@ -131,6 +131,8 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     //    MARK: - Methods
     func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
         let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, completion) in
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+            
             //    sets action sheet with task states
             var actionSheetStatesMessage = ""
             if taskStates.isEmpty {
@@ -139,12 +141,15 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 actionSheetStatesMessage = "Выберите новое состояние задачи"
             }
             let actionSheetStates = UIAlertController(title: nil, message: actionSheetStatesMessage, preferredStyle: .actionSheet)
-            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
             actionSheetStates.addAction(cancelAction)
             
             //    sets action sheet with task assignee options
             let actionSheetAssignee = UIAlertController(title: nil, message: "Изменить ответственного по задаче?", preferredStyle: .actionSheet)
             actionSheetAssignee.addAction(cancelAction)
+            
+            //    sets action sheet with confirming transition for final states
+            let actionSheetConfirmFinal = UIAlertController(title: "Перевести в конечное состояние?", message: "Задача станет недоступной для изменений", preferredStyle: .actionSheet)
+            actionSheetConfirmFinal.addAction(cancelAction)
             
             //    sets action sheet with task assignee names
             let actionSheetChooseAssignee = UIAlertController(title: nil, message: "Выберите ответственного", preferredStyle: .actionSheet)
@@ -167,8 +172,28 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             //    sets handler logic for element of actionSheetStates
             let handlerStates = { (action: UIAlertAction!) -> () in
                 if let index = actionSheetStates.actions.firstIndex(where: {$0 === action}) {
+                    let selectedTaskState = taskStates[index - 1]
                     self.selectedTaskStateIndex = index
-                    self.present(actionSheetAssignee, animated: true, completion: nil)
+                    if selectedTaskState.isFinal {
+                        self.present(actionSheetConfirmFinal, animated: true, completion: nil)
+                    } else {
+                        self.present(actionSheetAssignee, animated: true, completion: nil)
+                    }
+                }
+            }
+            
+            //    sets handler logic for element of actionSheetConfirmFinal
+            let handlerConfirmFinal = { (action: UIAlertAction!) -> () in
+                if let indexStates = self.selectedTaskStateIndex {
+                    if let indexAssignee = actionSheetConfirmFinal.actions.firstIndex(where: {$0 === action}) {
+                        if indexAssignee == 1 {
+                            self.changeTaskState(assignedEmail: nil, title: title, taskStates: taskStates, indexState: indexStates)
+                        }
+                        if indexAssignee == 2 {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                    completion(false)
                 }
             }
             
@@ -204,6 +229,12 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 let actionState = UIAlertAction(title: title, style: .default, handler: handlerStates)
                 actionSheetStates.addAction(actionState)
             }
+            
+            //    sets actions (elements) for actionSheetConfirmFinal
+            let yesConfirmFinalAction = UIAlertAction(title: "Да", style: .default, handler: handlerConfirmFinal)
+            let noConfirmFinalAction = UIAlertAction(title: "Нет", style: .default, handler: handlerConfirmFinal)
+            actionSheetConfirmFinal.addAction(yesConfirmFinalAction)
+            actionSheetConfirmFinal.addAction(noConfirmFinalAction)
             
             //    sets actions (elements) for actionSheetAssignee
             let sameAssigneeAction = UIAlertAction(title: "Не изменять", style: .default, handler: handlerAssignee)
