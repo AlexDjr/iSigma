@@ -70,6 +70,7 @@
 		FAD76B9F21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76B9E21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift */; };
 		FAD76BA121CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76BA021CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift */; };
 		FAD76BA721CFE4810034F614 /* Worklog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD76BA621CFE4810034F614 /* Worklog.swift */; };
+		FADF9030220C2141006AC13C /* UIView+activityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADF902F220C2140006AC13C /* UIView+activityIndicator.swift */; };
 		FAF5996A21D5130000A4F4B9 /* SubmitDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996921D5130000A4F4B9 /* SubmitDelegateProtocol.swift */; };
 		FAF5996C21D761BC00A4F4B9 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996B21D761BC00A4F4B9 /* Proxy.swift */; };
 		FAF5996E21D76E8500A4F4B9 /* CachableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF5996D21D76E8500A4F4B9 /* CachableProtocol.swift */; };
@@ -168,6 +169,7 @@
 		FAD76B9E21CE4F6B0034F614 /* WorklogDetailsTypeCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsTypeCellViewModel.swift; sourceTree = "<group>"; };
 		FAD76BA021CE4F7E0034F614 /* WorklogDetailsDateCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorklogDetailsDateCellViewModel.swift; sourceTree = "<group>"; };
 		FAD76BA621CFE4810034F614 /* Worklog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worklog.swift; sourceTree = "<group>"; };
+		FADF902F220C2140006AC13C /* UIView+activityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+activityIndicator.swift"; sourceTree = "<group>"; };
 		FAF5996921D5130000A4F4B9 /* SubmitDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitDelegateProtocol.swift; sourceTree = "<group>"; };
 		FAF5996B21D761BC00A4F4B9 /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		FAF5996D21D76E8500A4F4B9 /* CachableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachableProtocol.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				FAC9035521F5F51F00FBE62B /* UINavigationController+alert.swift */,
 				FAFB372A21F8BB490062C3E3 /* UIView+searchSubview.swift */,
 				FAFD2E592209CCB200DD1952 /* UserDefaults+setObject.swift */,
+				FADF902F220C2140006AC13C /* UIView+activityIndicator.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -552,6 +555,7 @@
 				FAD76B9621CD3A270034F614 /* WorklogTimePickerCellViewModel.swift in Sources */,
 				FA679A3C21D0E93B00FA6B93 /* SubmitView.swift in Sources */,
 				FAFB372D21FB01080062C3E3 /* Utils.swift in Sources */,
+				FADF9030220C2141006AC13C /* UIView+activityIndicator.swift in Sources */,
 				FA6FC53721E8D093001BD85A /* TaskInfoViewModel.swift in Sources */,
 				FA2230CC21D3C50700D602A7 /* APIWorklogType.swift in Sources */,
 				FAD76B8821CD24DD0034F614 /* WorklogTaskCell.swift in Sources */,

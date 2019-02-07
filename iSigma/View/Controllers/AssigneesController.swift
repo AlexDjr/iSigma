@@ -17,18 +17,6 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
     
     var viewModel: AssigneesViewModel?
     var callback: ((Employee) -> ())?
-    let spinner: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView()
-        view.style = .gray
-        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        view.hidesWhenStopped = true
-        return view
-    }()
-    var loadingView : UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
     
     private var searchController = UISearchController(searchResultsController: nil)
     private var searchBarIsEmpty: Bool {
@@ -128,18 +116,14 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
     }
 
     private func setLoadingScreen() {
-        spinner.startAnimating()
-        loadingView = Utils.getLoadingView(view: view, spinner: spinner)
+        self.view.addSubview(UIView().addActivityIndicator(view: self.view))
         collectionView.isScrollEnabled = false
-        collectionView.alpha = 0.0
     }
     
     private func removeLoadingScreen(_ isOk: Bool) {
-        spinner.stopAnimating()
-        loadingView.isHidden = true
+        Utils.removeLoadingView(from: self.view)
         if isOk {
             collectionView.isScrollEnabled = true
-            collectionView.alpha = 1.0
         }
     }
     
