@@ -116,12 +116,12 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
     }
 
     private func setLoadingScreen() {
-        self.view.addSubview(UIView().addActivityIndicator(view: self.view))
+        view.addActivityIndicator()
         collectionView.isScrollEnabled = false
     }
     
     private func removeLoadingScreen(_ isOk: Bool) {
-        Utils.removeLoadingView(from: self.view)
+        view.removeActivityIndicator()
         if isOk {
             collectionView.isScrollEnabled = true
         }

@@ -78,10 +78,6 @@ class Utils {
         UIApplication.shared.open(email)
     }
     
-    static func removeLoadingView(from view: UIView){
-        view.subviews.last?.removeFromSuperview()
-    }
-    
     static let settingsSections = ["Списания"]
     static let settingsRows = [["Тип по умолчанию"]]
 }

@@ -239,13 +239,13 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     private func setLoadingScreen() {
-        self.view.addSubview(UIView().addActivityIndicator(view: self.view))
+        view.addActivityIndicator()
         tableView.isScrollEnabled = false
         tableView.alpha = 0.3
     }
     
     private func removeLoadingScreen() {
-        Utils.removeLoadingView(from: self.view)
+        view.removeActivityIndicator()
         tableView.isScrollEnabled = true
         tableView.alpha = 1.0
     }

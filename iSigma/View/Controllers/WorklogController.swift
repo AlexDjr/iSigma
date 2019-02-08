@@ -207,12 +207,12 @@ class WorklogController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     private func setLoadingScreen() {
-        self.view.addSubview(UIView().addActivityIndicator(view: self.view))
+        view.addActivityIndicator()
         tableView.isScrollEnabled = false
     }
     
     private func removeLoadingScreen() {
-        Utils.removeLoadingView(from: self.view)
+        view.removeActivityIndicator()
         tableView.isScrollEnabled = true
     }
 

@@ -119,14 +119,14 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     private func setLoadingScreen() {
-        self.view.addSubview(UIView().addActivityIndicator(view: self.view))
+        view.addActivityIndicator()
         tableView.isScrollEnabled = false
         tableView.alpha = 0.0
         
     }
     
     private func removeLoadingScreen(_ isOk: Bool) {
-        Utils.removeLoadingView(from: self.view)
+        view.removeActivityIndicator()
         if isOk {
             tableView.isScrollEnabled = true
             tableView.alpha = 1.0
