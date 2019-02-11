@@ -33,7 +33,7 @@ class LoginViewModel {
     }
     
     func authToken(withPin pin: String, completion: @escaping () -> ())  {
-        NetworkManager.shared.authToken(withPin: pin) { errorDescription in
+        NetworkManager.shared.authToken(withPin: pin, withRefreshToken: nil) { errorDescription in
             if errorDescription != nil {
                 self.onErrorCallback?(errorDescription!)
             } else {

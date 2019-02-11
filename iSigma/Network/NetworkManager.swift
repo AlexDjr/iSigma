@@ -83,14 +83,23 @@ class NetworkManager {
         }
     }
     
-    func authToken(withPin pin: String, completion: @escaping (String?) -> ()) {
-        guard let pinToken = pinToken else { return }
+    func authToken(withPin pin: String?, withRefreshToken refreshToken: String?, completion: @escaping (String?) -> ()) {
+        if pin == nil && refreshToken == nil { return }
+        
         let url = URL(string: "http://webtst:7878/api/ems/auth/token")!
         
         var request = URLRequest(url: url)
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-        let postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=pin&pin=\(pin)&token=\(pinToken)"
+        
+        var postString = ""
+        if let pin = pin {
+            guard let pinToken = pinToken else { return }
+            postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=pin&pin=\(pin)&token=\(pinToken)"
+        }
+        if let refreshToken = refreshToken {
+            postString = "client_id=\(appName)&client_secret=\(clientSecret)&grant_type=refresh_token&refresh_token=\(refreshToken)"
+        }
         request.httpBody = postString.data(using: .utf8)
         
         fetchData(fromRequest: request) { data, statusCode, errorDescription in
@@ -139,7 +148,18 @@ class NetworkManager {
                 if statusCode == 200 {
                     completion(true, nil)
                 } else {
-                    completion(false, nil)
+                    //    if accessToken is expired trying to ask for new one with refreshToken
+                    if let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") {
+                        self.authToken(withPin: nil, withRefreshToken: refreshToken) { errorDescription in
+                            if errorDescription != nil {
+                                completion(false, nil)
+                            } else {
+                                completion(true, nil)
+                            }
+                        }
+                    } else {
+                        completion(false, nil)
+                    }
                 }
             }
         }
