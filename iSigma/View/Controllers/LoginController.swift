@@ -138,6 +138,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         viewModel.authCheck { isOk in
             self.stopSpinner()
+            self.hideError()
             
             if isOk && viewModel.isLoggedIn() {
                 self.openApp()
@@ -192,6 +193,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.errorImage.alpha = 1.0
                 self.error.alpha = 1.0
                 self.errorDescription.alpha = 1.0
+            }
+        }
+    }
+    
+    fileprivate func hideError() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5) {
+                self.errorImage.alpha = 0.0
+                self.error.alpha = 0.0
+                self.errorDescription.alpha = 0.0
             }
         }
     }
