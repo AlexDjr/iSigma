@@ -12,7 +12,7 @@ extension UIView {
     
     func addActivityIndicator() {
         let view = UIView()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.7)
         
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false

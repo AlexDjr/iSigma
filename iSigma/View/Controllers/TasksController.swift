@@ -241,13 +241,11 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     private func setLoadingScreen() {
         view.addActivityIndicator()
         tableView.isScrollEnabled = false
-        tableView.alpha = 0.3
     }
     
     private func removeLoadingScreen() {
         view.removeActivityIndicator()
         tableView.isScrollEnabled = true
-        tableView.alpha = 1.0
     }
     
     private func highlightCell(at indexPath: IndexPath, for index: Int) {
