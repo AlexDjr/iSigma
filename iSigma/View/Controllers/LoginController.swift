@@ -258,7 +258,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     @objc fileprivate func appWillReturnFromBackground() {
-        setupView()
+        guard let isLoggedIn = self.viewModel?.isLoggedIn() else { return }
+        if !isLoggedIn {
+            setupView()
+        }
     }
     
 }

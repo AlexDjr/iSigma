@@ -77,7 +77,7 @@ class TaskCellViewModel : CellViewModelProtocol {
             
             priorityViewIsHidden = false
             
-            if task.priority == 2 {
+            if task.priority == 1 {
                 priorityViewBGColor = AppStyle.attentionPinkColor.cgColor
                 priorityTextColor = AppStyle.whiteTextColor
             } else {
