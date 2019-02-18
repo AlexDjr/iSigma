@@ -525,6 +525,58 @@ class NetworkManager {
         }
     }
     
+    func putTaskUpdate(taskId: Int, assigneeEmail: String, completion: @escaping (Bool, String?, String?) -> ()) {
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
+        let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/update")!
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "PUT"
+        let parameters = ["username": "",
+                          "notes": "",
+                          "assignee": assigneeEmail,
+                          "subject": "",
+                          "solution": "",
+                          "description": "",
+                          "options": ["description_append": false,
+                                      "solution_append": false,
+                                      "assignee_substitute": false]
+                        ] as [String : Any]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        } catch {
+            completion(false, nil, "Ошибка обработки JSON\n\(#function)")
+        }
+        
+        fetchData(fromRequest: request) { data, statusCode, errorDescription in
+            if let errorDescription = errorDescription {
+                completion(false, nil, errorDescription)
+            } else {
+                guard let data = data, let statusCode = statusCode else { return }
+                if statusCode == 200 {
+                    do {
+                        let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+                        let success = apiResponse.result.success
+                        let details = apiResponse.result.details
+                        completion(success, details, nil)
+                    } catch {
+                        completion(false, nil, "Ошибка обработки JSON\n\(#function)")
+                    }
+                } else {
+                    var errorDescription = ""
+                    if statusCode == 400 {
+                        errorDescription = "Неверные параметры запроса"
+                    } else {
+                        errorDescription = "Ошибка \(statusCode). \(self.getErrorDescription(forCode: statusCode))"
+                    }
+                    completion(false, nil, errorDescription)
+                }
+            }
+        }
+        
+    }
+    
     //    MARK: - Methods
     private func getErrorDescription(forCode code: Int) -> String {
         switch code {

@@ -15,6 +15,13 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     var viewModel: TasksViewModel?
     var selectedTaskState: TaskState?
     
+    enum SwipeAction: String {
+        case forward = "Переход \n вперед"
+        case backward = "Переход \n назад"
+        case changeAssignee = "Смена \n ответств. "
+        case worklog = "Списание \n"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,15 +74,19 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         //    so in case of error row couldn't be swiped right at all
         viewModel.taskStates(forIndexPath: indexPath) { isSuccess, taskStates in
             if isSuccess {
-                let transitForward = self.getContextualAction(title: "Переход \n вперед", taskStates: taskStates![0])
+                let transitForward = self.getContextualAction(swipeAction: .forward, taskStates: taskStates![0])
                 transitForward.backgroundColor = AppStyle.transitForwardColor
                 transitForward.image = AppStyle.transitForwardImage
                 
-                let transitBackward = self.getContextualAction(title: "Переход \n назад", taskStates: taskStates![1])
+                let transitBackward = self.getContextualAction(swipeAction: .backward, taskStates: taskStates![1])
                 transitBackward.backgroundColor = AppStyle.transitBackwardColor
                 transitBackward.image = AppStyle.transitBackwardImage
                 
-                config = UISwipeActionsConfiguration(actions: [transitBackward, transitForward])
+                let changeAssignee = self.getContextualAction(swipeAction: .changeAssignee, taskStates: nil)
+                changeAssignee.backgroundColor = AppStyle.lightTextColor
+                changeAssignee.image = AppStyle.changeAssigneeImage
+                
+                config = UISwipeActionsConfiguration(actions: [transitBackward, changeAssignee, transitForward])
                 config!.performsFirstActionWithFullSwipe = false
             } else {
                 let okAction = UIAlertAction(title: "ОК", style: .default)
@@ -116,38 +127,122 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     //    MARK: - Methods
-    func getContextualAction(title: String, taskStates: [TaskState]) -> UIContextualAction {
-        let contextualAction = UIContextualAction(style: .normal, title: title) { (action, view, completion) in
+    func getContextualAction(swipeAction: SwipeAction, taskStates: [TaskState]?) -> UIContextualAction {
+        let contextualAction = UIContextualAction(style: .normal, title: swipeAction.rawValue) { (action, view, completion) in
+            
+            let taskStatesAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let changeAssigneeAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let confirmFinalAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let selectAssigneeAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
             
-            //    sets action sheet with task states
-            var actionSheetStatesMessage = ""
-            if taskStates.isEmpty {
-                actionSheetStatesMessage = "Нет доступных состояний"
-            } else {
-                actionSheetStatesMessage = "Выберите новое состояние задачи"
+            //    "Task states" step
+            if let taskStates = taskStates {
+                let handlerStates = { (action: UIAlertAction!) -> () in
+                    if let index = taskStatesAlert.actions.firstIndex(where: {$0 === action}) {
+                        let selectedTaskState = taskStates[index]
+                        self.selectedTaskState = selectedTaskState
+                        if selectedTaskState.isFinal {
+                            self.present(confirmFinalAlert, animated: true, completion: nil)
+                        } else {
+                            self.present(changeAssigneeAlert, animated: true, completion: nil)
+                        }
+                    }
+                }
+                
+                var taskStatesMessage = ""
+                if taskStates.isEmpty {
+                    taskStatesMessage = "Нет доступных состояний"
+                } else {
+                    taskStatesMessage = "Выберите новое состояние задачи"
+                }
+                taskStatesAlert.message = taskStatesMessage
+                
+                for taskState in taskStates {
+                    let title = taskState.isFinal ? "⚑ " + taskState.name : taskState.name
+                    let stateAction = UIAlertAction(title: title, style: .default, handler: handlerStates)
+                    taskStatesAlert.addAction(stateAction)
+                }
+                taskStatesAlert.addAction(cancelAction)
             }
-            let actionSheetStates = UIAlertController(title: nil, message: actionSheetStatesMessage, preferredStyle: .actionSheet)
-            actionSheetStates.addAction(cancelAction)
             
-            //    sets action sheet with task assignee options
-            let actionSheetAssignee = UIAlertController(title: nil, message: "Изменить ответственного по задаче?", preferredStyle: .actionSheet)
-            actionSheetAssignee.addAction(cancelAction)
-            
-            //    sets action sheet with confirming transition for final states
-            let actionSheetConfirmFinal = UIAlertController(title: "Перевести в конечное состояние?", message: "Задача станет недоступной для изменений", preferredStyle: .actionSheet)
-            actionSheetConfirmFinal.addAction(cancelAction)
-            
-            //    sets action sheet with task assignee names
-            let actionSheetChooseAssignee = UIAlertController(title: nil, message: "Выберите ответственного", preferredStyle: .actionSheet)
-            actionSheetChooseAssignee.addAction(cancelAction)
-            let assigneesController = self.setupCollectionViewController(for: actionSheetChooseAssignee)
-            assigneesController.callback = { result in
+            //    "Change assignee" step
+            let handlerAssignee = { (action: UIAlertAction!) -> () in
                 if let selectedTaskState = self.selectedTaskState {
-                    let employee = result as Employee
-                    if employee.email != "" {
-                        self.changeTaskState(assignedEmail: employee.email, title: title, taskState: selectedTaskState)
+                    if let indexAssignee = changeAssigneeAlert.actions.firstIndex(where: {$0 === action}) {
+                        if indexAssignee == 0 {
+                            if let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") {
+                                self.changeTaskState(assignedEmail: currentUserEmail, swipeAction: swipeAction, taskState: selectedTaskState)
+                            } else {
+                                let okAction = UIAlertAction(title: "ОК", style: .default)
+                                self.presentAlert(title: "Ошибка!", message: "Неудалось определить текущего пользователя", actions: okAction)
+                            }
+                        }
+                        if indexAssignee == 1 {
+                            self.present(selectAssigneeAlert, animated: true, completion: nil)
+                        }
+                        if indexAssignee == 2 {
+                            self.changeTaskState(assignedEmail: nil, swipeAction: swipeAction, taskState: selectedTaskState)
+                        }
+                    }
+                    completion(false)
+                }
+            }
+            
+            changeAssigneeAlert.message = "Изменить ответственного по задаче?"
+            let sameAssigneeAction = UIAlertAction(title: "Не изменять", style: .default, handler: handlerAssignee)
+            let otherAssigneeAction = UIAlertAction(title: "Изменить", style: .default, handler: handlerAssignee)
+            let autoAssigneeAction = UIAlertAction(title: "Автоматически", style: .default, handler: handlerAssignee)
+            changeAssigneeAlert.addAction(sameAssigneeAction)
+            changeAssigneeAlert.addAction(otherAssigneeAction)
+            changeAssigneeAlert.addAction(autoAssigneeAction)
+            changeAssigneeAlert.addAction(cancelAction)
+            
+            //    "Confirm final" step
+            let handlerConfirmFinal = { (action: UIAlertAction!) -> () in
+                if let selectedTaskState = self.selectedTaskState {
+                    if let indexAssignee = confirmFinalAlert.actions.firstIndex(where: {$0 === action}) {
+                        if indexAssignee == 0 {
+                            self.changeTaskState(assignedEmail: nil, swipeAction: swipeAction, taskState: selectedTaskState)
+                        }
+                        if indexAssignee == 1 {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                    completion(false)
+                }
+            }
+            
+            confirmFinalAlert.title = "Перевести в конечное состояние?"
+            confirmFinalAlert.message = "Задача станет недоступной для изменений"
+            let yesConfirmFinalAction = UIAlertAction(title: "Да", style: .default, handler: handlerConfirmFinal)
+            let noConfirmFinalAction = UIAlertAction(title: "Нет", style: .default, handler: handlerConfirmFinal)
+            confirmFinalAlert.addAction(yesConfirmFinalAction)
+            confirmFinalAlert.addAction(noConfirmFinalAction)
+            confirmFinalAlert.addAction(cancelAction)
+            
+            //    "Select assignee" step
+            selectAssigneeAlert.message = "Выберите ответственного"
+            selectAssigneeAlert.addAction(cancelAction)
+            let assigneesController = self.setupCollectionViewController(for: selectAssigneeAlert)
+            assigneesController.callback = { result in
+                let employee = result as Employee
+                if let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") {
+                    if employee.email == currentUserEmail {
                         self.dismiss(animated: true, completion: nil)
+                        let okAction = UIAlertAction(title: "ОК", style: .default)
+                        self.presentAlert(title: "Ошибка!", message: "Выбран текущий пользователь", actions: okAction)
+                    } else if employee.email != "" {
+                        if swipeAction == .changeAssignee {
+                            self.updateTask(assigneeEmail: employee.email)
+                            self.dismiss(animated: true, completion: nil)
+                        } else {
+                            if let selectedTaskState = self.selectedTaskState {
+                                self.changeTaskState(assignedEmail: employee.email, swipeAction: swipeAction, taskState: selectedTaskState)
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        }
                     } else {
                         self.dismiss(animated: true, completion: nil)
                         let okAction = UIAlertAction(title: "ОК", style: .default)
@@ -156,79 +251,13 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                 }
             }
             
-            //    sets handler logic for element of actionSheetStates
-            let handlerStates = { (action: UIAlertAction!) -> () in
-                if let index = actionSheetStates.actions.firstIndex(where: {$0 === action}) {
-                    let selectedTaskState = taskStates[index - 1]
-                    self.selectedTaskState = selectedTaskState
-                    if selectedTaskState.isFinal {
-                        self.present(actionSheetConfirmFinal, animated: true, completion: nil)
-                    } else {
-                        self.present(actionSheetAssignee, animated: true, completion: nil)
-                    }
-                }
+            //    defining first step to show
+            if swipeAction == .changeAssignee {
+                self.present(selectAssigneeAlert, animated: true, completion: nil)
+                completion(false)
+            } else {
+                self.present(taskStatesAlert, animated: true, completion: nil)
             }
-            
-            //    sets handler logic for element of actionSheetConfirmFinal
-            let handlerConfirmFinal = { (action: UIAlertAction!) -> () in
-                if let selectedTaskState = self.selectedTaskState {
-                    if let indexAssignee = actionSheetConfirmFinal.actions.firstIndex(where: {$0 === action}) {
-                        if indexAssignee == 1 {
-                            self.changeTaskState(assignedEmail: nil, title: title, taskState: selectedTaskState)
-                        }
-                        if indexAssignee == 2 {
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    }
-                    completion(false)
-                }
-            }
-            
-            //    sets handler logic for element of actionSheetAssignee
-            let handlerAssignee = { (action: UIAlertAction!) -> () in
-                if let selectedTaskState = self.selectedTaskState {
-                    if let indexAssignee = actionSheetAssignee.actions.firstIndex(where: {$0 === action}) {
-                        if indexAssignee == 1 {
-                            if let currentUserEmail = UserDefaults.standard.string(forKey: "currentUserEmail") {
-                                self.changeTaskState(assignedEmail: currentUserEmail, title: title, taskState: selectedTaskState)
-                            } else {
-                                let okAction = UIAlertAction(title: "ОК", style: .default)
-                                self.presentAlert(title: "Ошибка!", message: "Неудалось определить текущего пользователя", actions: okAction)
-                            }
-                        }
-                        if indexAssignee == 2 {
-                            self.present(actionSheetChooseAssignee, animated: true, completion: nil)
-                        }
-                        if indexAssignee == 3 {
-                            self.changeTaskState(assignedEmail: nil, title: title, taskState: selectedTaskState)
-                        }
-                    }
-                    completion(false)
-                }
-            }
-            
-            //    sets actions (elements) for actionSheetStates
-            for taskState in taskStates {
-                let title = taskState.isFinal ? "⚑ " + taskState.name : taskState.name
-                let actionState = UIAlertAction(title: title, style: .default, handler: handlerStates)
-                actionSheetStates.addAction(actionState)
-            }
-            
-            //    sets actions (elements) for actionSheetConfirmFinal
-            let yesConfirmFinalAction = UIAlertAction(title: "Да", style: .default, handler: handlerConfirmFinal)
-            let noConfirmFinalAction = UIAlertAction(title: "Нет", style: .default, handler: handlerConfirmFinal)
-            actionSheetConfirmFinal.addAction(yesConfirmFinalAction)
-            actionSheetConfirmFinal.addAction(noConfirmFinalAction)
-            
-            //    sets actions (elements) for actionSheetAssignee
-            let sameAssigneeAction = UIAlertAction(title: "Не изменять", style: .default, handler: handlerAssignee)
-            let otherAssigneeAction = UIAlertAction(title: "Изменить", style: .default, handler: handlerAssignee)
-            let autoAssigneeAction = UIAlertAction(title: "Автоматически", style: .default, handler: handlerAssignee)
-            actionSheetAssignee.addAction(sameAssigneeAction)
-            actionSheetAssignee.addAction(otherAssigneeAction)
-            actionSheetAssignee.addAction(autoAssigneeAction)
-            
-            self.present(actionSheetStates, animated: true, completion: nil)
         }
         return contextualAction
     }
@@ -261,7 +290,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    private func changeTaskState(assignedEmail: String?, title: String, taskState: TaskState) {
+    private func changeTaskState(assignedEmail: String?, swipeAction: SwipeAction, taskState: TaskState) {
         guard let viewModel = self.viewModel else { return }
         let task = viewModel.viewModelForSelectedItem()!.task!
         
@@ -269,7 +298,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         let nextTaskStateId = taskState.serverId
         
         var rowAnimation: UITableView.RowAnimation? = nil
-        if title == "Переход \n вперед" {
+        if swipeAction == .forward {
             rowAnimation = UITableView.RowAnimation(rawValue: 2)
         } else {
             rowAnimation = UITableView.RowAnimation(rawValue: 1)
@@ -300,6 +329,39 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
                         }
                         self.removeLoadingScreen()
                     }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let okAction = UIAlertAction(title: "ОК", style: .default)
+                    self.presentAlert(title: "Ошибка!", message: details, actions: okAction)
+                    self.removeLoadingScreen()
+                }
+            }
+        }
+    }
+    
+    private func updateTask(assigneeEmail: String) {
+        guard let viewModel = self.viewModel else { return }
+        let task = viewModel.viewModelForSelectedItem()!.task!
+        
+        self.setLoadingScreen()
+        
+        //    asks server to perform task transition (with checking for errors)
+        viewModel.onErrorCallback = { description in
+            DispatchQueue.main.async {
+                let okAction = UIAlertAction(title: "ОК", style: .default)
+                self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                self.removeLoadingScreen()
+            }
+        }
+        
+        viewModel.putTaskUpdate(taskId: task.id, assigneeEmail: assigneeEmail) { isSuccess, details in
+            if isSuccess {
+                DispatchQueue.main.async {
+                    //    manually deleting task from data source, because API method doesn't return updated list of tasks immediately
+                    viewModel.deleteTask(withId: task.id)
+                    self.tableView.deleteRows(at: [viewModel.selectedIndexPath!], with: .left)
+                    self.removeLoadingScreen()
                 }
             } else {
                 DispatchQueue.main.async {

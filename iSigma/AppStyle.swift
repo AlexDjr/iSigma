@@ -21,5 +21,6 @@ struct AppStyle {
     
     static var transitForwardImage = #imageLiteral(resourceName: "transitForward")
     static var transitBackwardImage = #imageLiteral(resourceName: "transitBackward")
+    static var changeAssigneeImage = #imageLiteral(resourceName: "changeAssignee")
     static var worklogImage = #imageLiteral(resourceName: "logWrite")
 }

@@ -101,6 +101,12 @@ class TasksViewModel {
         }
     }
     
+    func deleteTask(withId id: Int) {
+        if tasks != nil {
+            tasks = tasks!.filter { $0.id != id }
+        }
+    }
+    
     func putTaskTransition(taskId: Int, from: Int, to: Int, assignedEmail: String?, completion: @escaping (Bool, String) -> ()) {
         NetworkManager.shared.putTaskTransition(taskId: taskId, from: from, to: to, assignedEmail: assignedEmail) { isSuccess, details, errorDescription in
             if errorDescription != nil {
@@ -109,6 +115,20 @@ class TasksViewModel {
                 if isSuccess {
                     NetworkManager.shared.cache.removeObject(forKey: "tasks")
                     NetworkManager.shared.cache.removeObject(forKey: "taskStates+\(taskId)" as NSString)
+                    completion(true, details!)
+                } else {
+                    completion(false, details!)
+                }
+            }
+        }
+    }
+    
+    func putTaskUpdate(taskId: Int, assigneeEmail: String, completion: @escaping (Bool, String) -> ()) {
+        NetworkManager.shared.putTaskUpdate(taskId: taskId, assigneeEmail: assigneeEmail) { isSuccess, details, errorDescription in
+            if errorDescription != nil {
+                self.onErrorCallback?(errorDescription!)
+            } else {
+                if isSuccess {
                     completion(true, details!)
                 } else {
                     completion(false, details!)
