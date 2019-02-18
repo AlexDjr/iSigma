@@ -119,7 +119,7 @@ class EmployeesController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     private func setLoadingScreen() {
-        view.addActivityIndicator()
+        view.addActivityIndicator(withBlur: false)
         tableView.isScrollEnabled = false
         tableView.alpha = 0.0
         

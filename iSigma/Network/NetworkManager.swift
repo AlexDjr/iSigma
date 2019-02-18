@@ -310,7 +310,7 @@ class NetworkManager {
                         
                         for member in APIworklogTypes.members {
                             var worklogType = WorklogType(id: member.value, name: member.name, isOften: false)
-                            if member.name.oneOf(other: "Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
+                            if member.name.oneOf("Анализ", "Визирование", "Планирование", "Разработка", "Тестирование") {
                                 worklogType.isOften = true
                             }
                             worklogTypes.append(worklogType)

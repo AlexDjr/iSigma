@@ -10,9 +10,11 @@ import UIKit
 
 extension UIView {
     
-    func addActivityIndicator() {
+    func addActivityIndicator(withBlur: Bool) {
         let view = UIView()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.7)
+        if withBlur {
+            view.backgroundColor = UIColor.white.withAlphaComponent(0.7)
+        }
         
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false

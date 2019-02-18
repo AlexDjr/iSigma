@@ -9,7 +9,7 @@
 import Foundation
 
 extension Equatable {
-    func oneOf(other: Self...) -> Bool {
+    func oneOf(_ other: Self...) -> Bool {
         return other.contains(self)
     }
 }

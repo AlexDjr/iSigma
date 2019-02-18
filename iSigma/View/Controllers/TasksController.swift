@@ -98,7 +98,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let logWrite = UIContextualAction(style: .destructive, title: "Списание") { (action, view, completion) in
+        let worklog = UIContextualAction(style: .destructive, title: SwipeAction.worklog.rawValue) { (action, view, completion) in
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             let worklogController = storyboard.instantiateViewController(withIdentifier: "worklogController") as! WorklogController
             
@@ -109,10 +109,10 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
             self.navigationController?.pushViewController(worklogController, animated: true)
             completion(false)
         }
-        logWrite.backgroundColor = AppStyle.worklogColor
-        logWrite.image = AppStyle.worklogImage
+        worklog.backgroundColor = AppStyle.worklogColor
+        worklog.image = AppStyle.worklogImage
         
-        return UISwipeActionsConfiguration(actions: [logWrite])
+        return UISwipeActionsConfiguration(actions: [worklog])
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -268,7 +268,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     private func setLoadingScreen() {
-        view.addActivityIndicator()
+        view.addActivityIndicator(withBlur: true)
         tableView.isScrollEnabled = false
     }
     

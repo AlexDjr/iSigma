@@ -116,7 +116,7 @@ class AssigneesController: UIViewController, UICollectionViewDataSource, UIColle
     }
 
     private func setLoadingScreen() {
-        view.addActivityIndicator()
+        view.addActivityIndicator(withBlur: false)
         collectionView.isScrollEnabled = false
     }
     
