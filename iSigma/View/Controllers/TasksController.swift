@@ -27,10 +27,10 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         
         viewModel = TasksViewModel()
         
-        viewModel?.onErrorCallback = { description in
+        viewModel?.onErrorCallback = { [weak self] description in
             DispatchQueue.main.async {
                 let okAction = UIAlertAction(title: "ОК", style: .default)
-                self.presentAlert(title: "Ошибка!", message: description, actions: okAction)
+                self?.presentAlert(title: "Ошибка!", message: description, actions: okAction)
             }
         }
         
@@ -42,7 +42,7 @@ class TasksController: UIViewController, UITableViewDataSource, UITableViewDeleg
         NotificationCenter.default.addObserver(self, selector: #selector(appWillReturnFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
-    deinit {
+    override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
     }
     

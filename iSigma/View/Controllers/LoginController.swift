@@ -158,8 +158,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
             }, completion: { isFinished in
                 let viewModel = TasksViewModel()
                 
-                viewModel.onErrorCallback = { description in
-                    self.showAlert(description)
+                viewModel.onErrorCallback = { [weak self] description in
+                    self?.showAlert(description)
                 }
                 viewModel.getTasksForCurrentUser { tasks in
                     DispatchQueue.main.async {
