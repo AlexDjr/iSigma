@@ -42,6 +42,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.userTextField.delegate = self
         self.pinTextField.delegate = self
         
+        viewModel = LoginViewModel()
+        
         setupView()
         NotificationCenter.default.addObserver(self, selector: #selector(appWillReturnFromBackground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
@@ -126,7 +128,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         hideSteps()
         startSpinner()
         
-        viewModel = LoginViewModel()
         guard let viewModel = viewModel else { return }
         
         viewModel.onErrorCallback = { description in
@@ -163,10 +164,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 viewModel.getTasksForCurrentUser { tasks in
                     DispatchQueue.main.async {
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
                         let tabBarController = storyboard.instantiateViewController(withIdentifier: "tabBarController")
-                        appDelegate.window?.rootViewController = tabBarController
-                        appDelegate.window?.makeKeyAndVisible()
+                        UIApplication.shared.keyWindow?.rootViewController = tabBarController
                     }
                 }
             })
@@ -174,9 +173,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func startSpinner() {
-        spinner.startAnimating()
-        spinner.center = view.center
-        view.addSubview(spinner)
+        DispatchQueue.main.async {
+            self.spinner.startAnimating()
+            self.spinner.center = self.view.center
+            self.view.addSubview(self.spinner)
+        }
     }
     
     fileprivate func stopSpinner() {
@@ -208,15 +209,17 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     fileprivate func hideSteps() {
-        userView.alpha = 0.0
-        userDescription.alpha = 0.0
-        pinTextField.alpha = 0.0
-        pinDescriptionMain.alpha = 0.0
-        pinDescriptionSecondary.alpha = 0.0
-        errorImage.alpha = 0.0
-        error.alpha = 0.0
-        errorDescription.alpha = 0.0
-        submitButton.alpha = 0.0
+        DispatchQueue.main.async {
+            self.userView.alpha = 0.0
+            self.userDescription.alpha = 0.0
+            self.pinTextField.alpha = 0.0
+            self.pinDescriptionMain.alpha = 0.0
+            self.pinDescriptionSecondary.alpha = 0.0
+            self.errorImage.alpha = 0.0
+            self.error.alpha = 0.0
+            self.errorDescription.alpha = 0.0
+            self.submitButton.alpha = 0.0
+        }
     }
     
     fileprivate func showUserStep() {
@@ -258,9 +261,29 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     @objc fileprivate func appWillReturnFromBackground() {
-        guard let isLoggedIn = self.viewModel?.isLoggedIn() else { return }
-        if !isLoggedIn {
-            setupView()
+        if viewModel == nil {
+            viewModel = LoginViewModel()
+        }
+
+        
+        viewModel?.onErrorCallback = { _ in
+            DispatchQueue.main.async {
+                UIApplication.shared.keyWindow?.rootViewController = self
+                self.setupView()
+            }
+        }
+
+        viewModel?.authCheck { isOk in
+            if isOk {
+                DispatchQueue.main.async {
+                    if UIApplication.shared.keyWindow?.rootViewController == self {
+                        self.openApp()
+                    }
+                }
+            } else {
+                UIApplication.shared.keyWindow?.rootViewController = self
+                self.setupView()
+            }
         }
     }
     
