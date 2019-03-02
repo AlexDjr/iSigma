@@ -119,8 +119,8 @@ let taskStates : [TaskType.Name : [TaskState]] = [
         TaskState(serverId: 584, order: 47, name: "Выпущено", isFinal: false),
         TaskState(serverId: 1165, order: 48, name: "Тестируется клиентом", isFinal: false),
         TaskState(serverId: 1293, order: 49, name: "Приемка в стенд", isFinal: false),
-        TaskState(serverId: 585, order: 50, name: "Доступно", isFinal: true),
-        TaskState(serverId: 982, order: 51, name: "Отложено", isFinal: false),
+        TaskState(serverId: 982, order: 50, name: "Отложено", isFinal: false),
+        TaskState(serverId: 585, order: 51, name: "Доступно", isFinal: true),
         TaskState(serverId: 589, order: 52, name: "Отказано", isFinal: true),
         TaskState(serverId: 586, order: 53, name: "Есть решение", isFinal: true)
     ],
@@ -128,8 +128,8 @@ let taskStates : [TaskType.Name : [TaskState]] = [
         TaskState(serverId: 427, order: 0, name: "В производстве", isFinal: false),
         TaskState(serverId: 429, order: 1, name: "Реализовано, но не доступно", isFinal: false),
         TaskState(serverId: 430, order: 2, name: "Верификация автором", isFinal: false),
-        TaskState(serverId: 431, order: 3, name: "Доступно", isFinal: true),
-        TaskState(serverId: 428, order: 4, name: "Отложено", isFinal: false),
+        TaskState(serverId: 428, order: 3, name: "Отложено", isFinal: false),
+        TaskState(serverId: 431, order: 4, name: "Доступно", isFinal: true),
         TaskState(serverId: 861, order: 5, name: "Отказано", isFinal: true)
     ],
     .sprintRequirement : [
@@ -142,8 +142,8 @@ let taskStates : [TaskType.Name : [TaskState]] = [
         TaskState(serverId: 1376, order: 4, name: "Производство", isFinal: false),
         TaskState(serverId: 1377, order: 5, name: "Готов к демо", isFinal: false),
         TaskState(serverId: 1378, order: 6, name: "Выпущено", isFinal: false),
-        TaskState(serverId: 1379, order: 7, name: "Доступно", isFinal: true),
-        TaskState(serverId: 1381, order: 8, name: "Отложена", isFinal: false),
+        TaskState(serverId: 1381, order: 7, name: "Отложена", isFinal: false),
+        TaskState(serverId: 1379, order: 8, name: "Доступно", isFinal: true),
         TaskState(serverId: 1380, order: 9, name: "Отказано", isFinal: true),
         TaskState(serverId: 1384, order: 10, name: "Есть решение", isFinal: true)
     ],

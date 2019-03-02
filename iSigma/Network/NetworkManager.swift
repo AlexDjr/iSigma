@@ -483,7 +483,7 @@ class NetworkManager {
                           "worklog": ["time_spent": "00:01",
                                       "type_of_work": 1],
                           "categorization": ["type": 1,
-                                             "author": "adelin@diasoft.ru",
+                                             "author": "",
                                              "reason": "---",
                                              "prevention": "---"],
                           "readme": ["impact_analysis_code": ["off": true],
