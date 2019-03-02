@@ -10,7 +10,7 @@ import Foundation
 
 class NetworkManager {
     
-    private let appName = "adelin@TestApp"
+    private let appName = "iSigma"
     private let clientSecret = "03408b403cd98bdd785736a52453bd3e"
     var pinToken: String?
     let cache = NSCache<NSString, NSArray>()
@@ -48,7 +48,7 @@ class NetworkManager {
     
     //    MARK: - Auth METHODS    
     func auth(withUser user: String, completion: @escaping (String?) -> ()) {
-        let url = URL(string: "http://webtst:7878/api/ems/auth/pin")!
+        let url = URL(string: "http://webems:82/api/ems/auth/pin")!
         
         var request = URLRequest(url: url)
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -86,7 +86,7 @@ class NetworkManager {
     func authToken(withPin pin: String?, withRefreshToken refreshToken: String?, completion: @escaping (String?) -> ()) {
         if pin == nil && refreshToken == nil { return }
         
-        let url = URL(string: "http://webtst:7878/api/ems/auth/token")!
+        let url = URL(string: "http://webems:82/api/ems/auth/token")!
         
         var request = URLRequest(url: url)
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -132,7 +132,7 @@ class NetworkManager {
     }
     
     func authCheck(completion: @escaping (Bool, String?)->()) {
-        let url = URL(string: "http://webtst:7878/api/ems/auth/check")!
+        let url = URL(string: "http://webems:82/api/ems/auth/check")!
         var request = URLRequest(url: url)
         
         if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") {
@@ -168,7 +168,7 @@ class NetworkManager {
     //    MARK: - GET METHODS
     func getTasksForCurrentUser(completion: @escaping ([Task]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/issues/context/assigned")!
+        let url = URL(string: "http://webems:82/api/ems/issues/context/assigned")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
@@ -206,7 +206,7 @@ class NetworkManager {
     func getTask(byIds ids: [Int], completion: @escaping ([Task]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         let stringIds = ids.map{ String($0) }.joined(separator: ",")
-        let url = URL(string: "http://webtst:7878/api/ems/issues/\(stringIds)?include=extra,project")!
+        let url = URL(string: "http://webems:82/api/ems/issues/\(stringIds)?include=extra,project")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
@@ -258,7 +258,7 @@ class NetworkManager {
     
     func getTaskTransitions(_ taskId: Int, completion: @escaping ([TaskState]?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/issues/\(taskId)/transitions")!
+        let url = URL(string: "http://webems:82/api/ems/issues/\(taskId)/transitions")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(String(describing: accessToken))", forHTTPHeaderField: "authorization")
@@ -293,7 +293,7 @@ class NetworkManager {
     }
     
     func getWorklogTypes(completion: @escaping ([WorklogType]?, String?) -> ()) {
-        let url = URL(string: "http://webtst:7878/api/ems/meta/model/contracts/worklog/type")!
+        let url = URL(string: "http://webems:82/api/ems/meta/model/contracts/worklog/type")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -327,7 +327,7 @@ class NetworkManager {
     }
     
     func getEmployees(completion: @escaping ([Employee]?, String?) -> ()) {
-        let url = URL(string: "http://webtst:7878/api/ems/employees/status/2")!
+        let url = URL(string: "http://webems:82/api/ems/employees/status/2")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -424,7 +424,7 @@ class NetworkManager {
     //    MARK: - POST METHODS
     func postWorklog(task: String, time: String, type: Int, date: String, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/worklog/context/add")!
+        let url = URL(string: "http://webems:82/api/ems/worklog/context/add")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
@@ -468,7 +468,7 @@ class NetworkManager {
     //    MARK: - PUT METHODS
     func putTaskTransition(taskId: Int, from: Int, to: Int, assignedEmail: String?, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/transfer")!
+        let url = URL(string: "http://webems:82/api/ems/issues/context/\(taskId)/transfer")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
@@ -527,7 +527,7 @@ class NetworkManager {
     
     func putTaskUpdate(taskId: Int, assigneeEmail: String, completion: @escaping (Bool, String?, String?) -> ()) {
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        let url = URL(string: "http://webtst:7878/api/ems/issues/context/\(taskId)/update")!
+        let url = URL(string: "http://webems:82/api/ems/issues/context/\(taskId)/update")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "authorization")
