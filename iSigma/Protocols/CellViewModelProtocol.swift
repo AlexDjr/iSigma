@@ -9,5 +9,4 @@
 import UIKit
 
 protocol CellViewModelProtocol {
-    func setupViewModel()
 }

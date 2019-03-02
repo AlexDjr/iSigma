@@ -9,7 +9,6 @@
 import UIKit
 
 class WorklogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
-    
     var timePickerSelectedRows: (Int, Int)
     var timePickerComponentWidth: CGFloat
     
@@ -24,5 +23,4 @@ class WorklogTimePickerCellViewModel : NSObject, CellViewModelProtocol {
         timePickerSelectedRows = (8,0)
         timePickerComponentWidth = 20.0
     }
-    
 }

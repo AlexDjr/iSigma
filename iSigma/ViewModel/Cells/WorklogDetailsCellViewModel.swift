@@ -18,8 +18,4 @@ class WorklogDetailsCellViewModel : CellViewModelProtocol {
         self.name = ""
         self.value = Box("")
     }
-    
-    func setupViewModel() {
-        
-    }
 }

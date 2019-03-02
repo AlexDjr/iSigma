@@ -16,8 +16,4 @@ class SettingsCellViewModel: CellViewModelProtocol {
         self.name = name
         self.value = Box("")
     }
-    
-    func setupViewModel() {
-        
-    }
 }

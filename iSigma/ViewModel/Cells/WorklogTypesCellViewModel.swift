@@ -9,14 +9,9 @@
 import Foundation
 
 class WorklogTypesCellViewModel: CellViewModelProtocol {
-    
     var value: Box<String?>
     
     init() {
         self.value = Box(nil)
-    }
-    
-    func setupViewModel() {
-    }
-    
+    }    
 }
